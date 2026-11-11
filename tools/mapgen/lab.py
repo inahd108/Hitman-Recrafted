@@ -79,7 +79,7 @@ def sewer(ctx):
     # outlet in the quay wall -> north under the central stairs -> cistern under the fountain
     x0, x1 = 150, 151
     for z in range(160, 206):
-        w.fill(x0 - 1, 61, z, x1 + 1, 66 if z < 204 else 65, z, 'stone_bricks') if z < 205 else None
+        w.fill(x0 - 1, 61, z, x1 + 1, 65 if z >= 170 else 66, z, 'stone_bricks') if z < 205 else None
         w.fill(x0, 62, z, x1, 62, z, 'mossy_stone_bricks' if rng.random() < .4 else 'stone_bricks')
         w.clear(x0, 63, z, x1, 64, z)
         if z % 8 == 0:
@@ -312,7 +312,7 @@ def lab(ctx):
     room(ctx, 196, 104, 210, 118, name='lab.wetlab')
     doorway(ctx, 211, 110, 213, 111)
     for z in range(105, 118, 3):
-        w.fill(198, f + 1, z, 203, f + 1, z, 'smooth_quartz')
+        w.fill(198, f + 1, z, 202, f + 1, z, 'smooth_quartz')
         w.set(199, f + 2, z, 'brewing_stand'); w.set(202, f + 2, z, rng.choice(['water_cauldron[level=3]', 'flower_pot']))
     A['lab.wetlab.bench'] = (201, f + 1, 109)
     ctx['props'].append(('lethal_poison', 200, f + 2, 108))

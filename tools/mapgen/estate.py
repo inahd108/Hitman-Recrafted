@@ -282,7 +282,7 @@ def estate(ctx):
     A['security.desk'] = (125, f1, 63)
     A['security.room'] = (121, f1, 66)
     A['security.lockers'] = (120, f1, 70)
-    ctx['props'].append(('outfit_guard', 121, f1, 69))
+    ctx['props'].append(('outfit_estate_guard', 121, f1, 69))
     ctx['props'].append(('baton', 126, f1 + 1, 64))
     for i in range(5):
         w.set(123 - i, f1 + i, 60, 'spruce_stairs[facing=west,half=bottom]')

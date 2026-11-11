@@ -1,0 +1,6868 @@
+{
+ "id": "corvara",
+ "title": "Salt & Ash",
+ "location": "Corvara \u2014 Tyrrhenian Sea",
+ "dimension": "recrafted:corvara",
+ "briefing": [
+  "Corvara. Four hundred residents, one ferry a day, and the best sunsets in the Tyrrhenian.",
+  "Beneath the old cannery, Halcyon Agrigenics is finishing CINDER \u2014 a blight engineered to wipe a harvest from the map and sell the cure.",
+  "Three people keep it alive. Marco Belmonte pays for it from his hilltop estate. Dr. Ilse Varga builds it in the salt mine under the town. Capitano Renzo Sordi makes sure the harbour never sees it leave.",
+  "Remove all three. Destroy the pathogen. Take the evening ferry home."
+ ],
+ "spawn": {
+  "pos": [
+   134.5,
+   64,
+   228.5
+  ],
+  "yaw": 180
+ },
+ "targets": [
+  {
+   "id": "belmonte",
+   "name": "Marco Belmonte",
+   "desc": "Vintner, financier, owner of the Tenuta. Never without two bodyguards."
+  },
+  {
+   "id": "varga",
+   "name": "Dr. Ilse Varga",
+   "desc": "Lead virologist. Lives in the lab; surfaces only for bad coffee."
+  },
+  {
+   "id": "sordi",
+   "name": "Capitano Renzo Sordi",
+   "desc": "Harbour master. Takes lunch at the trattoria, wine included."
+  }
+ ],
+ "objectives": [
+  {
+   "id": "kill_belmonte",
+   "type": "eliminate",
+   "target": "belmonte",
+   "text": "Eliminate Marco Belmonte"
+  },
+  {
+   "id": "kill_varga",
+   "type": "eliminate",
+   "target": "varga",
+   "text": "Eliminate Dr. Ilse Varga"
+  },
+  {
+   "id": "kill_sordi",
+   "type": "eliminate",
+   "target": "sordi",
+   "text": "Eliminate Capitano Renzo Sordi"
+  },
+  {
+   "id": "destroy_core",
+   "type": "destroy_core",
+   "text": "Destroy the CINDER pathogen"
+  },
+  {
+   "id": "exit",
+   "type": "exit",
+   "text": "Leave the island"
+  }
+ ],
+ "intel": [
+  "The caf\u00e9 and the estate dress their waiters alike. Nobody at the gate checks faces.",
+  "The Capitano drinks at the middle table of the trattoria. The glass sits there between visits.",
+  "A sewer mouth opens under the quay. The cistern beyond it connects to the old salt workings.",
+  "Belmonte tastes from the cellar every afternoon. The big vats at the far end hide a door the miners left.",
+  "The clean zone needs a suit. Spare ones hang in the locker room behind the security corridor.",
+  "The purge console in the core hall sterilises the containment chamber. It was never meant to be run with the sample inside.",
+  "Fuse boxes bring someone to fix them. That someone leaves their post."
+ ],
+ "zones": [
+  {
+   "name": "harbour_office_upstairs",
+   "box": [
+    207,
+    70,
+    176,
+    225,
+    75,
+    189
+   ],
+   "allow": [
+    "harbour_guard"
+   ],
+   "label": "Harbour Office \u2014 staff only"
+  },
+  {
+   "name": "estate",
+   "box": [
+    37,
+    80,
+    24,
+    131,
+    130,
+    86
+   ],
+   "allow": [
+    "estate_guard",
+    "bodyguard",
+    "waiter",
+    "cook",
+    "gardener",
+    "cleaner"
+   ],
+   "label": "Tenuta Belmonte \u2014 private property"
+  },
+  {
+   "name": "villa_private",
+   "box": [
+    72,
+    94,
+    42,
+    128,
+    119,
+    58
+   ],
+   "allow": [
+    "estate_guard",
+    "bodyguard",
+    "cleaner"
+   ],
+   "label": "Villa \u2014 private rooms"
+  },
+  {
+   "name": "cannery",
+   "box": [
+    254,
+    60,
+    152,
+    298,
+    110,
+    204
+   ],
+   "allow": [
+    "worker",
+    "security",
+    "scientist"
+   ],
+   "label": "Conservificio Corvara \u2014 employees only"
+  },
+  {
+   "name": "lab_service",
+   "box": [
+    254,
+    36,
+    148,
+    294,
+    52,
+    196
+   ],
+   "allow": [
+    "security",
+    "lab_guard",
+    "scientist",
+    "hazmat"
+   ],
+   "label": "Halcyon facility \u2014 restricted"
+  },
+  {
+   "name": "lab_clean",
+   "box": [
+    192,
+    36,
+    84,
+    290,
+    52,
+    147
+   ],
+   "allow": [
+    "lab_guard",
+    "hazmat",
+    "scientist"
+   ],
+   "label": "Clean zone \u2014 protective suit required"
+  },
+  {
+   "name": "sea_cave",
+   "box": [
+    272,
+    56,
+    92,
+    300,
+    72,
+    114
+   ],
+   "allow": [
+    "security",
+    "lab_guard",
+    "scientist",
+    "hazmat"
+   ],
+   "label": "Private dock"
+  }
+ ],
+ "props": [
+  {
+   "item": "recrafted:fish",
+   "pos": [
+    169.5,
+    67,
+    179.5
+   ]
+  },
+  {
+   "item": "recrafted:fish",
+   "pos": [
+    169.5,
+    67,
+    185.5
+   ]
+  },
+  {
+   "item": "recrafted:fish",
+   "pos": [
+    175.5,
+    67,
+    179.5
+   ]
+  },
+  {
+   "item": "recrafted:fish",
+   "pos": [
+    175.5,
+    67,
+    185.5
+   ]
+  },
+  {
+   "item": "recrafted:fish",
+   "pos": [
+    181.5,
+    67,
+    179.5
+   ]
+  },
+  {
+   "item": "recrafted:fish",
+   "pos": [
+    181.5,
+    67,
+    185.5
+   ]
+  },
+  {
+   "item": "recrafted:kitchen_knife",
+   "pos": [
+    181.5,
+    67,
+    186.5
+   ]
+  },
+  {
+   "item": "recrafted:fish",
+   "pos": [
+    175.5,
+    67,
+    180.5
+   ]
+  },
+  {
+   "item": "recrafted:keycard_harbour",
+   "pos": [
+    220.5,
+    72,
+    178.5
+   ]
+  },
+  {
+   "item": "recrafted:letter_opener",
+   "pos": [
+    221.5,
+    72,
+    178.5
+   ]
+  },
+  {
+   "item": "recrafted:wrench",
+   "pos": [
+    198.5,
+    97,
+    137.5
+   ]
+  },
+  {
+   "item": "recrafted:candlestick",
+   "pos": [
+    214.5,
+    91,
+    64.5
+   ]
+  },
+  {
+   "item": "recrafted:shovel",
+   "pos": [
+    233.5,
+    90,
+    82.5
+   ]
+  },
+  {
+   "item": "recrafted:bottle",
+   "pos": [
+    64.5,
+    67,
+    184.5
+   ]
+  },
+  {
+   "item": "recrafted:coin",
+   "pos": [
+    50.5,
+    64,
+    200.5
+   ]
+  },
+  {
+   "item": "recrafted:keycard_estate",
+   "pos": [
+    115.5,
+    96,
+    46.5
+   ]
+  },
+  {
+   "item": "recrafted:letter_opener",
+   "pos": [
+    117.5,
+    96,
+    46.5
+   ]
+  },
+  {
+   "item": "recrafted:golf_club",
+   "pos": [
+    113.5,
+    95,
+    54.5
+   ]
+  },
+  {
+   "item": "recrafted:kitchen_knife",
+   "pos": [
+    77.5,
+    91,
+    64.5
+   ]
+  },
+  {
+   "item": "recrafted:frying_pan",
+   "pos": [
+    75.5,
+    90,
+    62.5
+   ]
+  },
+  {
+   "item": "recrafted:rat_poison",
+   "pos": [
+    82.5,
+    90,
+    61.5
+   ]
+  },
+  {
+   "item": "recrafted:rolling_pin",
+   "pos": [
+    80.5,
+    91,
+    63.5
+   ]
+  },
+  {
+   "item": "recrafted:outfit_waiter",
+   "pos": [
+    80.5,
+    95,
+    62.5
+   ]
+  },
+  {
+   "item": "recrafted:outfit_estate_guard",
+   "pos": [
+    121.5,
+    90,
+    69.5
+   ]
+  },
+  {
+   "item": "recrafted:baton",
+   "pos": [
+    126.5,
+    91,
+    64.5
+   ]
+  },
+  {
+   "item": "recrafted:garden_shears",
+   "pos": [
+    90.5,
+    90,
+    80.5
+   ]
+  },
+  {
+   "item": "recrafted:bottle",
+   "pos": [
+    49.5,
+    91,
+    61.5
+   ]
+  },
+  {
+   "item": "recrafted:coin",
+   "pos": [
+    62.5,
+    90,
+    78.5
+   ]
+  },
+  {
+   "item": "recrafted:corkscrew",
+   "pos": [
+    94.5,
+    84,
+    50.5
+   ]
+  },
+  {
+   "item": "recrafted:bottle",
+   "pos": [
+    80.5,
+    83,
+    45.5
+   ]
+  },
+  {
+   "item": "recrafted:crowbar",
+   "pos": [
+    106.5,
+    83,
+    55.5
+   ]
+  },
+  {
+   "item": "recrafted:wrench",
+   "pos": [
+    266.5,
+    66,
+    185.5
+   ]
+  },
+  {
+   "item": "recrafted:lead_pipe",
+   "pos": [
+    277.5,
+    66,
+    183.5
+   ]
+  },
+  {
+   "item": "recrafted:hammer",
+   "pos": [
+    262.5,
+    66,
+    168.5
+   ]
+  },
+  {
+   "item": "recrafted:screwdriver",
+   "pos": [
+    272.5,
+    67,
+    176.5
+   ]
+  },
+  {
+   "item": "recrafted:keycard_lab",
+   "pos": [
+    283.5,
+    72,
+    160.5
+   ]
+  },
+  {
+   "item": "recrafted:scissors",
+   "pos": [
+    266.5,
+    72,
+    159.5
+   ]
+  },
+  {
+   "item": "recrafted:outfit_worker",
+   "pos": [
+    259.5,
+    66,
+    190.5
+   ]
+  },
+  {
+   "item": "recrafted:brick",
+   "pos": [
+    257.5,
+    66,
+    170.5
+   ]
+  },
+  {
+   "item": "recrafted:crowbar",
+   "pos": [
+    158.5,
+    65,
+    148.5
+   ]
+  },
+  {
+   "item": "recrafted:coin",
+   "pos": [
+    151.5,
+    63,
+    190.5
+   ]
+  },
+  {
+   "item": "recrafted:lead_pipe",
+   "pos": [
+    150.5,
+    48,
+    98.5
+   ]
+  },
+  {
+   "item": "recrafted:lockpick",
+   "pos": [
+    146.5,
+    48,
+    104.5
+   ]
+  },
+  {
+   "item": "recrafted:keycard_lab",
+   "pos": [
+    287.5,
+    42,
+    177.5
+   ]
+  },
+  {
+   "item": "recrafted:baton",
+   "pos": [
+    280.5,
+    41,
+    169.5
+   ]
+  },
+  {
+   "item": "recrafted:wrench",
+   "pos": [
+    284.5,
+    41,
+    158.5
+   ]
+  },
+  {
+   "item": "recrafted:outfit_hazmat",
+   "pos": [
+    261.5,
+    41,
+    170.5
+   ]
+  },
+  {
+   "item": "recrafted:outfit_scientist",
+   "pos": [
+    265.5,
+    41,
+    170.5
+   ]
+  },
+  {
+   "item": "recrafted:sedative",
+   "pos": [
+    262.5,
+    42,
+    152.5
+   ]
+  },
+  {
+   "item": "recrafted:fire_extinguisher",
+   "pos": [
+    216.5,
+    41,
+    131.5
+   ]
+  },
+  {
+   "item": "recrafted:syringe",
+   "pos": [
+    218.5,
+    42,
+    119.5
+   ]
+  },
+  {
+   "item": "recrafted:scalpel",
+   "pos": [
+    250.5,
+    42,
+    119.5
+   ]
+  },
+  {
+   "item": "recrafted:lethal_poison",
+   "pos": [
+    200.5,
+    42,
+    108.5
+   ]
+  },
+  {
+   "item": "recrafted:emetic_poison",
+   "pos": [
+    201.5,
+    42,
+    114.5
+   ]
+  },
+  {
+   "item": "recrafted:letter_opener",
+   "pos": [
+    266.5,
+    42,
+    106.5
+   ]
+  },
+  {
+   "item": "recrafted:garden_shears",
+   "pos": [
+    240.5,
+    41,
+    99.5
+   ]
+  },
+  {
+   "item": "recrafted:outfit_security",
+   "pos": [
+    280.5,
+    64,
+    96.5
+   ]
+  },
+  {
+   "item": "recrafted:coin",
+   "pos": [
+    135.5,
+    64,
+    228.5
+   ]
+  },
+  {
+   "item": "recrafted:coin",
+   "pos": [
+    163.5,
+    74,
+    162.5
+   ]
+  },
+  {
+   "item": "recrafted:coin",
+   "pos": [
+    150.5,
+    66,
+    202.5
+   ]
+  },
+  {
+   "item": "recrafted:brick",
+   "pos": [
+    120.5,
+    66,
+    179.5
+   ]
+  },
+  {
+   "item": "recrafted:brick",
+   "pos": [
+    125.5,
+    82,
+    129.5
+   ]
+  },
+  {
+   "item": "recrafted:bottle",
+   "pos": [
+    135.5,
+    74,
+    147.5
+   ]
+  },
+  {
+   "item": "recrafted:bottle",
+   "pos": [
+    135.5,
+    66,
+    193.5
+   ]
+  },
+  {
+   "item": "recrafted:newspaper",
+   "pos": [
+    172.5,
+    74,
+    161.5
+   ]
+  },
+  {
+   "item": "recrafted:wrench",
+   "pos": [
+    206.5,
+    63,
+    212.5
+   ]
+  },
+  {
+   "item": "recrafted:fishing_gaff",
+   "pos": [
+    191.5,
+    66,
+    203.5
+   ]
+  },
+  {
+   "item": "recrafted:oar",
+   "pos": [
+    128.5,
+    66,
+    225.5
+   ]
+  },
+  {
+   "item": "recrafted:screwdriver",
+   "pos": [
+    86.5,
+    66,
+    268.5
+   ]
+  },
+  {
+   "item": "recrafted:outfit_fisherman",
+   "pos": [
+    85.5,
+    66,
+    269.5
+   ]
+  },
+  {
+   "item": "recrafted:hammer",
+   "pos": [
+    245.5,
+    66,
+    188.5
+   ]
+  },
+  {
+   "item": "recrafted:fiber_wire",
+   "pos": [
+    142.5,
+    82,
+    120.5
+   ]
+  },
+  {
+   "item": "recrafted:scissors",
+   "pos": [
+    140.5,
+    82,
+    120.5
+   ]
+  },
+  {
+   "item": "recrafted:outfit_waiter",
+   "pos": [
+    128.5,
+    74,
+    147.5
+   ]
+  },
+  {
+   "item": "recrafted:rolling_pin",
+   "pos": [
+    110.5,
+    82,
+    120.5
+   ]
+  },
+  {
+   "item": "recrafted:emetic_poison",
+   "pos": [
+    244.5,
+    74,
+    148.5
+   ]
+  },
+  {
+   "item": "recrafted:sedative",
+   "pos": [
+    171.5,
+    82,
+    121.5
+   ]
+  },
+  {
+   "item": "recrafted:syringe",
+   "pos": [
+    172.5,
+    82,
+    121.5
+   ]
+  },
+  {
+   "item": "recrafted:outfit_gardener",
+   "pos": [
+    168.5,
+    90,
+    78.5
+   ]
+  },
+  {
+   "item": "recrafted:garden_shears",
+   "pos": [
+    141.5,
+    90,
+    81.5
+   ]
+  },
+  {
+   "item": "recrafted:outfit_cook",
+   "pos": [
+    132.5,
+    66,
+    187.5
+   ]
+  },
+  {
+   "item": "recrafted:kitchen_knife",
+   "pos": [
+    128.5,
+    66,
+    185.5
+   ]
+  },
+  {
+   "item": "recrafted:cleaver",
+   "pos": [
+    76.5,
+    90,
+    63.5
+   ]
+  },
+  {
+   "item": "recrafted:lockpick",
+   "pos": [
+    157.5,
+    74,
+    159.5
+   ]
+  },
+  {
+   "item": "recrafted:pocket_radio",
+   "pos": [
+    206.5,
+    74,
+    150.5
+   ]
+  },
+  {
+   "item": "recrafted:pocket_radio",
+   "pos": [
+    271.5,
+    66,
+    186.5
+   ]
+  },
+  {
+   "item": "recrafted:outfit_cleaner",
+   "pos": [
+    197.5,
+    74,
+    142.5
+   ]
+  },
+  {
+   "item": "recrafted:broom",
+   "pos": [
+    180.5,
+    75,
+    167.5
+   ]
+  },
+  {
+   "item": "recrafted:lethal_poison",
+   "pos": [
+    106.5,
+    83,
+    53.5
+   ]
+  },
+  {
+   "item": "recrafted:outfit_priest",
+   "pos": [
+    209.5,
+    90,
+    63.5
+   ]
+  },
+  {
+   "item": "recrafted:fire_axe",
+   "pos": [
+    293.5,
+    66,
+    182.5
+   ]
+  },
+  {
+   "item": "recrafted:candlestick",
+   "pos": [
+    82.5,
+    90,
+    47.5
+   ]
+  }
+ ],
+ "npcs": [
+  {
+   "name": "Marco Belmonte",
+   "role": "belmonte",
+   "pos": [
+    85.5,
+    95,
+    53.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       85.5,
+       95,
+       53.5
+      ],
+      "wait": 500,
+      "pose": "drink",
+      "yaw": 90,
+      "say": "Another vintage wasted on investors."
+     },
+     {
+      "pos": [
+       80.5,
+       95,
+       50.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       100.5,
+       95,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       116.5,
+       95,
+       50.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       116.5,
+       96,
+       45.5
+      ],
+      "wait": 900,
+      "pose": "type",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       116.5,
+       95,
+       55.5
+      ],
+      "wait": 300,
+      "pose": "phone",
+      "yaw": 0,
+      "say": "The shipment leaves tonight. No delays."
+     },
+     {
+      "pos": [
+       100.5,
+       95,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       101.5,
+       95,
+       45.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       92.5,
+       90,
+       45.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       61.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       70.5
+      ],
+      "wait": 240,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       90.5,
+       90,
+       66.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       84.5,
+       90,
+       79.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       69.5,
+       90,
+       76.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       53.5,
+       90,
+       80.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       50.5,
+       90,
+       63.5
+      ],
+      "wait": 600,
+      "pose": "drink",
+      "yaw": 180,
+      "say": "The usual. And keep them coming."
+     },
+     {
+      "pos": [
+       64.5,
+       91,
+       70.5
+      ],
+      "wait": 800,
+      "pose": "sit",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       53.5,
+       90,
+       80.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       69.5,
+       90,
+       76.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       70.5,
+       90,
+       68.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       79.5,
+       90,
+       65.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       90,
+       63.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       83,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       84.5,
+       83,
+       50.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       93.5,
+       83,
+       51.5
+      ],
+      "wait": 800,
+      "pose": "drink",
+      "yaw": 180,
+      "say": "Ah. The ninety-eight."
+     },
+     {
+      "pos": [
+       84.5,
+       83,
+       50.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       83,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       90,
+       63.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       86.5,
+       90,
+       65.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       61.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       82.5,
+       90,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       79.5,
+       90,
+       47.5
+      ],
+      "wait": 900,
+      "pose": "eat",
+      "yaw": 0,
+      "say": "Sit. Eat. We will talk business after."
+     },
+     {
+      "pos": [
+       82.5,
+       90,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       92.5,
+       90,
+       45.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       101.5,
+       95,
+       45.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       100.5,
+       95,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       80.5,
+       95,
+       50.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   },
+   "id": "belmonte",
+   "target": true,
+   "sickSpot": [
+    70.5,
+    90,
+    68.5
+   ]
+  },
+  {
+   "name": "Bodyguard Dario",
+   "role": "bodyguard",
+   "pos": [
+    81.5,
+    95,
+    51.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       81.5,
+       95,
+       51.5
+      ],
+      "wait": 100,
+      "pose": "guard"
+     }
+    ]
+   },
+   "enforcer": true,
+   "follow": "belmonte"
+  },
+  {
+   "name": "Bodyguard Enzo",
+   "role": "bodyguard",
+   "pos": [
+    79.5,
+    95,
+    51.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       79.5,
+       95,
+       51.5
+      ],
+      "wait": 100,
+      "pose": "guard"
+     }
+    ]
+   },
+   "follow": "belmonte"
+  },
+  {
+   "name": "Dr. Ilse Varga",
+   "role": "varga",
+   "pos": [
+    266.5,
+    42,
+    105.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       266.5,
+       42,
+       105.5
+      ],
+      "wait": 900,
+      "pose": "type",
+      "yaw": 0,
+      "say": "Batch nine is stable. Finally."
+     },
+     {
+      "pos": [
+       265.5,
+       41,
+       110.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       251.5,
+       41,
+       114.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       240.5,
+       41,
+       129.5
+      ],
+      "wait": 600,
+      "pose": "type",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       234.5,
+       41,
+       125.5
+      ],
+      "wait": 400,
+      "pose": "look",
+      "yaw": 180,
+      "say": "Beautiful, isn't it? One vial and a harvest is ash."
+     },
+     {
+      "pos": [
+       217.5,
+       41,
+       114.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       203.5,
+       41,
+       111.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       201.5,
+       41,
+       109.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       203.5,
+       41,
+       111.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       217.5,
+       41,
+       114.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       220.5,
+       41,
+       108.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       234.5,
+       41,
+       94.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       228.5,
+       41,
+       96.5
+      ],
+      "wait": 500,
+      "pose": "crouch",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       234.5,
+       41,
+       94.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       220.5,
+       41,
+       108.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       234.5,
+       41,
+       131.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       234.5,
+       41,
+       138.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       262.5,
+       41,
+       138.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       273.5,
+       41,
+       140.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       273.5,
+       41,
+       145.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       273.5,
+       41,
+       151.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       273.5,
+       41,
+       165.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       263.5,
+       41,
+       158.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       266.5,
+       42,
+       155.5
+      ],
+      "wait": 800,
+      "pose": "drink",
+      "yaw": 90,
+      "say": "This coffee is a war crime."
+     },
+     {
+      "pos": [
+       263.5,
+       41,
+       158.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       273.5,
+       41,
+       165.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       273.5,
+       41,
+       151.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       273.5,
+       41,
+       145.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       273.5,
+       41,
+       140.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       262.5,
+       41,
+       138.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       234.5,
+       41,
+       138.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       234.5,
+       41,
+       131.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       251.5,
+       41,
+       114.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       265.5,
+       41,
+       110.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   },
+   "id": "varga",
+   "target": true,
+   "sickSpot": [
+    263.5,
+    41,
+    175.5
+   ]
+  },
+  {
+   "name": "Capitano Renzo Sordi",
+   "role": "sordi",
+   "pos": [
+    221.5,
+    72,
+    177.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       221.5,
+       72,
+       177.5
+      ],
+      "wait": 800,
+      "pose": "type",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       217.5,
+       71,
+       188.5
+      ],
+      "wait": 300,
+      "pose": "look",
+      "yaw": 0,
+      "say": "My harbour. My rules."
+     },
+     {
+      "pos": [
+       214.5,
+       71,
+       181.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       216.5,
+       66,
+       185.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       209.5,
+       66,
+       190.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       221.5,
+       66,
+       203.5
+      ],
+      "wait": 400,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       210.5,
+       66,
+       200.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       170.5,
+       66,
+       200.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       176.5,
+       66,
+       192.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       176.5,
+       66,
+       183.5
+      ],
+      "wait": 400,
+      "pose": "talk",
+      "yaw": 180,
+      "say": "Belmonte's crates go through unopened. Understood?"
+     },
+     {
+      "pos": [
+       176.5,
+       66,
+       192.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       160.5,
+       66,
+       196.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       130.5,
+       66,
+       195.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       129.5,
+       67,
+       193.5
+      ],
+      "wait": 900,
+      "pose": "drink",
+      "yaw": 180,
+      "say": "Nino! The house red."
+     },
+     {
+      "pos": [
+       130.5,
+       66,
+       195.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       160.5,
+       66,
+       196.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       210.5,
+       66,
+       200.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       209.5,
+       66,
+       190.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       216.5,
+       66,
+       185.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       214.5,
+       71,
+       181.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   },
+   "id": "sordi",
+   "target": true,
+   "sickSpot": [
+    176.5,
+    66,
+    183.5
+   ]
+  },
+  {
+   "name": "Agente Ricci",
+   "role": "harbour_guard",
+   "pos": [
+    215.5,
+    71,
+    182.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       215.5,
+       71,
+       182.5
+      ],
+      "wait": 100,
+      "pose": "guard"
+     }
+    ]
+   },
+   "enforcer": true,
+   "follow": "sordi"
+  },
+  {
+   "name": "Ferryman Aldo",
+   "role": "fisherman",
+   "pos": [
+    133.5,
+    64,
+    226.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       133.5,
+       64,
+       226.5
+      ],
+      "wait": 600,
+      "pose": "lean",
+      "yaw": 180,
+      "say": "Next crossing is at six. Maybe."
+     }
+    ]
+   }
+  },
+  {
+   "name": "Harbour Officer Conti",
+   "role": "harbour_guard",
+   "pos": [
+    88.5,
+    66,
+    196.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       88.5,
+       66,
+       196.5
+      ],
+      "wait": 160,
+      "pose": "guard",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       110.5,
+       66,
+       200.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       150.5,
+       66,
+       200.5
+      ],
+      "wait": 120,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       160.5,
+       66,
+       196.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       190.5,
+       66,
+       200.5
+      ],
+      "wait": 120,
+      "pose": "guard",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       246.5,
+       66,
+       196.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Harbour Officer Greco",
+   "role": "harbour_guard",
+   "pos": [
+    127.5,
+    66,
+    208.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       127.5,
+       66,
+       208.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       127.5,
+       66,
+       222.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       128.5,
+       66,
+       236.5
+      ],
+      "wait": 300,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       127.5,
+       66,
+       222.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       130.5,
+       66,
+       200.5
+      ],
+      "wait": 160,
+      "pose": "guard",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Harbour Clerk Paola",
+   "role": "harbour_guard",
+   "pos": [
+    213.5,
+    66,
+    181.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       213.5,
+       66,
+       181.5
+      ],
+      "wait": 600,
+      "pose": "type",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Harbour Officer Bruno",
+   "role": "harbour_guard",
+   "pos": [
+    242.5,
+    66,
+    202.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       242.5,
+       66,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "guard",
+      "yaw": 90
+     }
+    ]
+   },
+   "enforcer": true
+  },
+  {
+   "name": "Old Tonio",
+   "role": "fisherman",
+   "pos": [
+    98.5,
+    66,
+    202.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       98.5,
+       66,
+       202.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": 0,
+      "say": "Nets are torn again."
+     },
+     {
+      "pos": [
+       100.5,
+       67,
+       198.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       98.5,
+       66,
+       199.5
+      ],
+      "wait": 240,
+      "pose": "smoke",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       169.5,
+       66,
+       182.5
+      ],
+      "wait": 300,
+      "pose": "talk",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Beppe",
+   "role": "fisherman",
+   "pos": [
+    150.5,
+    66,
+    202.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       150.5,
+       66,
+       202.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       132.5,
+       67,
+       198.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       150.5,
+       66,
+       199.5
+      ],
+      "wait": 240,
+      "pose": "smoke",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       169.5,
+       66,
+       188.5
+      ],
+      "wait": 300,
+      "pose": "talk",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Salvo",
+   "role": "fisherman",
+   "pos": [
+    176.5,
+    66,
+    202.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       176.5,
+       66,
+       202.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": 0,
+      "say": "Wind is turning."
+     },
+     {
+      "pos": [
+       172.5,
+       67,
+       198.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       176.5,
+       66,
+       199.5
+      ],
+      "wait": 240,
+      "pose": "smoke",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       175.5,
+       66,
+       182.5
+      ],
+      "wait": 300,
+      "pose": "talk",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Gino",
+   "role": "fisherman",
+   "pos": [
+    206.5,
+    66,
+    202.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       206.5,
+       66,
+       202.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       190.5,
+       67,
+       198.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       206.5,
+       66,
+       199.5
+      ],
+      "wait": 240,
+      "pose": "smoke",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       175.5,
+       66,
+       188.5
+      ],
+      "wait": 300,
+      "pose": "talk",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Fishmonger Rosa",
+   "role": "shopkeeper",
+   "pos": [
+    170.5,
+    66,
+    178.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       170.5,
+       66,
+       178.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Fishmonger Carlo",
+   "role": "shopkeeper",
+   "pos": [
+    176.5,
+    66,
+    178.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       176.5,
+       66,
+       178.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 0,
+      "say": "Fresh this morning! Fresh!"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Fishmonger Ines",
+   "role": "shopkeeper",
+   "pos": [
+    182.5,
+    66,
+    178.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       182.5,
+       66,
+       178.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Shopper Lucia",
+   "role": "civilian",
+   "pos": [
+    169.5,
+    66,
+    188.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       169.5,
+       66,
+       188.5
+      ],
+      "wait": 300,
+      "pose": "look",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       175.5,
+       66,
+       188.5
+      ],
+      "wait": 240,
+      "pose": "talk",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       176.5,
+       66,
+       192.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       170.5,
+       66,
+       200.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       181.5,
+       66,
+       188.5
+      ],
+      "wait": 300,
+      "pose": "look",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Shopper Matteo",
+   "role": "civilian",
+   "pos": [
+    181.5,
+    66,
+    182.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       181.5,
+       66,
+       182.5
+      ],
+      "wait": 360,
+      "pose": "look",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       176.5,
+       66,
+       183.5
+      ],
+      "wait": 160,
+      "pose": "phone"
+     },
+     {
+      "pos": [
+       169.5,
+       66,
+       182.5
+      ],
+      "wait": 300,
+      "pose": "talk",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Chef Nino",
+   "role": "cook",
+   "pos": [
+    130.5,
+    66,
+    184.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       130.5,
+       66,
+       184.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Waiter Fabio",
+   "role": "waiter",
+   "pos": [
+    126.5,
+    66,
+    192.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       126.5,
+       66,
+       192.5
+      ],
+      "wait": 200,
+      "pose": "talk",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       130.5,
+       66,
+       195.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       130.5,
+       66,
+       190.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       130.5,
+       66,
+       187.5
+      ],
+      "wait": 240,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       130.5,
+       66,
+       190.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       134.5,
+       66,
+       192.5
+      ],
+      "wait": 200,
+      "pose": "talk",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       130.5,
+       66,
+       195.5
+      ],
+      "wait": 160,
+      "pose": "look",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Diner Giulia",
+   "role": "tourist",
+   "pos": [
+    125.5,
+    67,
+    193.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       125.5,
+       67,
+       193.5
+      ],
+      "wait": 600,
+      "pose": "eat",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Diner Henrik",
+   "role": "tourist",
+   "pos": [
+    125.5,
+    67,
+    191.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       125.5,
+       67,
+       191.5
+      ],
+      "wait": 600,
+      "pose": "drink",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Diner Sofia",
+   "role": "civilian",
+   "pos": [
+    133.5,
+    67,
+    193.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       133.5,
+       67,
+       193.5
+      ],
+      "wait": 600,
+      "pose": "eat",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Tourist Amelie",
+   "role": "tourist",
+   "pos": [
+    90.5,
+    66,
+    200.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       90.5,
+       66,
+       200.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       130.5,
+       66,
+       200.5
+      ],
+      "wait": 160,
+      "pose": "phone",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       112.5,
+       67,
+       198.5
+      ],
+      "wait": 500,
+      "pose": "sit",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       110.5,
+       66,
+       200.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Tourist Jonas",
+   "role": "tourist",
+   "pos": [
+    127.5,
+    66,
+    234.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       127.5,
+       66,
+       234.5
+      ],
+      "wait": 500,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       127.5,
+       66,
+       222.5
+      ],
+      "wait": 160,
+      "pose": "phone",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       127.5,
+       66,
+       208.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       130.5,
+       66,
+       200.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Tourist Priya",
+   "role": "tourist",
+   "pos": [
+    190.5,
+    66,
+    200.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       190.5,
+       66,
+       200.5
+      ],
+      "wait": 240,
+      "pose": "phone",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       230.5,
+       66,
+       200.5
+      ],
+      "wait": 240,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       232.5,
+       67,
+       198.5
+      ],
+      "wait": 400,
+      "pose": "sit",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Tourist Kenji",
+   "role": "tourist",
+   "pos": [
+    87.5,
+    66,
+    212.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       87.5,
+       66,
+       212.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       87.5,
+       66,
+       236.5
+      ],
+      "wait": 300,
+      "pose": "phone",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       87.5,
+       66,
+       248.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       86.5,
+       66,
+       244.5
+      ],
+      "wait": 400,
+      "pose": "look",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Lighthouse Keeper Ugo",
+   "role": "fisherman",
+   "pos": [
+    87.5,
+    66,
+    262.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       87.5,
+       66,
+       262.5
+      ],
+      "wait": 600,
+      "pose": "smoke",
+      "yaw": 180,
+      "say": "Forty years. Never one wreck."
+     }
+    ]
+   }
+  },
+  {
+   "name": "Skipper Dante",
+   "role": "civilian",
+   "pos": [
+    244.5,
+    64,
+    218.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       244.5,
+       64,
+       218.5
+      ],
+      "wait": 600,
+      "pose": "lean",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Deckhand Pio",
+   "role": "cleaner",
+   "pos": [
+    244.5,
+    64,
+    228.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       244.5,
+       64,
+       228.5
+      ],
+      "wait": 400,
+      "pose": "sweep",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       245.5,
+       64,
+       217.5
+      ],
+      "wait": 400,
+      "pose": "sweep",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Sunbather Chiara",
+   "role": "tourist",
+   "pos": [
+    37.5,
+    67,
+    191.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       37.5,
+       67,
+       191.5
+      ],
+      "wait": 600,
+      "pose": "sleep",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Sunbather Tom",
+   "role": "tourist",
+   "pos": [
+    37.5,
+    66,
+    199.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       37.5,
+       66,
+       199.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Sunbather Elena",
+   "role": "tourist",
+   "pos": [
+    46.5,
+    66,
+    191.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       46.5,
+       66,
+       191.5
+      ],
+      "wait": 600,
+      "pose": "sleep",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Sunbather Nils",
+   "role": "tourist",
+   "pos": [
+    46.5,
+    65,
+    199.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       46.5,
+       65,
+       199.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Barman Leo",
+   "role": "waiter",
+   "pos": [
+    63.5,
+    66,
+    183.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       63.5,
+       66,
+       183.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Beachgoer Sara",
+   "role": "tourist",
+   "pos": [
+    63.5,
+    66,
+    187.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       63.5,
+       66,
+       187.5
+      ],
+      "wait": 400,
+      "pose": "drink",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       48.5,
+       65,
+       191.5
+      ],
+      "wait": 300,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       56.5,
+       64,
+       204.5
+      ],
+      "wait": 400,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       39.5,
+       65,
+       191.5
+      ],
+      "wait": 200,
+      "pose": "phone"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Barista Franca",
+   "role": "shopkeeper",
+   "pos": [
+    126.5,
+    74,
+    144.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       126.5,
+       74,
+       144.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Waiter Luca",
+   "role": "waiter",
+   "pos": [
+    135.5,
+    74,
+    142.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       135.5,
+       74,
+       142.5
+      ],
+      "wait": 160,
+      "pose": "talk",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       139.5,
+       74,
+       146.5
+      ],
+      "wait": 160,
+      "pose": "talk",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       131.5,
+       74,
+       144.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       128.5,
+       74,
+       144.5
+      ],
+      "wait": 200,
+      "pose": "work",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       131.5,
+       74,
+       144.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       135.5,
+       74,
+       150.5
+      ],
+      "wait": 160,
+      "pose": "talk",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Waiter Sandro",
+   "role": "waiter",
+   "pos": [
+    139.5,
+    74,
+    150.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       139.5,
+       74,
+       150.5
+      ],
+      "wait": 200,
+      "pose": "talk",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       139.5,
+       74,
+       142.5
+      ],
+      "wait": 160,
+      "pose": "talk",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       131.5,
+       74,
+       144.5
+      ],
+      "wait": 240,
+      "pose": "smoke",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Signora Bianchi",
+   "role": "civilian",
+   "pos": [
+    134.5,
+    75,
+    141.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       134.5,
+       75,
+       141.5
+      ],
+      "wait": 600,
+      "pose": "drink",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Signor Russo",
+   "role": "civilian",
+   "pos": [
+    138.5,
+    75,
+    141.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       138.5,
+       75,
+       141.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Tourist Claire",
+   "role": "tourist",
+   "pos": [
+    134.5,
+    75,
+    145.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       134.5,
+       75,
+       145.5
+      ],
+      "wait": 600,
+      "pose": "eat",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Tourist Diego",
+   "role": "tourist",
+   "pos": [
+    140.5,
+    75,
+    145.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       140.5,
+       75,
+       145.5
+      ],
+      "wait": 600,
+      "pose": "phone",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Professor Vitale",
+   "role": "civilian",
+   "pos": [
+    136.5,
+    75,
+    149.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       136.5,
+       75,
+       149.5
+      ],
+      "wait": 600,
+      "pose": "drink",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Signora Marino",
+   "role": "civilian",
+   "pos": [
+    140.5,
+    75,
+    149.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       140.5,
+       75,
+       149.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Vendor Pina",
+   "role": "shopkeeper",
+   "pos": [
+    175.5,
+    74,
+    140.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       175.5,
+       74,
+       140.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Vendor Tano",
+   "role": "shopkeeper",
+   "pos": [
+    175.5,
+    74,
+    146.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       175.5,
+       74,
+       146.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 0,
+      "say": "Lemons! Sweet as sin!"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Vendor Assunta",
+   "role": "shopkeeper",
+   "pos": [
+    182.5,
+    74,
+    140.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       182.5,
+       74,
+       140.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Vendor Mimmo",
+   "role": "shopkeeper",
+   "pos": [
+    182.5,
+    74,
+    146.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       182.5,
+       74,
+       146.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Shopper Elio",
+   "role": "civilian",
+   "pos": [
+    175.5,
+    74,
+    143.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       175.5,
+       74,
+       143.5
+      ],
+      "wait": 280,
+      "pose": "look",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       175.5,
+       74,
+       149.5
+      ],
+      "wait": 240,
+      "pose": "talk",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       182.5,
+       74,
+       149.5
+      ],
+      "wait": 280,
+      "pose": "look",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       169.5,
+       74,
+       154.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Shopper Nadia",
+   "role": "civilian",
+   "pos": [
+    182.5,
+    74,
+    143.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       182.5,
+       74,
+       143.5
+      ],
+      "wait": 280,
+      "pose": "talk",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       171.5,
+       74,
+       161.5
+      ],
+      "wait": 240,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       175.5,
+       74,
+       149.5
+      ],
+      "wait": 240,
+      "pose": "look",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Nonno Peppino",
+   "role": "civilian",
+   "pos": [
+    162.5,
+    75,
+    160.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       162.5,
+       75,
+       160.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": 0,
+      "say": "In my day the fish were bigger."
+     }
+    ]
+   }
+  },
+  {
+   "name": "Nonno Ciro",
+   "role": "civilian",
+   "pos": [
+    168.5,
+    75,
+    154.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       168.5,
+       75,
+       154.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Street Sweeper Aldo",
+   "role": "cleaner",
+   "pos": [
+    155.5,
+    74,
+    154.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       155.5,
+       74,
+       154.5
+      ],
+      "wait": 300,
+      "pose": "sweep",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       162.5,
+       74,
+       147.5
+      ],
+      "wait": 300,
+      "pose": "sweep",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       192.5,
+       74,
+       146.5
+      ],
+      "wait": 300,
+      "pose": "sweep",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       176.5,
+       74,
+       166.5
+      ],
+      "wait": 300,
+      "pose": "sweep",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       144.5,
+       74,
+       166.5
+      ],
+      "wait": 300,
+      "pose": "sweep",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       171.5,
+       74,
+       161.5
+      ],
+      "wait": 200,
+      "pose": "sweep",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Carabiniere Fontana",
+   "role": "harbour_guard",
+   "pos": [
+    162.5,
+    74,
+    161.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       162.5,
+       74,
+       161.5
+      ],
+      "wait": 240,
+      "pose": "guard",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       144.5,
+       74,
+       166.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       192.5,
+       74,
+       146.5
+      ],
+      "wait": 240,
+      "pose": "guard",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       162.5,
+       74,
+       147.5
+      ],
+      "wait": 160,
+      "pose": "guard",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Carabiniere Leone",
+   "role": "harbour_guard",
+   "pos": [
+    76.5,
+    74,
+    154.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       76.5,
+       74,
+       154.5
+      ],
+      "wait": 160,
+      "pose": "guard",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       100.5,
+       74,
+       154.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       124.5,
+       74,
+       154.5
+      ],
+      "wait": 160,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       155.5,
+       74,
+       154.5
+      ],
+      "wait": 120,
+      "pose": "guard",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       196.5,
+       74,
+       154.5
+      ],
+      "wait": 160,
+      "pose": "guard",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       220.5,
+       74,
+       154.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       244.5,
+       74,
+       154.5
+      ],
+      "wait": 160,
+      "pose": "look",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Clerk Ottavio",
+   "role": "civilian",
+   "pos": [
+    204.5,
+    74,
+    148.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       204.5,
+       74,
+       148.5
+      ],
+      "wait": 600,
+      "pose": "type",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Councillor Ferri",
+   "role": "civilian",
+   "pos": [
+    197.5,
+    74,
+    146.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       197.5,
+       74,
+       146.5
+      ],
+      "wait": 400,
+      "pose": "phone",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       192.5,
+       74,
+       146.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       204.5,
+       74,
+       148.5
+      ],
+      "wait": 400,
+      "pose": "talk",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Tourist Hana",
+   "role": "tourist",
+   "pos": [
+    176.5,
+    74,
+    166.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       176.5,
+       74,
+       166.5
+      ],
+      "wait": 400,
+      "pose": "phone",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       169.5,
+       74,
+       154.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       148.5,
+       75,
+       167.5
+      ],
+      "wait": 500,
+      "pose": "sit",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Tourist Felix",
+   "role": "tourist",
+   "pos": [
+    162.5,
+    74,
+    161.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       162.5,
+       74,
+       161.5
+      ],
+      "wait": 300,
+      "pose": "phone",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       160.5,
+       74,
+       169.5
+      ],
+      "wait": 120,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       160.5,
+       66,
+       178.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       160.5,
+       66,
+       196.5
+      ],
+      "wait": 300,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       160.5,
+       66,
+       178.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       160.5,
+       74,
+       169.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Gelataio Remo",
+   "role": "shopkeeper",
+   "pos": [
+    126.5,
+    74,
+    162.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       126.5,
+       74,
+       162.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Pharmacist Olga",
+   "role": "shopkeeper",
+   "pos": [
+    243.5,
+    74,
+    146.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       243.5,
+       74,
+       146.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Baker Tilde",
+   "role": "shopkeeper",
+   "pos": [
+    109.5,
+    82,
+    118.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       109.5,
+       82,
+       118.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 0,
+      "say": "Cornetti! Still warm!"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Tailor Arturo",
+   "role": "shopkeeper",
+   "pos": [
+    141.5,
+    82,
+    118.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       141.5,
+       82,
+       118.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Signora Costa",
+   "role": "civilian",
+   "pos": [
+    100.5,
+    82,
+    127.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       100.5,
+       82,
+       127.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       109.5,
+       82,
+       123.5
+      ],
+      "wait": 240,
+      "pose": "talk",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       148.5,
+       82,
+       127.5
+      ],
+      "wait": 160,
+      "pose": "phone"
+     },
+     {
+      "pos": [
+       124.5,
+       82,
+       127.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Signor Galli",
+   "role": "civilian",
+   "pos": [
+    196.5,
+    82,
+    127.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       196.5,
+       82,
+       127.5
+      ],
+      "wait": 200,
+      "pose": "smoke",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       172.5,
+       82,
+       127.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       160.5,
+       82,
+       131.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       160.5,
+       74,
+       140.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       162.5,
+       74,
+       147.5
+      ],
+      "wait": 300,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       160.5,
+       74,
+       140.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       160.5,
+       82,
+       131.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Housekeeper Bice",
+   "role": "cleaner",
+   "pos": [
+    220.5,
+    82,
+    127.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       220.5,
+       82,
+       127.5
+      ],
+      "wait": 400,
+      "pose": "sweep",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       244.5,
+       82,
+       127.5
+      ],
+      "wait": 400,
+      "pose": "sweep",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Dr. Amato",
+   "role": "civilian",
+   "pos": [
+    171.5,
+    82,
+    123.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       171.5,
+       82,
+       123.5
+      ],
+      "wait": 300,
+      "pose": "phone",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       172.5,
+       82,
+       127.5
+      ],
+      "wait": 160,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       148.5,
+       82,
+       127.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Postman Ezio",
+   "role": "civilian",
+   "pos": [
+    76.5,
+    82,
+    127.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       76.5,
+       82,
+       127.5
+      ],
+      "wait": 80,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       124.5,
+       82,
+       127.5
+      ],
+      "wait": 80,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       172.5,
+       82,
+       127.5
+      ],
+      "wait": 80,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       220.5,
+       82,
+       127.5
+      ],
+      "wait": 80,
+      "pose": "work",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Padre Anselmo",
+   "role": "priest",
+   "pos": [
+    213.5,
+    90,
+    66.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       213.5,
+       90,
+       66.5
+      ],
+      "wait": 800,
+      "pose": "pray",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       213.5,
+       90,
+       72.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       213.5,
+       90,
+       86.5
+      ],
+      "wait": 400,
+      "pose": "look",
+      "yaw": 0,
+      "say": "The door is always open, my child."
+     },
+     {
+      "pos": [
+       229.5,
+       90,
+       72.5
+      ],
+      "wait": 300,
+      "pose": "pray",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       213.5,
+       90,
+       86.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       213.5,
+       90,
+       72.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Widow Carmela",
+   "role": "civilian",
+   "pos": [
+    209.5,
+    91,
+    74.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       209.5,
+       91,
+       74.5
+      ],
+      "wait": 600,
+      "pose": "pray",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Gravedigger Sesto",
+   "role": "gardener",
+   "pos": [
+    236.5,
+    90,
+    69.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       236.5,
+       90,
+       69.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       244.5,
+       90,
+       74.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       229.5,
+       90,
+       72.5
+      ],
+      "wait": 300,
+      "pose": "smoke",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Gardener Vito",
+   "role": "gardener",
+   "pos": [
+    140.5,
+    90,
+    80.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       140.5,
+       90,
+       80.5
+      ],
+      "wait": 500,
+      "pose": "crouch",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       166.5,
+       90,
+       76.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       191.5,
+       90,
+       70.5
+      ],
+      "wait": 500,
+      "pose": "crouch",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       156.5,
+       90,
+       91.5
+      ],
+      "wait": 300,
+      "pose": "smoke",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Tourist Ingrid",
+   "role": "tourist",
+   "pos": [
+    172.5,
+    90,
+    93.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       172.5,
+       90,
+       93.5
+      ],
+      "wait": 500,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       132.5,
+       90,
+       91.5
+      ],
+      "wait": 200,
+      "pose": "phone"
+     },
+     {
+      "pos": [
+       188.5,
+       90,
+       91.5
+      ],
+      "wait": 240,
+      "pose": "look",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Tourist Raul",
+   "role": "tourist",
+   "pos": [
+    160.5,
+    90,
+    91.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       160.5,
+       90,
+       91.5
+      ],
+      "wait": 240,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       150.5,
+       91,
+       93.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       104.5,
+       90,
+       91.5
+      ],
+      "wait": 240,
+      "pose": "phone"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Gate Guard Rocco",
+   "role": "estate_guard",
+   "pos": [
+    97.5,
+    90,
+    87.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       97.5,
+       90,
+       87.5
+      ],
+      "wait": 600,
+      "pose": "guard",
+      "yaw": 0,
+      "say": "Private estate. Move along."
+     }
+    ]
+   },
+   "enforcer": true
+  },
+  {
+   "name": "Gate Guard Santo",
+   "role": "estate_guard",
+   "pos": [
+    103.5,
+    90,
+    87.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       103.5,
+       90,
+       87.5
+      ],
+      "wait": 600,
+      "pose": "guard",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Service Gate Guard Milo",
+   "role": "estate_guard",
+   "pos": [
+    129.5,
+    90,
+    75.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       129.5,
+       90,
+       75.5
+      ],
+      "wait": 600,
+      "pose": "guard",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Guard Tullio",
+   "role": "estate_guard",
+   "pos": [
+    84.5,
+    90,
+    79.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       84.5,
+       90,
+       79.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       79.5
+      ],
+      "wait": 160,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       116.5,
+       90,
+       79.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       84.5
+      ],
+      "wait": 160,
+      "pose": "guard",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Guard Ivo",
+   "role": "estate_guard",
+   "pos": [
+    53.5,
+    90,
+    80.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       53.5,
+       90,
+       80.5
+      ],
+      "wait": 240,
+      "pose": "guard",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       53.5,
+       90,
+       76.5
+      ],
+      "wait": 160,
+      "pose": "look",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       69.5,
+       90,
+       76.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       70.5,
+       90,
+       68.5
+      ],
+      "wait": 160,
+      "pose": "smoke",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Guard Nello",
+   "role": "estate_guard",
+   "pos": [
+    90.5,
+    90,
+    66.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       90.5,
+       90,
+       66.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       70.5
+      ],
+      "wait": 160,
+      "pose": "look",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       110.5,
+       90,
+       66.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       61.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Guard Remo",
+   "role": "estate_guard",
+   "pos": [
+    100.5,
+    90,
+    53.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       100.5,
+       90,
+       53.5
+      ],
+      "wait": 300,
+      "pose": "guard",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       116.5,
+       90,
+       50.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       82.5,
+       90,
+       53.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Security Chief Orso",
+   "role": "estate_guard",
+   "pos": [
+    124.5,
+    90,
+    63.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       124.5,
+       90,
+       63.5
+      ],
+      "wait": 600,
+      "pose": "type",
+      "yaw": -90
+     }
+    ]
+   },
+   "enforcer": true
+  },
+  {
+   "name": "Guard Lino",
+   "role": "estate_guard",
+   "pos": [
+    103.5,
+    95,
+    55.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       103.5,
+       95,
+       55.5
+      ],
+      "wait": 600,
+      "pose": "guard",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Cook Marisa",
+   "role": "cook",
+   "pos": [
+    74.5,
+    90,
+    65.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       74.5,
+       90,
+       65.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       79.5,
+       90,
+       65.5
+      ],
+      "wait": 400,
+      "pose": "work",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Cook Tobia",
+   "role": "cook",
+   "pos": [
+    80.5,
+    90,
+    66.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       80.5,
+       90,
+       66.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       70.5,
+       90,
+       69.5
+      ],
+      "wait": 300,
+      "pose": "smoke",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Waiter Elia",
+   "role": "waiter",
+   "pos": [
+    78.5,
+    90,
+    66.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       78.5,
+       90,
+       66.5
+      ],
+      "wait": 200,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       86.5,
+       90,
+       65.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       61.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       84.5,
+       90,
+       53.5
+      ],
+      "wait": 300,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       53.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       61.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       86.5,
+       90,
+       65.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Waiter Bruno",
+   "role": "waiter",
+   "pos": [
+    51.5,
+    90,
+    60.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       51.5,
+       90,
+       60.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       50.5,
+       90,
+       63.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       65.5,
+       90,
+       67.5
+      ],
+      "wait": 160,
+      "pose": "talk",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       50.5,
+       90,
+       63.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Sommelier Ottone",
+   "role": "waiter",
+   "pos": [
+    84.5,
+    83,
+    50.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       84.5,
+       83,
+       50.5
+      ],
+      "wait": 500,
+      "pose": "look",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       91.5,
+       83,
+       51.5
+      ],
+      "wait": 400,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       104.5,
+       83,
+       50.5
+      ],
+      "wait": 400,
+      "pose": "work",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Maid Teresa",
+   "role": "cleaner",
+   "pos": [
+    80.5,
+    95,
+    50.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       80.5,
+       95,
+       50.5
+      ],
+      "wait": 500,
+      "pose": "sweep",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       100.5,
+       95,
+       53.5
+      ],
+      "wait": 400,
+      "pose": "sweep",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       116.5,
+       95,
+       50.5
+      ],
+      "wait": 400,
+      "pose": "sweep",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Maid Agnese",
+   "role": "cleaner",
+   "pos": [
+    116.5,
+    90,
+    50.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       116.5,
+       90,
+       50.5
+      ],
+      "wait": 500,
+      "pose": "sweep",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       53.5
+      ],
+      "wait": 400,
+      "pose": "sweep",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       82.5,
+       90,
+       53.5
+      ],
+      "wait": 500,
+      "pose": "sweep",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Gardener Piero",
+   "role": "gardener",
+   "pos": [
+    87.5,
+    90,
+    80.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       87.5,
+       90,
+       80.5
+      ],
+      "wait": 400,
+      "pose": "crouch",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       118.5,
+       90,
+       80.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       100.5,
+       90,
+       79.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Vintner Gaspare",
+   "role": "gardener",
+   "pos": [
+    52.5,
+    83,
+    45.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       52.5,
+       83,
+       45.5
+      ],
+      "wait": 600,
+      "pose": "crouch",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       44.5,
+       78,
+       51.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Guest Contessa Valli",
+   "role": "civilian",
+   "pos": [
+    64.5,
+    91,
+    67.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       64.5,
+       91,
+       67.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Guest Mr. Whitlock",
+   "role": "civilian",
+   "pos": [
+    114.5,
+    90,
+    53.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       114.5,
+       90,
+       53.5
+      ],
+      "wait": 600,
+      "pose": "drink",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Guest Avvocato Serra",
+   "role": "civilian",
+   "pos": [
+    110.5,
+    90,
+    66.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       110.5,
+       90,
+       66.5
+      ],
+      "wait": 400,
+      "pose": "phone",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       116.5,
+       90,
+       79.5
+      ],
+      "wait": 400,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       116.5,
+       90,
+       50.5
+      ],
+      "wait": 400,
+      "pose": "look",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Gate Security Falco",
+   "role": "security",
+   "pos": [
+    255.5,
+    66,
+    198.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       255.5,
+       66,
+       198.5
+      ],
+      "wait": 600,
+      "pose": "guard",
+      "yaw": 90,
+      "say": "Deliveries only. You a delivery?"
+     }
+    ]
+   },
+   "enforcer": true
+  },
+  {
+   "name": "Security Marek",
+   "role": "security",
+   "pos": [
+    264.5,
+    66,
+    198.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       264.5,
+       66,
+       198.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       256.5,
+       66,
+       196.5
+      ],
+      "wait": 160,
+      "pose": "look",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       256.5,
+       66,
+       162.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Security Dolf",
+   "role": "security",
+   "pos": [
+    280.5,
+    66,
+    201.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       280.5,
+       66,
+       201.5
+      ],
+      "wait": 240,
+      "pose": "smoke",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       272.5,
+       66,
+       194.5
+      ],
+      "wait": 160,
+      "pose": "guard",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       268.5,
+       66,
+       186.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Security Brandt",
+   "role": "security",
+   "pos": [
+    278.5,
+    66,
+    187.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       278.5,
+       66,
+       187.5
+      ],
+      "wait": 600,
+      "pose": "guard",
+      "yaw": 90
+     }
+    ]
+   },
+   "enforcer": true
+  },
+  {
+   "name": "Worker Alba",
+   "role": "worker",
+   "pos": [
+    263.5,
+    66,
+    173.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       263.5,
+       66,
+       173.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Worker Rino",
+   "role": "worker",
+   "pos": [
+    263.5,
+    66,
+    177.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       263.5,
+       66,
+       177.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Worker Dina",
+   "role": "worker",
+   "pos": [
+    263.5,
+    66,
+    181.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       263.5,
+       66,
+       181.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Worker Pasquale",
+   "role": "worker",
+   "pos": [
+    270.5,
+    66,
+    173.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       270.5,
+       66,
+       173.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Worker Zita",
+   "role": "worker",
+   "pos": [
+    270.5,
+    66,
+    177.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       270.5,
+       66,
+       177.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Worker Michele",
+   "role": "worker",
+   "pos": [
+    270.5,
+    66,
+    181.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       270.5,
+       66,
+       181.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Foreman Guido",
+   "role": "worker",
+   "pos": [
+    268.5,
+    71,
+    162.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       268.5,
+       71,
+       162.5
+      ],
+      "wait": 400,
+      "pose": "look",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       261.5,
+       71,
+       167.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       269.5,
+       66,
+       167.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       275.5,
+       66,
+       178.5
+      ],
+      "wait": 300,
+      "pose": "work",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       268.5,
+       66,
+       186.5
+      ],
+      "wait": 240,
+      "pose": "talk",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       269.5,
+       66,
+       167.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       261.5,
+       71,
+       167.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       266.5,
+       71,
+       160.5
+      ],
+      "wait": 400,
+      "pose": "eat",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Mechanic Tazio",
+   "role": "worker",
+   "pos": [
+    260.5,
+    66,
+    180.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       260.5,
+       66,
+       180.5
+      ],
+      "wait": 400,
+      "pose": "work",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       261.5,
+       66,
+       174.5
+      ],
+      "wait": 200,
+      "pose": "smoke",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Security Kessler",
+   "role": "security",
+   "pos": [
+    272.5,
+    41,
+    189.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       272.5,
+       41,
+       189.5
+      ],
+      "wait": 600,
+      "pose": "guard",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Security Novak",
+   "role": "security",
+   "pos": [
+    285.5,
+    41,
+    172.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       285.5,
+       41,
+       172.5
+      ],
+      "wait": 600,
+      "pose": "type",
+      "yaw": -90
+     }
+    ]
+   },
+   "enforcer": true
+  },
+  {
+   "name": "Security Voss",
+   "role": "security",
+   "pos": [
+    273.5,
+    41,
+    177.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       273.5,
+       41,
+       177.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       273.5,
+       41,
+       165.5
+      ],
+      "wait": 160,
+      "pose": "look",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       273.5,
+       41,
+       151.5
+      ],
+      "wait": 240,
+      "pose": "guard",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Technician Idris",
+   "role": "worker",
+   "pos": [
+    278.5,
+    41,
+    153.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       278.5,
+       41,
+       153.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       283.5,
+       41,
+       158.5
+      ],
+      "wait": 400,
+      "pose": "look",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Canteen Cook Wanda",
+   "role": "cook",
+   "pos": [
+    258.5,
+    41,
+    153.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       258.5,
+       41,
+       153.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Dr. Lindqvist",
+   "role": "scientist",
+   "pos": [
+    258.5,
+    42,
+    155.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       258.5,
+       42,
+       155.5
+      ],
+      "wait": 600,
+      "pose": "eat",
+      "yaw": -90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Hazmat Tech Ko",
+   "role": "hazmat",
+   "pos": [
+    263.5,
+    41,
+    175.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       263.5,
+       41,
+       175.5
+      ],
+      "wait": 600,
+      "pose": "sit",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Virus Guard Sturm",
+   "role": "lab_guard",
+   "pos": [
+    273.5,
+    41,
+    140.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       273.5,
+       41,
+       140.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       248.5,
+       41,
+       138.5
+      ],
+      "wait": 160,
+      "pose": "look",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       206.5,
+       41,
+       138.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": -90
+     }
+    ]
+   },
+   "enforcer": true
+  },
+  {
+   "name": "Virus Guard Halla",
+   "role": "lab_guard",
+   "pos": [
+    234.5,
+    41,
+    131.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       234.5,
+       41,
+       131.5
+      ],
+      "wait": 240,
+      "pose": "guard",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       217.5,
+       41,
+       114.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       220.5,
+       41,
+       108.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       248.5,
+       41,
+       108.5
+      ],
+      "wait": 200,
+      "pose": "guard",
+      "yaw": 0
+     },
+     {
+      "pos": [
+       251.5,
+       41,
+       114.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Virus Guard Rask",
+   "role": "lab_guard",
+   "pos": [
+    236.5,
+    41,
+    125.5
+   ],
+   "yaw": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       236.5,
+       41,
+       125.5
+      ],
+      "wait": 600,
+      "pose": "guard",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Virus Guard Meyer",
+   "role": "lab_guard",
+   "pos": [
+    271.5,
+    41,
+    110.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       271.5,
+       41,
+       110.5
+      ],
+      "wait": 600,
+      "pose": "guard",
+      "yaw": 90
+     }
+    ]
+   }
+  },
+  {
+   "name": "Dr. Okafor",
+   "role": "scientist",
+   "pos": [
+    224.5,
+    41,
+    128.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       224.5,
+       41,
+       128.5
+      ],
+      "wait": 600,
+      "pose": "type",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Dr. Brandao",
+   "role": "scientist",
+   "pos": [
+    228.5,
+    41,
+    129.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       228.5,
+       41,
+       129.5
+      ],
+      "wait": 600,
+      "pose": "type",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Dr. Sato",
+   "role": "scientist",
+   "pos": [
+    240.5,
+    41,
+    129.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       240.5,
+       41,
+       129.5
+      ],
+      "wait": 600,
+      "pose": "type",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Dr. Weiss",
+   "role": "scientist",
+   "pos": [
+    244.5,
+    41,
+    128.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       244.5,
+       41,
+       128.5
+      ],
+      "wait": 600,
+      "pose": "type",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Hazmat Tech Ilya",
+   "role": "hazmat",
+   "pos": [
+    217.5,
+    41,
+    107.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       217.5,
+       41,
+       107.5
+      ],
+      "wait": 400,
+      "pose": "work",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       229.5,
+       41,
+       107.5
+      ],
+      "wait": 400,
+      "pose": "look",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       241.5,
+       41,
+       107.5
+      ],
+      "wait": 400,
+      "pose": "work",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Hazmat Tech Mona",
+   "role": "hazmat",
+   "pos": [
+    219.5,
+    41,
+    120.5
+   ],
+   "yaw": 90,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       219.5,
+       41,
+       120.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       217.5,
+       41,
+       114.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       203.5,
+       41,
+       111.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       201.5,
+       41,
+       112.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       203.5,
+       41,
+       111.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       217.5,
+       41,
+       114.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Hazmat Tech Jun",
+   "role": "hazmat",
+   "pos": [
+    249.5,
+    41,
+    120.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "loop",
+    "points": [
+     {
+      "pos": [
+       249.5,
+       41,
+       120.5
+      ],
+      "wait": 500,
+      "pose": "work",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       251.5,
+       41,
+       114.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       265.5,
+       41,
+       126.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       262.5,
+       41,
+       126.5
+      ],
+      "wait": 400,
+      "pose": "type",
+      "yaw": -90
+     },
+     {
+      "pos": [
+       265.5,
+       41,
+       126.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       251.5,
+       41,
+       114.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Hazmat Tech Petra",
+   "role": "hazmat",
+   "pos": [
+    236.5,
+    41,
+    96.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "pingpong",
+    "points": [
+     {
+      "pos": [
+       236.5,
+       41,
+       96.5
+      ],
+      "wait": 500,
+      "pose": "crouch",
+      "yaw": 180
+     },
+     {
+      "pos": [
+       234.5,
+       41,
+       94.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       220.5,
+       41,
+       108.5
+      ],
+      "wait": 200,
+      "pose": "look",
+      "yaw": 0
+     }
+    ]
+   }
+  },
+  {
+   "name": "Hazmat Tech Arno",
+   "role": "hazmat",
+   "pos": [
+    203.5,
+    41,
+    126.5
+   ],
+   "yaw": 180,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       203.5,
+       41,
+       126.5
+      ],
+      "wait": 600,
+      "pose": "work",
+      "yaw": 180
+     }
+    ]
+   }
+  },
+  {
+   "name": "Dock Guard Hess",
+   "role": "security",
+   "pos": [
+    281.5,
+    64,
+    100.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       281.5,
+       64,
+       100.5
+      ],
+      "wait": 600,
+      "pose": "smoke",
+      "yaw": -90
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -56,7 +56,7 @@ def main():
     w.save(OUT_MAP)
     if mission is not None:
         with open(OUT_MISSION, 'w') as f:
-            json.dump(mission, f, indent=1)
+            json.dump(mission, f, indent=1, default=lambda o: int(o) if hasattr(o, '__int__') else str(o))
     print(f'palette {len(w.palette)} states, map {os.path.getsize(OUT_MAP) / 1024:.0f} KiB')
 
     if '--no-preview' not in sys.argv:
