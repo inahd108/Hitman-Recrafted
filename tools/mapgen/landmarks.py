@@ -114,7 +114,7 @@ def harbour(ctx):
             for x in (126, 129):
                 w.fill(x, 50, z, x, y - 1, z, 'spruce_log')
                 if z % 10 == 0:
-                    w.set(x, y + 1, z, 'spruce_fence')
+                    w.set(x, y + 1, z, 'lantern[hanging=false]') if x == 126 and z % 20 == 0 else None
     street_lamp(w, 126, y + 1, 238)
     A['pier.start'] = (127, y + 1, 208)
     A['pier.mid'] = (127, y + 1, 222)
@@ -130,6 +130,9 @@ def harbour(ctx):
     boat(ctx, 206, QUAY_Z + 3, 12, 'z', beam=2, hull='spruce', stripe='blue', cabin=True, name='boat.trawler')
     # patrol launch of the harbour office (exit option)
     boat(ctx, 221, QUAY_Z + 3, 11, 'z', beam=2, hull='birch', stripe='gray', cabin=True, name='boat.patrol')
+    for lx in (102, 112, 154, 166, 180, 196, 211, 226, 236):
+        for yy in range(SEA - 1, T0 + 1):
+            w.set(lx, yy, QUAY_Z + 1, 'ladder[facing=south]')
     # boats at anchor
     boat(ctx, 172, 246, 8, 'x', beam=1, hull='spruce', stripe='red', mast=True)
     boat(ctx, 228, 252, 9, 'x', beam=1, hull='birch', stripe='blue', mast=True)
@@ -141,15 +144,15 @@ def harbour(ctx):
 def ferry(ctx, x, z):
     """Small island ferry moored on the east side of the pier; bow to the south."""
     w, A = ctx['w'], ctx['anchors']
-    y = SEA
+    y = T0 - 1                     # deck floor sits at y + 1, level with the pier
     L, hw = 22, 3
     for i in range(L):
         t = i / (L - 1)
         ww = hw if t < .75 else max(1, int(round(hw * (1 - (t - .75) / .3))))
         for j in range(-ww, ww + 1):
             px, pz = x + j, z + i
-            w.fill(px, y - 2, pz, px, y, pz, 'white_concrete')
-            w.set(px, y - 1, pz, 'red_concrete')
+            w.fill(px, SEA - 2, pz, px, y, pz, 'white_concrete')
+            w.set(px, SEA + 1, pz, 'red_concrete')
             w.set(px, y + 1, pz, 'smooth_stone')       # main deck (walk at y+2)
             w.clear(px, y + 2, pz, px, y + 8, pz)
             if abs(j) == ww or i in (0, L - 1):
@@ -185,14 +188,14 @@ def ferry(ctx, x, z):
 
 def yacht(ctx, x, z):
     w, A = ctx['w'], ctx['anchors']
-    y = SEA
+    y = T0 - 1
     L, hw = 20, 3
     for i in range(L):
         t = i / (L - 1)
         ww = hw if t < .6 else max(0, int(round(hw * (1 - (t - .6) / .4))))
         for j in range(-ww, ww + 1):
             px, pz = x + j, z + i
-            w.fill(px, y - 1, pz, px, y, pz, 'white_concrete')
+            w.fill(px, SEA - 1, pz, px, y, pz, 'white_concrete')
             w.set(px, y + 1, pz, 'birch_planks')
             w.clear(px, y + 2, pz, px, y + 8, pz)
             if abs(j) == ww and ww > 0:
@@ -318,8 +321,8 @@ def fish_market(ctx):
         for sz in (z0 + 2, z0 + 8):
             w.fill(sx, y + 1, sz, sx + 3, y + 1, sz + 1, 'spruce_planks')
             for dx in range(4):
-                w.set(sx + dx, y + 2, sz, rng.choice(['snow[layers=2]', 'snow[layers=3]', 'snow[layers=1]']))
-                w.set(sx + dx, y + 2, sz + 1, rng.choice(['snow[layers=2]', 'snow[layers=1]']))
+                w.set(sx + dx, y + 2, sz, rng.choice(['snow[layers=5]', 'snow[layers=6]']))
+                w.set(sx + dx, y + 2, sz + 1, rng.choice(['snow[layers=5]', 'snow[layers=6]', 'snow[layers=5]']))
             w.set(sx + 4, y + 1, sz, 'barrel[facing=up]')
             A[f'fishmarket.stall{k}'] = (sx + 1, y + 1, sz + 3)
             A[f'fishmarket.monger{k}'] = (sx + 2, y + 1, sz - 1)

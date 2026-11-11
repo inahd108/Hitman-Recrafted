@@ -460,7 +460,7 @@ def piazza(ctx):
     A['piazza.bench.s'] = (cx, y + 1, cz + 6)
     A['piazza.bench.e'] = (cx + 6, y + 1, cz)
     # corner trees in stone planters
-    for (tx, tz) in ((x0 + 5, z0 + 4), (x1 - 5, z0 + 4), (x0 + 5, z1 - 5), (x1 - 5, z1 - 5)):
+    for (tx, tz) in ((x0 + 14, z0 + 4), (x1 - 5, z0 + 4), (x0 + 5, z1 - 5), (x1 - 5, z1 - 5)):
         for dx in (-1, 0, 1):
             for dz in (-1, 0, 1):
                 w.set(tx + dx, y + 1, tz + dz, 'polished_diorite' if (dx or dz) else 'grass_block')
@@ -556,6 +556,8 @@ def build(ctx):
     w, rng, H, A = ctx['w'], ctx['rng'], ctx['H'], ctx['anchors']
     ctx['nowall'] = np.zeros((SZ, SX), dtype=bool)
 
+    piazza(ctx)
+
     # ---- stairways between terraces --------------------------------------
     st = {}
     st['h_w'] = stairway(ctx, 116, 121, Z0 - 1, T1, T0)
@@ -629,7 +631,6 @@ def build(ctx):
     for (xa, xb) in ((72, 96), (104, 155), (166, 220), (228, 248)):
         yard(ctx, xa, Z2 + 1, xb, uz0 - 1, T2)
 
-    piazza(ctx)
     quay(ctx)
 
     # street lamps + planters along the streets

@@ -85,8 +85,7 @@ def sewer(ctx):
         if z % 8 == 0:
             w.set(x0, 62, z, 'ochre_froglight[axis=y]')
     w.set(x0, 64, 204, 'iron_bars')
-    w.set(x1, 64, 204, 'iron_bars')
-    w.set(x0, 63, 204, 'iron_bars')
+    w.set(x0, 63, 204, 'iron_bars')            # half a grate: the other half rusted away
     A['sewer.mouth'] = (151, 63, 203)
     A['sewer.mid'] = (151, 63, 180)
     # cistern

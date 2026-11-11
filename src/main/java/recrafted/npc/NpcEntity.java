@@ -226,8 +226,15 @@ public class NpcEntity extends PathfinderMob {
 
     // ---- vanilla hooks -------------------------------------------------------------
     @Override public boolean removeWhenFarAway(double d) { return false; }
-    @Override public boolean isPushable() { return !isDown() && super.isPushable(); }
+    @Override public boolean isPushable() { return !isDown() && !(waiting && getState() == State.CALM) && super.isPushable(); }
     @Override protected boolean isImmobile() { return super.isImmobile() || isDown(); }
+
+    /** Townspeople slip past each other instead of shoving: no deadlocks in alleys and doorways. */
+    @Override
+    public void push(Entity other) {
+        if (other instanceof NpcEntity) return;
+        super.push(other);
+    }
     @Override public boolean shouldDropExperience() { return false; }
     @Override protected boolean shouldDropLoot() { return false; }
     @Override @Nullable protected SoundEvent getAmbientSound() { return null; }
@@ -375,7 +382,7 @@ public class NpcEntity extends PathfinderMob {
      */
     private void walkTo(double x, double y, double z, double speed) {
         double dx = x - getX(), dz = z - getZ();
-        boolean close = dx * dx + dz * dz < 3.2 && Math.abs(y - getY()) < 1.3;
+        boolean close = dx * dx + dz * dz < 1.4 && Math.abs(y - getY()) < 1.3;
         if (getNavigation().isDone()) {
             if (close) {
                 getMoveControl().setWantedPosition(x, y, z, speed);

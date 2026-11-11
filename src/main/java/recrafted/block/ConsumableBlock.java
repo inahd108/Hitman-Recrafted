@@ -47,6 +47,12 @@ public class ConsumableBlock extends Block {
         return shape;
     }
 
+    /** Keeps mobs from treating a laid table as a stepping stone. */
+    @Override
+    public boolean isPathfindable(BlockState s, BlockGetter g, BlockPos p, net.minecraft.world.level.pathfinder.PathComputationType t) {
+        return false;
+    }
+
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
                                  BlockHitResult hit) {

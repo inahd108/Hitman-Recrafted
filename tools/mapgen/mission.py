@@ -158,7 +158,7 @@ def build(ctx):
     # ======================= HARBOUR ============================================
     idle('Ferryman Aldo', 'fisherman', 'ferry.deck', 'lean', 'n', say='Next crossing is at six. Maybe.', off=(-1, 0, -3))
     add('Harbour Officer Conti', 'harbour_guard', [
-        wp('quay.w', 8, 'guard', 's'), wp('quay.walk1'), wp('quay.walk3', 6, 'look', 's'), wp('quay.mid'),
+        wp('quay.w', 8, 'guard', 's'), wp('quay.walk1'), wp('quay.walk2'), wp('quay.walk3', 6, 'look', 's'), wp('quay.mid'),
         wp('quay.walk5', 6, 'guard', 's'), wp('quay.e', 10, 'guard', 'w'),
     ], mode='pingpong')
     add('Harbour Officer Greco', 'harbour_guard', [
@@ -457,5 +457,12 @@ def build(ctx):
         for wmsg in c.warn[:60]:
             print('    ', wmsg)
     print(f'  mission: {getattr(c, "moved", 0)} waypoints snapped to free cells')
+    import walkcheck
+    added = walkcheck.split_long_legs(ctx['w'], c.npcs)
+    print(f'  mission: {added} pass-through stops inserted on long legs')
+    problems = walkcheck.check_routes(ctx['w'], c.npcs)
+    print(f'  mission: {len(problems)} unreachable route legs')
+    for pr in problems:
+        print('    ', pr)
     print(f'  mission: {len(c.npcs)} npcs, {len(props)} props, {len(ctx["zones"])} zones')
     return mission

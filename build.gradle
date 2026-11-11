@@ -23,6 +23,12 @@ legacyForge {
     runs {
         client {
             client()
+            if (project.hasProperty('clienttest')) {
+                systemProperty 'recrafted.clienttest', 'true'
+                systemProperty 'recrafted.clienttest.settle', project.findProperty('settle') ?: '20000'
+                programArguments.addAll('--quickPlaySingleplayer', project.findProperty('world') ?: 'corvara_test',
+                        '--width', '1280', '--height', '720')
+            }
         }
         server {
             server()

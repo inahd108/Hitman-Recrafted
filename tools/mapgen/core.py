@@ -364,9 +364,11 @@ POTS = ['potted_red_tulip', 'potted_orange_tulip', 'potted_pink_tulip', 'potted_
         'potted_azalea_bush', 'potted_flowering_azalea_bush']
 
 
-def cafe_table(w, x, y, z, rng, cloth=None):
-    w.set(x, y, z, 'spruce_fence')
-    w.set(x, y + 1, z, cloth or rng.choice(['white_carpet', 'red_carpet', 'white_carpet']))
+def cafe_table(w, x, y, z, rng, cloth=None, top=None):
+    """Pedestal table. Something always stands on it, which also keeps mobs from walking over it."""
+    w.set(x, y, z, 'quartz_pillar[axis=y]')
+    w.set(x, y + 1, z, top or rng.choice(['recrafted:drink[poison=none]', 'recrafted:meal[poison=none]',
+                                          rng.choice(POTS), 'recrafted:drink[poison=none]']))
 
 
 def chair(w, x, y, z, facing, wood='spruce'):
@@ -396,6 +398,7 @@ def market_stall(w, x, y, z, color, rng, goods=None, axis='x'):
                                    ['hay_block', 'melon', 'pumpkin'],
                                    ['barrel[facing=up]', 'barrel[facing=up]', 'smoker']]))[i % 3]
         w.set(px, y, pz, g)
+        w.set(px, y + 1, pz, rng.choice(POTS))          # produce on display; also blocks walking over the counter
     corners = [(x, z), (x + L - 1, z + 1)] if axis == 'x' else [(x, z), (x + 1, z + L - 1)]
     ex = [(x - 1, z - 1), (x + L, z - 1), (x - 1, z + 2), (x + L, z + 2)] if axis == 'x' else \
          [(x - 1, z - 1), (x + 2, z - 1), (x - 1, z + L), (x + 2, z + L)]
