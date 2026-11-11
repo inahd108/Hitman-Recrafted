@@ -3019,33 +3019,33 @@
    "name": "Deckhand Pio",
    "role": "cleaner",
    "pos": [
-    244.5,
+    245.5,
     64,
-    228.5
+    215.5
    ],
-   "yaw": 0,
+   "yaw": 180,
    "route": {
     "mode": "pingpong",
     "points": [
      {
       "pos": [
-       244.5,
+       245.5,
        64,
-       228.5
+       215.5
       ],
-      "wait": 400,
+      "wait": 500,
       "pose": "sweep",
-      "yaw": 0
+      "yaw": 180
      },
      {
       "pos": [
-       245.5,
+       243.5,
        64,
        217.5
       ],
-      "wait": 400,
+      "wait": 500,
       "pose": "sweep",
-      "yaw": 180
+      "yaw": 0
      }
     ]
    }

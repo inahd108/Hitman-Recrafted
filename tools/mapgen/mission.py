@@ -209,8 +209,8 @@ def build(ctx):
                              wp('mole.3', 10, 'look', 's'), wp('mole.bench', 20, 'look', 'e')], mode='pingpong')
     idle('Lighthouse Keeper Ugo', 'fisherman', 'lighthouse.door', 'smoke', 'n', say='Forty years. Never one wreck.')
     idle('Skipper Dante', 'civilian', 'yacht.deck', 'lean', 'n', off=(0, 0, 2))
-    add('Deckhand Pio', 'cleaner', [wp('yacht.cabin', 20, 'sweep', 's', off=(0, 0, 6)),
-                                    wp('yacht.deck', 20, 'sweep', 'n', off=(1, 0, 1))], mode='pingpong')
+    add('Deckhand Pio', 'cleaner', [wp('yacht.deck', 25, 'sweep', 'n', off=(1, 0, -1)),
+                                    wp('yacht.deck', 25, 'sweep', 's', off=(-1, 0, 1))], mode='pingpong')
     # beach
     for i in range(4):
         idle(['Sunbather Chiara', 'Sunbather Tom', 'Sunbather Elena', 'Sunbather Nils'][i], 'tourist',

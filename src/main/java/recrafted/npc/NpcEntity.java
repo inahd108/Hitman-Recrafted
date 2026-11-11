@@ -79,6 +79,9 @@ public class NpcEntity extends PathfinderMob {
 
     private static final int F_TARGET = 1, F_ENFORCER = 2, F_STRIPPED = 4;
     private static final double WALK = 0.55, BRISK = 0.8, RUN = 1.15;
+    // diagnostics for the headless self-test
+    public static int statArrivals, statUnsticks;
+    public static final Map<String, Integer> UNSTICK_LOG = new java.util.TreeMap<>();
 
     // ---- authored data ---------------------------------------------------------
     private Route route = new Route();
@@ -362,10 +365,28 @@ public class NpcEntity extends PathfinderMob {
             arrive(wp);
             return;
         }
-        if (getNavigation().isDone() || tickCount % 40 == 0) {
-            getNavigation().moveTo(wp.x, wp.y, wp.z, wp.run ? RUN : WALK);
-        }
+        walkTo(wp.x, wp.y, wp.z, wp.run ? RUN : WALK);
         if (unstick(wp.pos())) arrive(wp);
+    }
+
+    /**
+     * Paths to an exact spot. Vanilla navigation is happy to stop a block short, so the last
+     * couple of steps are walked in a straight line.
+     */
+    private void walkTo(double x, double y, double z, double speed) {
+        double dx = x - getX(), dz = z - getZ();
+        boolean close = dx * dx + dz * dz < 3.2 && Math.abs(y - getY()) < 1.3;
+        if (getNavigation().isDone()) {
+            if (close) {
+                getMoveControl().setWantedPosition(x, y, z, speed);
+                return;
+            }
+            net.minecraft.world.level.pathfinder.Path path = getNavigation().createPath(BlockPos.containing(x, y, z), 0);
+            if (path != null) getNavigation().moveTo(path, speed);
+        } else if (tickCount % 40 == 0 && !close) {
+            net.minecraft.world.level.pathfinder.Path path = getNavigation().createPath(BlockPos.containing(x, y, z), 0);
+            if (path != null) getNavigation().moveTo(path, speed);
+        }
     }
 
     /** Teleports to the goal if the NPC has made no progress for a while. Returns true if it jumped. */
@@ -377,6 +398,11 @@ public class NpcEntity extends PathfinderMob {
         if (stuckTicks >= 160) {
             stuckTicks = 0;
             if (level().isLoaded(BlockPos.containing(goal))) {
+                statUnsticks++;
+                if (UNSTICK_LOG.size() < 400) {
+                    UNSTICK_LOG.merge(getName().getString() + " [" + getState() + " #" + routeIndex + "] " + blockPosition().toShortString()
+                            + " -> " + BlockPos.containing(goal).toShortString(), 1, Integer::sum);
+                }
                 teleportTo(goal.x, goal.y, goal.z);
                 getNavigation().stop();
                 return true;
@@ -386,6 +412,7 @@ public class NpcEntity extends PathfinderMob {
     }
 
     private void arrive(Waypoint wp) {
+        statArrivals++;
         getNavigation().stop();
         stuckTicks = 0;
         if (!wp.say.isEmpty()) say(wp.say, 90);

@@ -653,7 +653,7 @@ def finish(ctx):
     for z in range(40, SZ - 2):
         for x in range(60, SX - 2):
             h = H[z, x]
-            if h < 64 or nowall[z, x]:
+            if h < 64 or nowall[z, x] or z >= 200:      # the quay edge stays open: piers and gangways
                 continue
             drop = max(h - H[z + 1, x], h - H[z, x + 1], h - H[z, x - 1], h - H[z - 1, x])
             if drop >= 3 and w.get(x, h + 1, z) == 0 and w.get(x, h, z) != 0:

@@ -27,6 +27,10 @@ legacyForge {
         server {
             server()
             programArgument '--nogui'
+            if (project.hasProperty('selftest')) {
+                systemProperty 'recrafted.selftest', 'true'
+                systemProperty 'recrafted.selftest.ticks', project.findProperty('selftestTicks') ?: '2400'
+            }
         }
         configureEach {
             systemProperty 'forge.logging.console.level', 'info'

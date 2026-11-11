@@ -141,7 +141,7 @@ def topdown(w, path, scale=3, ymax=None):
     im.save(path)
 
 
-def oblique(w, path, scale=3, view='south', crop=None):
+def oblique(w, path, scale=3, view='south', crop=None, ymin=0):
     """Orthographic view tilted 45 degrees. view = side the camera stands on."""
     pal, solid = palette_colors(w)
     G = w.G
@@ -154,6 +154,10 @@ def oblique(w, path, scale=3, view='south', crop=None):
     if crop:
         x0, z0, x1, z1 = crop
         G = G[:, z0:z1, x0:x1]
+    if ymin:
+        G = G[ymin:]
+    top_used = int(np.nonzero(G.reshape(G.shape[0], -1).any(axis=1))[0].max()) + 2
+    G = G[:top_used]
     sy, sz, sx = G.shape
     img = np.zeros((sz + sy + 1, sx, 3), dtype=np.float32)
     img[:] = (150, 200, 235)
@@ -169,7 +173,7 @@ def oblique(w, path, scale=3, view='south', crop=None):
             if not row.any():
                 continue
             py = z + (sy - 1 - y) + 1
-            shade = 0.72 + 0.28 * min(1.0, y / 110.0)
+            shade = 0.72 + 0.28 * min(1.0, (y + ymin) / 110.0)
             img[py, row] = col[y, row] * (0.78 * shade + 0.1)
             t = row & ~above[y]
             if t.any():
@@ -180,10 +184,13 @@ def oblique(w, path, scale=3, view='south', crop=None):
     im.save(path)
 
 
-def slice_y(w, path, y, scale=3, depth=6):
+def slice_y(w, path, y, scale=3, depth=6, crop=None):
     """Horizontal cut: shows the first solid block at or below y (for interiors / the lab)."""
     pal, solid = palette_colors(w)
     G = w.G[max(0, y - depth):y + 1]
+    if crop:
+        x0, z0, x1, z1 = crop
+        G = G[:, z0:z1, x0:x1]
     mask = solid[G]
     sy = G.shape[0]
     idx = sy - 1 - np.argmax(mask[::-1], axis=0)

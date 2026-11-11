@@ -64,7 +64,9 @@ def main():
         render.topdown(w, os.path.join(PREVIEW, 'corvara_top.png'), scale=3)
         render.oblique(w, os.path.join(PREVIEW, 'corvara_south.png'), scale=3)
         render.oblique(w, os.path.join(PREVIEW, 'corvara_east.png'), scale=3, view='east')
-        render.slice_y(w, os.path.join(PREVIEW, 'corvara_lab.png'), y=45, scale=3, depth=5)
+        render.slice_y(w, os.path.join(PREVIEW, 'corvara_lab.png'), y=45, scale=4, depth=5, crop=(185, 80, 305, 200))
+        render.oblique(w, os.path.join(PREVIEW, 'corvara_town.png'), scale=5, crop=(68, 96, 256, 240), ymin=60)
+        render.oblique(w, os.path.join(PREVIEW, 'corvara_estate.png'), scale=6, crop=(34, 20, 136, 98), ymin=80)
     print(f'done in {time.time() - t:.1f}s')
 
 

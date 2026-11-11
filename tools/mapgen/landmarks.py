@@ -351,7 +351,7 @@ def harbour_office(ctx):
     w.fill(x1 - 6, f2, z0 + 2, x1 - 3, f2, z0 + 2, 'dark_oak_planks')          # desk
     w.set(x1 - 4, f2, z0 + 1, 'dark_oak_stairs[facing=north,half=bottom]')     # chair behind desk
     w.set(x1 - 6, f2 + 1, z0 + 2, 'lantern[hanging=false]')
-    w.set(x1 - 3, f2 + 1, z0 + 2, 'recrafted:wine_glass[poison=none]')
+    w.set(x1 - 3, f2 + 1, z0 + 2, 'recrafted:drink[poison=none]')
     w.fill(x1 - 1, f2, z0 + 5, x1 - 1, f2 + 1, z0 + 8, 'bookshelf')
     w.set(x0 + 1, f2, z1 - 1, 'recrafted:hiding_crate')
     A['office.desk'] = (x1 - 4, f2, z0 + 1)
@@ -634,7 +634,7 @@ def beach(ctx):
         w.set(x, h + 1, bz0 + 5, 'jungle_stairs[facing=south,half=top]') if False else None
         w.set(x, h + 1, bz0 + 4, 'jungle_fence')
         w.set(x, h + 2, bz0 + 4, 'jungle_pressure_plate')
-    w.set(bx0 + 2, h + 2, bz0 + 3, 'recrafted:wine_glass[poison=none]')
+    w.set(bx0 + 2, h + 2, bz0 + 3, 'recrafted:drink[poison=none]')
     w.set(bx0 + 5, h + 1, bz0 + 1, 'barrel[facing=up]')
     w.set(bx0 + 4, h + 1, bz0 + 1, 'barrel[facing=up]')
     w.set(bx0 + 3, h + 3, bz0 + 2, 'lantern[hanging=true]')

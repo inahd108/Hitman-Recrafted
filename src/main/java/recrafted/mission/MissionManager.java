@@ -320,15 +320,10 @@ public final class MissionManager {
     }
 
     // ---- start / stop ----------------------------------------------------------------------
-    public static boolean start(ServerPlayer p) {
-        MinecraftServer server = p.getServer();
+    /** Resets the world state and queues the whole cast and every prop for spawning. */
+    public static void begin(ServerLevel level) {
         Mission.reload();
         Mission m = Mission.corvara();
-        ServerLevel level = server.getLevel(m.dimension);
-        if (level == null) {
-            p.sendSystemMessage(Component.literal("The Corvara dimension is missing. Create a new world with the mod installed, or restart the server.").withStyle(ChatFormatting.RED));
-            return false;
-        }
         MissionState st = MissionState.get(level);
         for (Map.Entry<BlockPos, BlockState> e : st.changed.entrySet()) level.setBlock(e.getKey(), e.getValue(), 3);
         st.changed.clear();
@@ -351,7 +346,21 @@ public final class MissionManager {
             else if (e instanceof PropEntity pe && pe.missionGen != -1) stale.add(e);
         }
         stale.forEach(Entity::discard);
+    }
 
+    public static void smashCoreHeadless(ServerLevel level, BlockPos pos) {
+        destroyCore(level, pos);
+    }
+
+    public static boolean start(ServerPlayer p) {
+        MinecraftServer server = p.getServer();
+        ServerLevel level = server.getLevel(Mission.corvara().dimension);
+        if (level == null) {
+            p.sendSystemMessage(Component.literal("The Corvara dimension is missing. Create a new world with the mod installed, or restart the server.").withStyle(ChatFormatting.RED));
+            return false;
+        }
+        begin(level);
+        Mission m = Mission.corvara();
         p.teleportTo(level, m.spawn.x, m.spawn.y, m.spawn.z, m.spawnYaw, 0f);
         if (p.gameMode.getGameModeForPlayer() == GameType.SURVIVAL) p.setGameMode(GameType.ADVENTURE);
         PlayerData.setDisguise(p, null, 0);
