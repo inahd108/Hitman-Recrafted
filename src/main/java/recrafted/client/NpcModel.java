@@ -20,7 +20,8 @@ public class NpcModel extends PlayerModel<NpcEntity> {
         if (e.isDown() || p == NpcPose.STAND || p == NpcPose.SLEEP) return false;
         if (p == NpcPose.SIT) return true;
         if (e.getDeltaMovement().horizontalDistanceSqr() > 1e-4) return false;
-        BlockState below = e.level().getBlockState(e.blockPosition());
+        // standing on the high half of a chair puts the feet a full block up, so look a little below them
+        BlockState below = e.level().getBlockState(net.minecraft.core.BlockPos.containing(e.getX(), e.getY() - 0.3, e.getZ()));
         return below.getBlock() instanceof StairBlock || below.getBlock() instanceof SlabBlock;
     }
 

@@ -502,7 +502,9 @@ def piazza(ctx):
     # newspaper kiosk
     w.fill(170, y + 1, 163, 172, y + 3, 165, 'dark_oak_planks')
     w.fill(170, y + 2, 163, 172, y + 2, 163, 'air')
-    w.fill(170, y + 4, 162, 172, y + 4, 165, 'green_wool')
+    for kx in range(169, 174):
+        for kz in range(162, 167):
+            w.set(kx, y + 4, kz, 'green_wool' if kx % 2 else 'white_wool')
     w.set(171, y + 1, 163, 'bookshelf')
     A['piazza.kiosk'] = (171, y + 1, 161)
 

@@ -48,7 +48,9 @@ public final class ClientTest {
             new Shot("03_quay", 141, 67.6, 197.5, -90, 4, "fly"),
             new Shot("04_piazza", 162, 86, 176, 180, 28, "fly"),
             new Shot("05_cafe", 146, 75.6, 150, 100, 6, "fly"),
-            new Shot("06_upper_town", 196, 96, 140, 150, 22, "fly"),
+            new Shot("06_upper_town", 186, 104, 136, 115, 30, "fly"),
+            new Shot("06b_chapel", 213.5, 94, 100, 180, 2, "fly"),
+            new Shot("06c_beach", 58, 70, 214, 170, 8, "fly"),
             new Shot("07_estate", 100, 108, 100, 180, 30, "fly"),
             new Shot("08_villa_court", 100, 91.6, 71.5, 180, -4, "fly"),
             new Shot("09_cannery", 262, 68, 175.5, -90, 6, "fly"),
@@ -64,6 +66,99 @@ public final class ClientTest {
     private static boolean placed;
 
     private ClientTest() {}
+
+    // ---- scripted gameplay checks, run on the integrated server with the real player ----------
+    private static int step;
+    private static recrafted.npc.NpcEntity victim;
+
+    private static recrafted.npc.NpcEntity npc(ServerLevel level, String name) {
+        for (net.minecraft.world.entity.Entity e : level.getAllEntities()) {
+            if (e instanceof recrafted.npc.NpcEntity n && n.getName().getString().equals(name)) return n;
+        }
+        return null;
+    }
+
+    private static void check(String what, boolean ok, Object detail) {
+        LOG.info("CLIENTTEST CHECK {}: {} ({})", what, ok ? "PASS" : "FAIL", detail);
+    }
+
+    private static void shot(Minecraft mc, String name) {
+        Screenshot.grab(mc.gameDirectory, "recrafted_" + name + ".png", mc.getMainRenderTarget(), c -> { });
+    }
+
+    /** Returns true when the script has finished. */
+    private static boolean gameplay(Minecraft mc, IntegratedServer server, ServerPlayer sp, long now) {
+        ServerLevel level = MissionManager.missionLevel(server);
+        mc.setScreen(null);
+        mc.options.setCameraType(CameraType.FIRST_PERSON);
+        switch (step++) {
+            case 0 -> server.execute(() -> {          // creep up behind the gardener in the olive grove
+                victim = npc(level, "Gardener Vito");
+                if (victim == null) { check("find gardener", false, "missing"); return; }
+                victim.frozen = true;
+                net.minecraft.world.phys.Vec3 look = net.minecraft.world.phys.Vec3.directionFromRotation(0, victim.yBodyRot);
+                sp.setGameMode(GameType.ADVENTURE);
+                PlayerData.setDisguise(sp, null, 0);
+                sp.teleportTo(level, victim.getX() - look.x * 1.3, victim.getY(), victim.getZ() - look.z * 1.3, victim.yBodyRot, 25);
+            });
+            case 1 -> server.execute(() -> {
+                if (victim == null) return;
+                recrafted.mission.Combat.melee(sp, victim);
+                check("subdue from behind", victim.getState() == recrafted.npc.NpcEntity.State.UNCONSCIOUS, victim.getState());
+            });
+            case 2 -> shot(mc, "15_subdued");
+            case 3 -> server.execute(() -> {
+                if (victim == null) return;
+                victim.takeOutfit(sp);
+                check("take outfit", PlayerData.disguise(sp) == NpcRole.GARDENER, PlayerData.disguise(sp));
+                sp.teleportTo(level, 100.5, 90, 80.5, 180, 0);       // inside the estate gate, dressed for it
+            });
+            case 4 -> { }
+            case 5 -> server.execute(() -> {
+                check("disguise grants access", !MissionManager.isTrespassing(sp) && !MissionManager.isHunted(sp),
+                        "trespassing=" + MissionManager.isTrespassing(sp) + " hunted=" + MissionManager.isHunted(sp));
+                PlayerData.setDisguise(sp, null, 0);
+            });
+            case 6, 7 -> { }
+            case 8 -> {
+                shot(mc, "16_spotted");
+                server.execute(() -> {
+                    float max = 0;
+                    for (net.minecraft.world.entity.Entity e : level.getAllEntities()) {
+                        if (e instanceof recrafted.npc.NpcEntity n) max = Math.max(max, n.suspicionOf(sp));
+                    }
+                    check("trespass detected", MissionManager.isTrespassing(sp) && (max > 0.2f || MissionManager.isHunted(sp)),
+                            "suspicion=" + max + " hunted=" + MissionManager.isHunted(sp));
+                    sp.setGameMode(GameType.SPECTATOR);
+                    recrafted.npc.NpcEntity diner = npc(level, "Diner Henrik");
+                    if (diner == null) { check("find diner", false, "missing"); return; }
+                    victim = diner;
+                    sp.teleportTo(level, diner.getX() + 3, diner.getY() + 1, diner.getZ() + 4, 150, 15);
+                    net.minecraft.core.BlockPos base = diner.blockPosition();
+                    boolean dosed = false;
+                    for (net.minecraft.core.BlockPos p : net.minecraft.core.BlockPos.betweenClosed(base.offset(-2, -1, -2), base.offset(2, 2, 2))) {
+                        net.minecraft.world.level.block.state.BlockState st = level.getBlockState(p);
+                        if (st.getBlock() instanceof recrafted.block.ConsumableBlock) {
+                            MissionManager.setTracked(level, p.immutable(), st.setValue(recrafted.block.ConsumableBlock.POISON, recrafted.block.Poison.LETHAL));
+                            dosed = true;
+                            break;
+                        }
+                    }
+                    check("found a plate or glass next to the diner", dosed, base);
+                });
+            }
+            case 9, 10, 11 -> { }
+            case 12 -> {
+                shot(mc, "17_poisoned");
+                server.execute(() -> check("poisoned drink kills", victim != null && victim.isDead(), victim == null ? "?" : victim.getState()));
+            }
+            default -> {
+                return true;
+            }
+        }
+        nextAt = now + 2500;
+        return false;
+    }
 
     private static void click(Screen screen, String... labels) {
         for (GuiEventListener l : screen.children()) {
@@ -111,6 +206,7 @@ public final class ClientTest {
             return;
         }
         if (index >= SHOTS.length) {
+            if (!gameplay(mc, server, sp, now)) return;
             LOG.info("CLIENTTEST DONE");
             mc.stop();
             index = Integer.MAX_VALUE - 1;

@@ -360,6 +360,7 @@ public class NpcEntity extends PathfinderMob {
             if (wp.pose == NpcPose.SMOKE && tickCount % 50 == 0) {
                 ((ServerLevel) level()).sendParticles(ParticleTypes.SMOKE, getX(), getEyeY(), getZ(), 2, .05, .05, .05, .005);
             }
+            if ((wp.pose == NpcPose.EAT || wp.pose == NpcPose.DRINK) && tickCount % 40 == 0) consumeNearby();
             if (--waitLeft <= 0) {
                 waiting = false;
                 advance();

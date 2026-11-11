@@ -449,7 +449,7 @@ def chapel(ctx):
     x0, x1, z0, z1, y = 206, 220, 60, 84, T3
     w.clear(x0 - 2, y + 1, z0 - 2, x1 + 9, y + 40, z1 + 3)
     w.fill(x0 - 1, y - 4, z0 - 1, x1 + 8, y, z1 + 1, 'stone_bricks')
-    mix = [('white_concrete', .8), ('calcite', .15), ('smooth_quartz', .05)]
+    mix = [('white_concrete', .95), ('calcite', .05)]
     hh = 9
     ring_mix(w, x0, z0, x1, z1, y + 1, y + hh, rng, mix)
     ring(w, x0, z0, x1, z1, y + 1, y + 1, 'stone_bricks')
@@ -562,7 +562,7 @@ def grove_and_promenade(ctx):
     for x in range(36, 252):
         for z in range(88, 95):
             if H[z, x] == y:
-                w.set(x, y, z, rng.choice(['gravel', 'gravel', 'coarse_dirt', 'dirt_path', 'gravel']))
+                w.set(x, y, z, 'gravel' if rng.random() < .88 else rng.choice(['andesite', 'coarse_dirt']))
                 w.clear(x, y + 1, z, x, y + 2, z)
     for x in range(44, 250, 14):
         if w.is_air(x, y + 1, 87) and H[87, x] == y:

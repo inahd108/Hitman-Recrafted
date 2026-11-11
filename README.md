@@ -6,7 +6,15 @@ town full of people who follow routines you can edit, and dozens of props to pic
 The mission, **Salt & Ash**, takes place in **Corvara** — an original sun-bleached harbour town on a
 limestone island. The setting, layout, characters and story are this project's own.
 
-![Corvara from the south](docs/preview/corvara_south.png)
+![Arriving in Corvara](docs/screenshots/harbour.jpg)
+
+| | |
+|---|---|
+| ![Piazza del Sale](docs/screenshots/piazza.jpg) | ![Caffè Aurora](docs/screenshots/cafe.jpg) |
+| ![Tenuta Belmonte](docs/screenshots/estate.jpg) | ![The villa court](docs/screenshots/villa_court.jpg) |
+| ![The core hall](docs/screenshots/lab.jpg) | ![The cannery floor](docs/screenshots/cannery.jpg) |
+
+All screenshots are taken in-game by the automated tour (`./gradlew runClient -Pclienttest`).
 
 ## What is in the box
 
@@ -96,12 +104,31 @@ NPCs told to eat or drink use the nearest plate or glass — which is how poison
 Other commands: `/contract visit` (go to the island without starting), `/contract freeze <true|false>`,
 `/contract disguise <role|none>`, `/contract stop`.
 
+### The editors
+
+| Route editor | NPC editor |
+|---|---|
+| ![Route editor](docs/screenshots/route_editor.jpg) | ![NPC editor](docs/screenshots/npc_editor.jpg) |
+
+## Good to know
+
+- Minecraft shows its *experimental settings* prompt the first time a world with the mod is opened,
+  because the island is a custom dimension. Forge remembers the answer per world.
+- The island is generated once per world. After updating the mod to a version with a changed map, delete
+  `dimensions/recrafted` inside the world folder and the island regenerates on the next visit.
+- `/contract start` puts survival players in adventure mode so the set stays intact. Creative players are
+  ignored by the NPCs, which is what you want while editing routes.
+- NPCs walk through each other rather than shoving. That is deliberate: it keeps narrow alleys, piers and
+  doorways from jamming.
+- Guards are melee-only until the TACZ add-on lands.
+
 ## Building
 
 ```
 ./gradlew build                       # jar in build/libs
 ./gradlew runClient                   # dev client
 ./gradlew runServer -Pselftest        # headless smoke test: loads the island, runs the cast, checks objectives
+./gradlew runClient -Pclienttest       # screenshot tour of a world named corvara_test (needs a display or xvfb-run)
 python3 tools/mapgen/build.py         # regenerate the island + mission data (+ previews in docs/preview)
 python3 tools/assets/gen_assets.py    # regenerate textures, models and the language file
 ```
@@ -111,6 +138,11 @@ strings + a dense `uint16` grid). `tools/mapgen` is plain Python with numpy and 
 `terrain.py` shapes the island, `town.py` builds the houses and piazza, `landmarks.py`, `estate.py` and
 `lab.py` add the set pieces, and `mission.py` writes the cast, props, zones and objectives using anchors
 recorded while building — so routes stay valid when geometry moves.
+`walkcheck.py` then walks every route leg on the voxel grid, reports anything unreachable, and splits long
+legs into short hops so the in-game pathfinder never has to solve a hard path.
+
+The headless self-test currently reports, for two minutes of simulated town life with all 131 NPCs:
+703 waypoint arrivals and 0 NPCs stuck.
 
 ## Roadmap
 
