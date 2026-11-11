@@ -70,7 +70,7 @@ def _reload(empty):
     a.pos('root', {0: [0, 0, 0], 0.24: near, 1.26: near, 1.3: [near[0], near[1] + 0.6, near[2]],
                    1.42: near, back: [-0.6, 1.6, 1.4], L - 0.1: [0, 0, 0], L: [0, 0, 0]})
     # the support hand strips the magazine down the grip, swaps it, slaps the new one home
-    out1 = along_grip(4.8)
+    out1 = along_grip(5.9)          # clears the long grip
     away = [3.0, -16.0, 1.5]
     a.pos('mag_and_lefthand', {0: [0, 0, 0], 0.28: [0, 0, 0], 0.38: out1, 0.58: away, 0.86: away,
                                1.06: out1, 1.2: along_grip(1.2), 1.3: [0, 0, 0], L: [0, 0, 0]})

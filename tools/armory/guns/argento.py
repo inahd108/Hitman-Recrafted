@@ -16,6 +16,8 @@ ID = 'argento'
 K = 16                       # texels per model unit
 GRIP_ROT = [16, 0, 0]
 GRIP_PIV = [0, 2.9, 2.45]
+GB = -1.4                    # bottom of the grip (grip frame); longer than a service pistol's
+MED_Y = (GB + 0.28 + 2.82) / 2   # medallion in the middle of the panel
 
 # Bedrock units. Muzzle towards -z, shooter's right is -x.
 SX = 0.68
@@ -150,29 +152,29 @@ def build_frame(m):
 
     # grip assembly, built upright and tilted as a whole: a rounded block with ivory panels
     g = m.part('grip', 'gun', GRIP_PIV, GRIP_ROT)
-    round_bar(g, 'y', (-0.5, -0.3, 1.1), (0.5, 3.1, 3.9), 'steel', r=0.32, data={'decal': 'grip_core'})
-    g.bar(-0.3, 0.3, 0.0, 2.65, 1.095, 1.12, 'blued', data={'decal': 'strap'})
-    round_bar(g, 'y', (-0.42, -0.3, 3.7), (0.42, 2.78, 4.12), 'blued', r=0.2, corners=(1, 1, 0, 0),
+    round_bar(g, 'y', (-0.5, GB, 1.1), (0.5, 3.1, 3.9), 'steel', r=0.32, data={'decal': 'grip_core'})
+    g.bar(-0.3, 0.3, GB + 0.3, 2.65, 1.095, 1.12, 'blued', data={'decal': 'strap'})
+    round_bar(g, 'y', (-0.42, GB, 3.7), (0.42, 2.78, 4.12), 'blued', r=0.2, corners=(1, 1, 0, 0),
               data={'decal': 'mainspring'})
     for sgn in (1, -1):
         corners = (1, 0, 0, 1) if sgn > 0 else (0, 1, 1, 0)
         x0, x1 = sorted((sgn * 0.36, sgn * 0.68))
-        round_bar(g, 'y', (x0, -0.02, 1.22), (x1, 2.82, 3.64), 'ivory', r=0.16, corners=corners,
+        round_bar(g, 'y', (x0, GB + 0.28, 1.22), (x1, 2.82, 3.64), 'ivory', r=0.16, corners=corners,
                   data={'decal': 'panel'})
         x0, x1 = sorted((sgn * 0.68, sgn * 0.71))
-        for sy in (0.3, 2.5):
+        for sy in (GB + 0.6, 2.5):
             disc_x(g, sy, 2.43, 0.11, x0, x1, 'gold', data={'decal': 'screw'})
         x0, x1 = sorted((sgn * 0.68, sgn * 0.73))
-        disc_x(g, 1.4, 2.43, 0.3, x0, x1, 'gold', sides=16, data={'decal': 'medallion'})
-    round_bar(g, 'y', (-0.56, -0.34, 1.04), (0.56, -0.2, 3.98), 'steel', r=0.12, sides=8)      # magwell lip
+        disc_x(g, MED_Y, 2.43, 0.3, x0, x1, 'gold', sides=16, data={'decal': 'medallion'})
+    round_bar(g, 'y', (-0.56, GB - 0.04, 1.04), (0.56, GB + 0.1, 3.98), 'steel', r=0.12, sides=8)      # magwell lip
 
 
 def build_magazine(m):
     m.part('magazine_and_bullet', 'mag_and_lefthand', [0, 1.995, 1.6])
     m.part('magazine', 'magazine_and_bullet', [0, 1.995, 1.6])
     std = m.part('mag_standard', 'magazine', GRIP_PIV, GRIP_ROT)
-    std.bar(-0.34, 0.34, -0.3, 3.0, 1.3, 3.5, 'blued', data={'decal': 'mag'})
-    round_bar(std, 'y', (-0.5, -0.68, 1.12), (0.5, -0.32, 3.86), 'rubber', r=0.18, sides=8)
+    std.bar(-0.34, 0.34, GB, 3.0, 1.3, 3.5, 'blued', data={'decal': 'mag'})
+    round_bar(std, 'y', (-0.5, GB - 0.38, 1.12), (0.5, GB - 0.02, 3.86), 'rubber', r=0.18, sides=8)
     rnd = m.part('bullet_in_mag', 'magazine', GRIP_PIV, GRIP_ROT)
     octagon(rnd, 'z', (0, 3.1), 0.2, 1.75, 2.75, 'brass')
     octagon(rnd, 'z', (0, 3.1), 0.16, 1.4, 1.75, 'copper')
@@ -262,10 +264,10 @@ def shader(p, n, face, c, uv, wh):
     if d == 'mainspring' and face == 'south':
         col = col * M.checker(x, y, 0.11, 0.24, 0.55)[:, None]
     if d == 'panel' and side:
-        inner = (z > 1.42) & (z < 3.44) & (y > 0.18) & (y < 2.62)
+        inner = (z > 1.42) & (z < 3.44) & (y > GB + 0.48) & (y < 2.62)
         col = col * np.where(inner, M.checker(y, z, 0.14, 0.2, 0.8), 1.0)[:, None]
     if d == 'medallion' and side:
-        cz, cy = 2.43, 1.4
+        cz, cy = 2.43, MED_Y
         rose = ((np.abs(z - cz) < 0.035) | (np.abs(y - cy) < 0.035)
                 | (np.abs(np.abs(z - cz) - np.abs(y - cy)) < 0.03)) & ~M.disc(z, y, cz, cy, 0.05)
         rim = ~M.disc(z, y, cz, cy, 0.22)
@@ -282,7 +284,7 @@ def shader(p, n, face, c, uv, wh):
         col = col * M.grooves(z + y, 0.07, 0.4, 0.6)[:, None]
     if d == 'mag' and side:
         holes = np.zeros(N, dtype=bool)
-        for hy in (0.5, 1.1, 1.7, 2.3):
+        for hy in (-0.7, -0.1, 0.5, 1.1, 1.7, 2.3):
             holes |= M.disc(z, y, 2.4, hy, 0.07)
         col = np.where(holes[:, None], col * 0.3, col)
     if d == 'hood' and side:
