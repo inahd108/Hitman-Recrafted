@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "poison=none": {
+      "model": "recrafted:block/meal"
+    },
+    "poison=emetic": {
+      "model": "recrafted:block/meal"
+    },
+    "poison=lethal": {
+      "model": "recrafted:block/meal"
+    }
+  }
+}

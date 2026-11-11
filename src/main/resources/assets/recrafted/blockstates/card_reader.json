@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "tier=lab": {
+      "model": "recrafted:block/card_reader_lab"
+    },
+    "tier=estate": {
+      "model": "recrafted:block/card_reader_estate"
+    },
+    "tier=harbour": {
+      "model": "recrafted:block/card_reader_harbour"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "broken=false": {
+      "model": "recrafted:block/fuse_box"
+    },
+    "broken=true": {
+      "model": "recrafted:block/fuse_box_broken"
+    }
+  }
+}

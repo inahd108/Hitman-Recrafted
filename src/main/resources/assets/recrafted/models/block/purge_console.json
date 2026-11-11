@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "recrafted:block/console_side",
+    "bottom": "recrafted:block/console_side",
+    "side": "recrafted:block/purge_console"
+  }
+}

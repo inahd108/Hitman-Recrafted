@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "recrafted:block/hiding_crate_top",
+    "side": "recrafted:block/hiding_crate_side"
+  }
+}

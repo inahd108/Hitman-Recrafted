@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "recrafted:block/lab_console"
+    }
+  }
+}
