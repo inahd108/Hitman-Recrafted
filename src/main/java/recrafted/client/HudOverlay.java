@@ -31,9 +31,11 @@ public class HudOverlay implements IGuiOverlay {
             g.drawString(font, ClientState.OBJECTIVES.get(i), x + 14, y, done ? 0xFF8A9199 : 0xFFE8EAED, false);
             y += 11;
         }
+        boolean allDone = !ClientState.OBJECTIVES_DONE.isEmpty() && !ClientState.OBJECTIVES_DONE.contains(false);
+        if (allDone) return;               // contract complete: leave the screen to the debrief
         // status strip above the hotbar
         int st = Math.max(0, Math.min(3, ClientState.status));
-        int cx = w / 2, by = h - 62;
+        int cx = w / 2, by = h - 88;      // clear of the vanilla action-bar text
         String disguise = "Wearing: " + ClientState.disguiseLabel;
         String status = ClientState.dragging ? "DRAGGING A BODY" : STATUS_TEXT[st];
         int col = ClientState.dragging ? 0xFFFF4D4D : STATUS_COLOR[st];

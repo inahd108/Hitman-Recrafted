@@ -141,6 +141,26 @@ recorded while building — so routes stay valid when geometry moves.
 `walkcheck.py` then walks every route leg on the voxel grid, reports anything unreachable, and splits long
 legs into short hops so the in-game pathfinder never has to solve a hard path.
 
+## How it was tested
+
+Nothing here was checked by eye alone. Two harnesses ship with the mod (`recrafted.dev`):
+
+- **Server self-test** (`runServer -Pselftest`): boots a dedicated server, generates the island, queues the
+  whole cast, simulates two minutes and reports arrivals and stuck NPCs, then completes every objective.
+- **Client tour** (`runClient -Pclienttest`): opens a world, starts the contract, takes the screenshots above,
+  then plays a scripted run with the real player on the integrated server and asserts each mechanic:
+  subdue from behind · take the outfit · disguise grants access · trespass raises suspicion ·
+  poisoned meal kills · drag and hide a body · keycard opens a security door · fuse-box sabotage lures a
+  repairer · thrown coin distracts · purge destroys the sample · all three targets eliminated · exit
+  completes the contract.
+
+| | |
+|---|---|
+| ![Subdued](docs/screenshots/subdued.jpg) | ![Spotted](docs/screenshots/spotted.jpg) |
+
+Not covered by automation: multiplayer with several real players, and playing the mission by hand from start
+to finish. Guards hit hard, and balance (suspicion rates, vision ranges) has only been tuned by reasoning.
+
 The headless self-test currently reports, for two minutes of simulated town life with all 131 NPCs:
 703 waypoint arrivals and 0 NPCs stuck.
 

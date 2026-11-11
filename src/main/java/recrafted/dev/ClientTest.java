@@ -150,8 +150,101 @@ public final class ClientTest {
             case 9, 10, 11 -> { }
             case 12 -> {
                 shot(mc, "17_poisoned");
-                server.execute(() -> check("poisoned drink kills", victim != null && victim.isDead(), victim == null ? "?" : victim.getState()));
+                server.execute(() -> {
+                    // two diners share the table; whoever reaches for the plate first is the one who dies
+                    recrafted.npc.NpcEntity other = npc(level, "Diner Giulia");
+                    boolean died = (victim != null && victim.isDead()) || (other != null && other.isDead());
+                    check("poisoned meal kills a diner at that table", died,
+                            "Henrik=" + (victim == null ? "?" : victim.getState()) + " Giulia=" + (other == null ? "?" : other.getState()));
+                });
             }
+            case 13 -> server.execute(() -> {     // drag the sleeping gardener and hide him
+                recrafted.npc.NpcEntity body = npc(level, "Gardener Vito");
+                if (body == null) { check("find body", false, "missing"); return; }
+                sp.setGameMode(GameType.ADVENTURE);
+                sp.teleportTo(level, body.getX() + 1, body.getY(), body.getZ(), 0, 0);
+                body.toggleDrag(sp);
+                check("drag body", MissionManager.isDragging(level, sp), body.getDraggedBy());
+                MissionManager.hideBody(level, sp, sp.blockPosition());
+                check("hide body", body.isRemoved(), "removed=" + body.isRemoved());
+            });
+            case 14 -> server.execute(() -> {     // keycard on the airlock reader
+                sp.setGameMode(GameType.SPECTATOR);
+                sp.teleportTo(level, 273.5, 42, 153.5, 180, 0);
+            });
+            case 15 -> server.execute(() -> {
+                net.minecraft.core.BlockPos reader = new net.minecraft.core.BlockPos(275, 42, 149);
+                net.minecraft.core.BlockPos door = new net.minecraft.core.BlockPos(273, 41, 149);
+                net.minecraft.world.level.block.state.BlockState rs = level.getBlockState(reader);
+                sp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
+                        new net.minecraft.world.item.ItemStack(recrafted.ModRegistry.prop(recrafted.prop.PropType.KEYCARD_LAB)));
+                rs.use(level, sp, net.minecraft.world.InteractionHand.MAIN_HAND, new net.minecraft.world.phys.BlockHitResult(
+                        net.minecraft.world.phys.Vec3.atCenterOf(reader), net.minecraft.core.Direction.SOUTH, reader, false));
+                net.minecraft.world.level.block.state.BlockState ds = level.getBlockState(door);
+                check("keycard opens security door", ds.getBlock() instanceof net.minecraft.world.level.block.DoorBlock
+                        && ds.getValue(net.minecraft.world.level.block.DoorBlock.OPEN), rs.getBlock() + " / " + ds);
+                // sabotage the cannery fuse box
+                sp.teleportTo(level, 262.5, 68, 180.5, 90, 10);
+            });
+            case 16 -> server.execute(() -> {
+                net.minecraft.core.BlockPos fuse = new net.minecraft.core.BlockPos(259, 66, 180);
+                net.minecraft.world.level.block.state.BlockState fs = level.getBlockState(fuse);
+                sp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
+                        new net.minecraft.world.item.ItemStack(recrafted.ModRegistry.prop(recrafted.prop.PropType.WRENCH)));
+                fs.use(level, sp, net.minecraft.world.InteractionHand.MAIN_HAND, new net.minecraft.world.phys.BlockHitResult(
+                        net.minecraft.world.phys.Vec3.atCenterOf(fuse), net.minecraft.core.Direction.EAST, fuse, false));
+                boolean broken = level.getBlockState(fuse).getBlock() instanceof recrafted.block.FuseBoxBlock
+                        && level.getBlockState(fuse).getValue(recrafted.block.FuseBoxBlock.BROKEN);
+                int coming = 0;
+                for (net.minecraft.world.entity.Entity e : level.getAllEntities()) {
+                    if (e instanceof recrafted.npc.NpcEntity n && n.getState() == recrafted.npc.NpcEntity.State.INVESTIGATE) coming++;
+                }
+                check("fuse box sabotage lures a repairer", broken && coming > 0, "broken=" + broken + " investigating=" + coming);
+                // toss a coin onto the piazza
+                sp.teleportTo(level, 150.5, 80, 160.5, 0, 60);
+            });
+            case 17 -> server.execute(() -> {
+                recrafted.entity.ThrownPropEntity coin = new recrafted.entity.ThrownPropEntity(level, sp);
+                coin.setItem(new net.minecraft.world.item.ItemStack(recrafted.ModRegistry.prop(recrafted.prop.PropType.COIN)));
+                coin.setPos(152.5, 77, 162.5);
+                coin.setDeltaMovement(0, -0.3, 0);
+                level.addFreshEntity(coin);
+            });
+            case 18 -> server.execute(() -> {
+                int looking = 0;
+                for (recrafted.npc.NpcEntity n : level.getEntitiesOfClass(recrafted.npc.NpcEntity.class,
+                        new net.minecraft.world.phys.AABB(152, 70, 162, 153, 80, 163).inflate(16))) {
+                    if (n.getState() == recrafted.npc.NpcEntity.State.INVESTIGATE) looking++;
+                }
+                boolean dropped = !level.getEntitiesOfClass(recrafted.entity.PropEntity.class,
+                        new net.minecraft.world.phys.AABB(152, 73, 162, 153, 76, 163).inflate(2)).isEmpty();
+                check("thrown coin distracts", looking > 0 && dropped, "investigating=" + looking + " coinOnGround=" + dropped);
+                // run the purge in the core hall
+                sp.teleportTo(level, 234.5, 44, 131.5, 180, 5);
+            });
+            case 19 -> server.execute(() -> MissionManager.startPurge(level, sp, new net.minecraft.core.BlockPos(234, 42, 128)));
+            case 20, 21, 22, 23 -> { }
+            case 24 -> {
+                shot(mc, "18_purge");
+                server.execute(() -> {
+                    recrafted.mission.MissionState st = recrafted.mission.MissionState.get(level);
+                    check("purge destroys the sample", st.done.contains("destroy_core")
+                            && !level.getBlockState(new net.minecraft.core.BlockPos(234, 42, 118)).is(recrafted.ModRegistry.PATHOGEN_CORE.get()), st.done);
+                    int killed = 0;
+                    for (String name : new String[]{"Marco Belmonte", "Dr. Ilse Varga", "Capitano Renzo Sordi"}) {
+                        recrafted.npc.NpcEntity t = npc(level, name);
+                        if (t != null) { t.kill(sp, false); killed++; }
+                    }
+                    check("all three targets reachable and eliminated", killed == 3 && st.done.size() == 4, "killed=" + killed + " done=" + st.done);
+                });
+            }
+            case 25 -> server.execute(() -> {
+                MissionManager.tryExit(level, sp);
+                recrafted.mission.MissionState st = recrafted.mission.MissionState.get(level);
+                check("exit completes the contract", st.complete, "complete=" + st.complete + " stats: nonTargetKills=" + st.nonTargetKills
+                        + " knockouts=" + st.knockouts + " bodiesFound=" + st.bodiesFound + " spotted=" + st.spotted + " hidden=" + st.bodiesHidden);
+            });
+            case 26 -> shot(mc, "19_complete");
             default -> {
                 return true;
             }
