@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.passero.name",
+  "display": "recrafted:passero_display",
+  "data": "recrafted:passero_data",
+  "tooltip": "recrafted.gun.passero.desc",
+  "type": "pistol",
+  "sort": 2
+}

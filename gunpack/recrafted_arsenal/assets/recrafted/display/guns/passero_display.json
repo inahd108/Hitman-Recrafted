@@ -1,0 +1,108 @@
+{
+  "state_machine": "tacz:default_state_machine_v2",
+  "ads_preset": "tacz:renew",
+  "use_default_animation": "pistol",
+  "player_animator_3rd": "tacz:pistol_default.player_animation",
+  "transform": {
+    "scale": {
+      "thirdperson": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "ground": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "fixed": [
+        1.1,
+        1.1,
+        1.1
+      ]
+    }
+  },
+  "shell": {
+    "initial_velocity": [
+      5.0,
+      3.0,
+      1
+    ],
+    "random_velocity": [
+      2.5,
+      2,
+      0.25
+    ],
+    "acceleration": [
+      0.0,
+      -20,
+      0.0
+    ],
+    "angular_velocity": [
+      360,
+      -960,
+      90
+    ],
+    "living_time": 1.0
+  },
+  "muzzle_flash": {
+    "type": "renew",
+    "texture": "tacz:flash/common_muzzle_flash",
+    "scale": 0.15,
+    "smoke_scale": 0.6,
+    "initial_speed_scale": 0.8,
+    "smoke_particle_count": 6
+  },
+  "iron_zoom": 1.25,
+  "model_fov": 60,
+  "zoom_model_fov": 45,
+  "offhand_show": {
+    "pos": [
+      4,
+      13,
+      -1
+    ],
+    "rotate": [
+      -90,
+      -35,
+      90
+    ],
+    "scale": [
+      0.5,
+      0.5,
+      0.5
+    ]
+  },
+  "hotbar_show": {
+    "0": {
+      "pos": [
+        -5,
+        13,
+        -1
+      ],
+      "rotate": [
+        -90,
+        -35,
+        90
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  },
+  "model": "recrafted:gun/passero_geo",
+  "texture": "recrafted:gun/uv/passero",
+  "hud": "recrafted:gun/hud/passero",
+  "slot": "recrafted:gun/slot/passero",
+  "animation": "recrafted:passero",
+  "sounds": {
+    "draw": "tacz:glock_17/glock17_draw",
+    "put_away": "tacz:m1911/m1911_put_away",
+    "shoot": "tacz:glock_17/glock17_silence",
+    "shoot_3p": "tacz:glock_17/glock17_silence_3p",
+    "silence": "tacz:glock_17/glock17_silence",
+    "silence_3p": "tacz:glock_17/glock17_silence_3p"
+  }
+}

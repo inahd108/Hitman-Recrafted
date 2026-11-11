@@ -243,3 +243,20 @@ def text_mask(y, z, text, z0, y_top, height, reverse=False):
 
 def disc(a, b, ca, cb, r):
     return (a - ca) ** 2 + (b - cb) ** 2 <= r * r
+
+
+def walnut(p, normal, seed=0):
+    """Dark oiled walnut: long wavy grain with darker figure."""
+    base = np.array([96, 58, 36], dtype=float)
+    warp = fbm(p, 1.2, 2, seed + 3)
+    grain = np.sin((p[:, 1] * 9.0 + warp * 6.0)) * 0.5 + 0.5
+    fig = fbm(p * np.array([1, 4.0, 1]), [6, 1.5, 6], 3, seed)
+    k = 0.78 + 0.22 * grain * fig + 0.12 * fig
+    return base[None] * k[:, None]
+
+
+def satin_black(p, normal, seed=0):
+    """Satin black finish (nitride): darker than steel, a little sheen."""
+    base = np.array([60, 62, 68], dtype=float)
+    n = fbm(p, [18, 18, 1.2], 2, seed)
+    return base[None] * (0.9 + 0.16 * n)[:, None]
