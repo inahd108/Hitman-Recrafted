@@ -61,28 +61,29 @@ def put_away():
 def _reload(empty):
     L = 2.45 if empty else 2.05
     a = Anim(L).with_hands()
-    # cant the gun towards the support hand, then bring it back
-    tilt = [6, 14, 34]
+    # bring the pistol up and in, turned so the magazine well faces the support hand
+    tilt = [-10, -36, -28]
+    near = [-0.8, 2.6, 2.2]
     back = L - 0.42
-    a.rot('root', {0: [0, 0, 0], 0.22: tilt, 0.9: [5, 13, 32], 1.25: tilt, 1.32: [3, 13, 36],
-                   1.42: tilt, back: [8, 6, 16] if empty else tilt, L - 0.12: [0, 0, 0], L: [0, 0, 0]})
-    a.pos('root', {0: [0, 0, 0], 0.22: [-1.6, 1.2, 0.4], 1.3: [-1.6, 1.2, 0.4], 1.34: [-1.6, 1.65, 0.4],
-                   1.44: [-1.6, 1.2, 0.4], back: [-0.8, 0.6, 0.2], L - 0.12: [0, 0, 0], L: [0, 0, 0]})
-    # the support hand pulls the magazine out down the grip, swaps it, slaps the new one home
+    a.rot('root', {0: [0, 0, 0], 0.24: tilt, 0.9: [-9, -34, -27], 1.24: tilt, 1.3: [-6, -36, -32],
+                   1.42: tilt, back: [-6, -22, -26] if empty else tilt, L - 0.1: [0, 0, 0], L: [0, 0, 0]})
+    a.pos('root', {0: [0, 0, 0], 0.24: near, 1.26: near, 1.3: [near[0], near[1] + 0.6, near[2]],
+                   1.42: near, back: [-0.6, 1.6, 1.4], L - 0.1: [0, 0, 0], L: [0, 0, 0]})
+    # the support hand strips the magazine down the grip, swaps it, slaps the new one home
     out1 = along_grip(4.8)
-    away = [-5.2, -17.0, 6.2]
-    a.pos('mag_and_lefthand', {0: [0, 0, 0], 0.26: [0, 0, 0], 0.36: out1, 0.56: away, 0.86: away,
+    away = [3.0, -16.0, 1.5]
+    a.pos('mag_and_lefthand', {0: [0, 0, 0], 0.28: [0, 0, 0], 0.38: out1, 0.58: away, 0.86: away,
                                1.06: out1, 1.2: along_grip(1.2), 1.3: [0, 0, 0], L: [0, 0, 0]})
-    a.rot('mag_and_lefthand', {0: [0, 0, 0], 0.36: [0, 0, 0], 0.56: [-60, -18, 28], 0.86: [-60, -18, 28],
+    a.rot('mag_and_lefthand', {0: [0, 0, 0], 0.38: [0, 0, 0], 0.58: [-35, 10, -25], 0.86: [-35, 10, -25],
                                1.06: [0, 0, 0], L: [0, 0, 0]})
     a.sound(0.0, S + ('reload_empty_lift' if empty else 'reload_lift'))
-    a.sound(0.26, S + ('reload_empty_magout' if empty else 'reload_magout'))
+    a.sound(0.28, S + ('reload_empty_magout' if empty else 'reload_magout'))
     a.sound(1.22, S + ('reload_empty_magin' if empty else 'reload_magin'))
     if empty:
         # support hand comes up and thumbs the slide release
-        a.pos('L', {0: [0, 0, 0], 1.36: [0, 0, 0], 1.5: [-6.5, 9.5, -3.2], 1.62: [-7.6, 13.6, -2.2],
-                    1.7: [-7.6, 13.6, -2.2], 1.86: [-2.4, 3.0, 2.0], 2.0: [0, 0, 0], L: [0, 0, 0]})
-        a.rot('L', {0: [0, 0, 0], 1.36: [0, 0, 0], 1.62: [-70, 0, -60], 1.7: [-74, 0, -64], 1.95: [0, 0, 0], L: [0, 0, 0]})
+        a.pos('L', {0: [0, 0, 0], 1.36: [0, 0, 0], 1.5: [-6.5, 9.5, -3.2], 1.62: [-8.0, 14.6, -1.8],
+                    1.7: [-8.0, 14.6, -1.8], 1.86: [-2.4, 3.0, 2.0], 2.0: [0, 0, 0], L: [0, 0, 0]})
+        a.rot('L', {0: [0, 0, 0], 1.36: [0, 0, 0], 1.62: [-76, 0, -70], 1.7: [-79, 0, -72], 1.95: [0, 0, 0], L: [0, 0, 0]})
         a.pos('slide', {0: [0, 0, SLIDE_TRAVEL], 1.66: [0, 0, SLIDE_TRAVEL], 1.71: [0, 0, 0], L: [0, 0, 0]}, smooth=False)
         a.rot('hold_release', {0: [8, 0, 0], 1.66: [8, 0, 0], 1.7: [0, 0, 0]}, smooth=False)
         a.rot('hammer', {0: [-27.5, 0, 0], 1.66: [-27.5, 0, 0], 1.72: [0, 0, 0]}, smooth=False)
@@ -91,29 +92,26 @@ def _reload(empty):
         a.sound(2.0, S + 'reload_empty_end')
     else:
         a.sound(1.7, S + 'reload_end')
-    a.rot('camera', {0: [0, 0, 0], 0.3: [0, 0, 0.8], 1.3: [0, 0, 0.2], 1.34: [0.6, 0, -0.6], 1.5: [0, 0, 0], L: [0, 0, 0]})
+    a.rot('camera', {0: [0, 0, 0], 0.3: [0.8, 0, 0.6], 1.3: [0.2, 0, 0.2], 1.34: [1.0, 0, -0.6], 1.5: [0, 0, 0], L: [0, 0, 0]})
     return a
 
 
 def inspect(empty=False):
-    L = 3.6
+    """Turn the pistol to show off the engraved left side, then the right side with the port."""
+    L = 4.0
     a = Anim(L).with_hands()
-    a.rot('root', {0: [0, 0, 0], 0.35: [-6, -22, -38], 1.25: [-8, -26, -42], 1.7: [8, 24, 30],
-                   2.6: [10, 28, 34], 3.15: [1, 2, 2], L: [0, 0, 0]})
-    a.pos('root', {0: [0, 0, 0], 0.35: [-1.4, 1.6, -0.6], 1.25: [-1.6, 1.8, -0.8], 1.7: [-0.6, 0.9, 0.4],
-                   2.6: [-0.6, 1.0, 0.5], 3.15: [0, 0.1, 0], L: [0, 0, 0]})
-    # press-check: the support hand eases the slide back to show brass, then lets it go
-    a.pos('L', {0: [0, 0, 0], 1.8: [0, 0, 0], 2.05: [-6.2, 10.4, -1.2], 2.2: [-6.6, 11.2, 0.6],
-                2.45: [-6.6, 11.2, 0.6], 2.6: [-6.2, 10.4, -1.2], 2.9: [0, 0, 0], L: [0, 0, 0]})
-    a.rot('L', {0: [0, 0, 0], 1.8: [0, 0, 0], 2.05: [-80, 0, -70], 2.6: [-80, 0, -70], 2.9: [0, 0, 0], L: [0, 0, 0]})
+    left = [-6, -58, -12]
+    right = [-6, 52, 12]
+    a.rot('root', {0: [0, 0, 0], 0.55: left, 1.6: [-8, -62, -14], 2.15: right, 3.2: [-8, 56, 14],
+                   3.65: [0, 0, 0], L: [0, 0, 0]})
+    a.pos('root', {0: [0, 0, 0], 0.55: [2.0, 2.2, 2.4], 1.6: [2.1, 2.3, 2.6], 2.15: [1.6, 2.2, 2.4],
+                   3.2: [1.6, 2.3, 2.6], 3.65: [0, 0, 0], L: [0, 0, 0]})
     if empty:
         a.static('slide', position=[0, 0, SLIDE_TRAVEL])
         a.static('bullet', scale=0)
-    else:
-        a.pos('slide', {0: [0, 0, 0], 2.15: [0, 0, 0], 2.25: [0, 0, 1.1], 2.45: [0, 0, 1.1], 2.5: [0, 0, 0], L: [0, 0, 0]},
-              smooth=False)
-        a.sound(2.2, S + 'inspect_slide_pull')
+    a.rot('camera', {0: [0, 0, 0], 0.55: [0.5, -1.2, 0.3], 2.15: [0.4, 1.0, -0.3], 3.65: [0, 0, 0], L: [0, 0, 0]})
     a.sound(0.0, S + 'inspect_quick')
+    a.sound(1.9, S + 'inspect_chamber')
     a.static('constraint', **CONSTRAINT['constraint'])
     return a
 

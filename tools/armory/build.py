@@ -208,6 +208,28 @@ def build_argento():
            hide=hide).save(os.path.join(PREVIEW, f'{gid}_right.png'))
     render(m, tex, eye=(40, 3.5, -2.5), target=(0, 3.5, -2.5), ortho_height=12, size=(1200, 640),
            hide=hide).save(os.path.join(PREVIEW, f'{gid}_left.png'))
+    # studio shots with the suppressor fitted (preview only: both parts in one atlas)
+    combo = argento.build()
+    mz = np.array([0, argento.BORE_Y, argento.MUZZLE_Z])
+    sp = combo.part('supp_preview', 'barrel', list(mz))
+    for c in s.parts['silencer'].cubes:
+        cc = sp.box(np.array(c.lo) + mz, np.array(c.hi) + mz, c.mat, data=dict(c.data, supp=True),
+                    pivot=(list(np.array(c.pivot) + mz) if c.pivot is not None else None), rotation=c.rotation)
+    combo.tex = 1024
+    combo.layout()
+
+    def both(p_, n_, f_, c_, uv_, wh_):
+        if c_.data.get('supp'):
+            return argento.suppressor_shader(p_ - mz, n_, f_, c_, uv_, wh_)
+        return argento.shader(p_, n_, f_, c_, uv_, wh_)
+
+    ctex = combo.paint(both)
+    render(combo, ctex, eye=(-40, 3.5, -5.5), target=(0, 3.5, -5.5), ortho_height=13, size=(1400, 640),
+           hide=hide).save(os.path.join(PREVIEW, f'{gid}_suppressed_right.png'))
+    render(combo, ctex, eye=(-15, 11, -20), target=(0, 3.5, -5), fov=34, size=(1200, 700),
+           hide=hide).save(os.path.join(PREVIEW, f'{gid}_suppressed_34.png'))
+    render(m, tex, eye=(13, 9, 10), target=(0, 3.4, -3.5), fov=36, size=(1200, 700),
+           hide=hide).save(os.path.join(PREVIEW, f'{gid}_rear34.png'))
     print(f'  {gid}: {m.cube_count()} cubes; suppressor {s.cube_count()} cubes')
 
 

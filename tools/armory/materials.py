@@ -94,17 +94,34 @@ def finish(col):
 # base materials: return float RGB [N,3]
 # ---------------------------------------------------------------------------
 def face_light(normal):
-    """Baked directional shading so small parts read well even under flat lighting."""
-    return {(0, 1): 1.10, (0, -1): 0.62}.get((0, int(round(normal[1]))), 1.0) * (0.9 if abs(normal[2]) > 0.5 else 1.0)
+    """Kept for compatibility: real shading is applied afterwards by bake()."""
+    return 1.0
+
+
+def bake(col, wn, metal=False):
+    """Soft studio lighting baked from the face's real direction on the assembled gun.
+
+    Rounded parts are made of many small faces pointing different ways, so this turns their
+    facets into a smooth gradient — the main thing that stops box models reading as blocks.
+    """
+    wn = np.asarray(wn, dtype=float)
+    up = max(0.0, wn[1])
+    down = max(0.0, -wn[1])
+    key = max(0.0, float(np.dot(wn, np.array([0.35, 0.8, 0.48]) / np.linalg.norm([0.35, 0.8, 0.48]))))
+    k = 0.66 + 0.24 * key + 0.12 * up - 0.22 * down
+    if metal:
+        # polished metal: a soft highlight band where faces turn towards the sky
+        k += 0.16 * np.exp(-((wn[1] - 0.72) ** 2) / 0.05) - 0.06 * (1 - abs(wn[1]))
+    return col * k
 
 
 def stainless(p, normal, grain=2, seed=0):
-    base = np.array([196, 200, 206], dtype=float)
+    base = np.array([206, 210, 216], dtype=float)
     fr = [24.0, 24.0, 24.0]
     fr[grain] = 0.9                              # long brushed streaks along the grain axis
     streak = fbm(p, fr, 3, seed)
     blotch = fbm(p, 1.6, 2, seed + 5)
-    k = 0.86 + 0.16 * streak + 0.06 * (blotch - 0.5)
+    k = 0.92 + 0.08 * streak + 0.05 * (blotch - 0.5)
     # soft "reflection" band that changes with height, like a polished flat
     band = 1 + 0.07 * np.sin(p[:, 1] * 2.3 + p[:, 2] * 0.35)
     return base[None] * (k * band * face_light(normal))[:, None]

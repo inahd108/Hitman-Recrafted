@@ -116,11 +116,12 @@ public final class GunShots {
             step(1600, () -> shot(mc, label + "_2_aim"));
             step(200, () -> holdAim(false));
             step(1200, () -> call(mc, "reload"));
-            step(Long.getLong("recrafted.gunshots.reloadAt", 700L), () -> shot(mc, label + "_3_reload_a"));
-            step(600, () -> shot(mc, label + "_4_reload_b"));
+            step(Long.getLong("recrafted.gunshots.reloadAt", 450L), () -> shot(mc, label + "_3_reload_a"));
+            step(650, () -> shot(mc, label + "_4_reload_b"));
             step(3200, () -> call(mc, "inspect"));
-            step(1500, () -> shot(mc, label + "_5_inspect"));
-            step(4000, () -> mc.options.setCameraType(CameraType.THIRD_PERSON_BACK));
+            step(1150, () -> shot(mc, label + "_5_inspect_a"));
+            step(1500, () -> shot(mc, label + "_5_inspect_b"));
+            step(4000, () -> mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT));
             step(1500, () -> shot(mc, label + "_6_third"));
         }
         step(1500, () -> {

@@ -100,10 +100,13 @@ def pose_at(anim_json, t, bones):
     for b in bones:
         r = sample(anim_json, b, 'rotation', t)
         p = sample(anim_json, b, 'position', t)
-        if r is not None or p is not None:
+        sc = anim_json['bones'].get(b, {}).get('scale')
+        if r is not None or p is not None or sc is not None:
             pose[b] = {}
             if r is not None:
                 pose[b]['rotation'] = r
             if p is not None:
                 pose[b]['position'] = p
+            if isinstance(sc, (list, int, float)):
+                pose[b]['scale'] = sc
     return pose

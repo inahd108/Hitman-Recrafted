@@ -66,6 +66,125 @@ class Part:
         return self.bar(-x1, -x0, y0, y1, z0, z1, mat, **kw2)
 
 
+# ----------------------------------------------------------------------------
+# shaping primitives (what makes box models read as machined parts)
+# ----------------------------------------------------------------------------
+def _profile(part, axis, lo, hi, r, corners, mat, kw):
+    """Boxes covering a bar's cross-section except the r x r squares at the selected corners."""
+    ax = 'xyz'.index(axis)
+    a, b = [i for i in range(3) if i != ax]
+    lo, hi = list(map(float, lo)), list(map(float, hi))
+    # corner order: (+a+b, -a+b, -a-b, +a-b)
+    pa_p = r if (corners[0] or corners[3]) else 0.0       # +a side needs a column
+    pa_m = r if (corners[1] or corners[2]) else 0.0
+    out = []
+    l, h = list(lo), list(hi)
+    l[a] += pa_m
+    h[a] -= pa_p
+    out.append(part.box(l, h, mat, **kw))                   # middle band, full height
+    for side, on_top, on_bot, amount in ((+1, corners[0], corners[3], pa_p), (-1, corners[1], corners[2], pa_m)):
+        if amount <= 0:
+            continue
+        l, h = list(lo), list(hi)
+        if side > 0:
+            l[a] = hi[a] - amount
+        else:
+            h[a] = lo[a] + amount
+        if on_top:
+            h[b] -= r
+        if on_bot:
+            l[b] += r
+        out.append(part.box(l, h, mat, **kw))
+    centres = []
+    for on, (sa, sb) in zip(corners, [(1, 1), (-1, 1), (-1, -1), (1, -1)]):
+        if on:
+            centres.append(((hi[a] - r) if sa > 0 else (lo[a] + r), (hi[b] - r) if sb > 0 else (lo[b] + r), sa, sb))
+    return out, centres, ax, a, b, lo, hi
+
+
+def chamfer_bar(part, axis, lo, hi, mat, c=0.1, corners=(1, 1, 1, 1), **kw):
+    """A bar along `axis` with 45-degree chamfers on the chosen long edges.
+
+    corners = (+a+b, -a+b, -a-b, +a-b) where a, b are the two cross axes in x, y, z order.
+    """
+    out, centres, ax, a, b, lo, hi = _profile(part, axis, lo, hi, c, corners, mat, kw)
+    rot = [0, 0, 0]
+    rot[ax] = 45
+    half = c * math.sqrt(2) / 2
+    for ca, cb, sa, sb in centres:
+        l3, h3, piv = [0.0] * 3, [0.0] * 3, [0.0] * 3
+        l3[ax], h3[ax] = lo[ax], hi[ax]
+        l3[a], h3[a] = ca - half, ca + half
+        l3[b], h3[b] = cb - half, cb + half
+        piv[ax] = (lo[ax] + hi[ax]) / 2
+        piv[a], piv[b] = ca, cb
+        out.append(part.box(l3, h3, mat, pivot=piv, rotation=rot, **kw))
+    return out
+
+
+def round_bar(part, axis, lo, hi, mat, r=0.2, corners=(1, 1, 1, 1), sides=16, **kw):
+    """A bar along `axis` whose chosen long edges are rounded with radius r (rounded-rectangle section)."""
+    out, centres, ax, a, b, lo, hi = _profile(part, axis, lo, hi, r, corners, mat, kw)
+    for ca, cb, sa, sb in centres:
+        out += octagon(part, axis, (ca, cb), r, lo[ax], hi[ax], mat, sides=sides, **kw)
+    return out
+
+
+def octagon(part, axis, center, r, start, end, mat, sides=8, **kw):
+    """A round part (barrel, bushing, suppressor, rounded edge) as an 8- or 16-sided prism along `axis`.
+
+    Built as bands of width 2*r*tan(pi/sides) at evenly spaced angles: their union is exactly the
+    regular polygon with apothem r (rotated full squares would leave star points).
+    """
+    ax = 'xyz'.index(axis)
+    a, b = [i for i in range(3) if i != ax]
+    half_w = r * math.tan(math.pi / sides)
+    n_bands = sides // 2
+    out = []
+    for k in range(n_bands):
+        ang = 180.0 * k / n_bands
+        lo, hi, piv = [0.0] * 3, [0.0] * 3, [0.0] * 3
+        lo[ax], hi[ax] = min(start, end), max(start, end)
+        lo[a], hi[a] = center[0] - r, center[0] + r
+        lo[b], hi[b] = center[1] - half_w, center[1] + half_w
+        piv[ax] = (start + end) / 2
+        piv[a], piv[b] = center
+        if ang == 0:
+            out.append(part.box(lo, hi, mat, **kw))
+        else:
+            rot = [0, 0, 0]
+            rot[ax] = ang
+            out.append(part.box(lo, hi, mat, pivot=piv, rotation=rot, **kw))
+    return out
+
+
+def seg_yz(part, p0, p1, thick, x0, x1, mat, ext=0.0, **kw):
+    """A straight bar in the side profile from p0=(y, z) to p1=(y, z): guards, straps, hammers."""
+    (y0, z0), (y1, z1) = p0, p1
+    dy, dz = y1 - y0, z1 - z0
+    L = math.hypot(dy, dz) + 2 * ext
+    cy, cz = (y0 + y1) / 2, (z0 + z1) / 2
+    rx = math.degrees(math.atan2(dy, dz))
+    return part.box((x0, cy - thick / 2, cz - L / 2), (x1, cy + thick / 2, cz + L / 2), mat,
+                    pivot=[(x0 + x1) / 2, cy, cz], rotation=[rx, 0, 0], **kw)
+
+
+def path_yz(part, pts, thick, x0, x1, mat, **kw):
+    """A polyline of side-profile bars, slightly overlapped so the joints close."""
+    return [seg_yz(part, a, b, thick, x0, x1, mat, ext=thick * 0.35, **kw) for a, b in zip(pts, pts[1:])]
+
+
+def arc_pts(cy, cz, r, a0, a1, n):
+    """Points on an arc in the side profile. Angles in degrees: 0 = +z (rear), 90 = +y (up)."""
+    return [(cy + r * math.sin(math.radians(a0 + (a1 - a0) * i / n)),
+             cz + r * math.cos(math.radians(a0 + (a1 - a0) * i / n))) for i in range(n + 1)]
+
+
+def disc_x(part, cy, cz, r, x0, x1, mat, sides=8, **kw):
+    """A round boss facing sideways (screws, medallions, pins)."""
+    return octagon(part, 'x', (cy, cz), r, x0, x1, mat, sides=sides, **kw)
+
+
 class Model:
     def __init__(self, identifier, tex_size=512, texels_per_unit=16):
         self.identifier = identifier
@@ -127,8 +246,15 @@ class Model:
         """shader(points[N,3] bedrock, normal(3,) bedrock, face, cube, uv01[N,2], (w,h) units) -> uint8 RGBA[N,4]."""
         img = np.zeros((self.tex, self.tex, 4), dtype=np.uint8)
         img[:] = background
+        rest = world_matrices(self)
         for p in self.parts.values():
             for c in p.cubes:
+                R = rest[p.name][:3, :3]
+                C = np.eye(4)
+                if c.rotation:
+                    cp = bb(c.pivot)
+                    C = trans(cp) @ rot_matrix(*c.rotation) @ trans(-cp)
+                    R = R @ C[:3, :3]
                 corners = face_corners(c)
                 sx, sy, sz = c.size
                 dims = {'north': (sx, sy), 'south': (sx, sy), 'east': (sz, sy), 'west': (sz, sy),
@@ -138,8 +264,14 @@ class Model:
                     ii, jj = np.meshgrid((np.arange(w) + .5) / w, (np.arange(h) + .5) / h)
                     uu, vv = ii.ravel(), jj.ravel()
                     pts = TL[None] + uu[:, None] * (TR - TL)[None] + vv[:, None] * (BL - TL)[None]
-                    pts = pts * np.array([-1, 1, 1])          # back to bedrock x
-                    n = FACE_NORMAL_BEDROCK[f]
+                    # true position within the part (cube rotation applied), back to Bedrock x
+                    pts = (C[:3, :3] @ pts.T).T + C[:3, 3]
+                    pts = pts * np.array([-1, 1, 1])
+                    n0 = FACE_NORMAL_BEDROCK[f]
+                    n = (C[:3, :3] @ (n0 * np.array([-1, 1, 1]))) * np.array([-1, 1, 1])
+                    wn = R @ (n0 * np.array([-1, 1, 1]))
+                    wn = wn * np.array([-1, 1, 1])          # world-facing normal, Bedrock axes
+                    c.data['wn'] = wn
                     rgba = shader(pts, n, f, c, np.stack([uu, vv], 1), dims[f])
                     img[v:v + h, u:u + w] = rgba.reshape(h, w, 4)
         self.atlas = img
@@ -400,7 +532,8 @@ def render(model, texture, eye, target, size=(960, 640), fov=None, ortho_height=
         cam = np.array([c[:3] for c in cam])
         if np.any(cam[:, 2] > -0.05) and fov is not None:
             continue
-        n = np.cross(cam[1] - cam[0], cam[2] - cam[0])
+        # Minecraft's face corner order winds clockwise seen from outside: flip for an outward normal
+        n = -np.cross(cam[1] - cam[0], cam[2] - cam[0])
         nn = np.linalg.norm(n)
         if nn < 1e-12:
             continue
@@ -452,7 +585,7 @@ def render(model, texture, eye, target, size=(960, 640), fov=None, ortho_height=
         if not m.any():
             continue
         # lighting in world space
-        wn = np.cross(pts[1] - pts[0], pts[2] - pts[0])
+        wn = -np.cross(pts[1] - pts[0], pts[2] - pts[0])
         wn /= max(np.linalg.norm(wn), 1e-12)
         lam = max(0.0, float(np.dot(wn, Ld)))
         shade = 0.55 + 0.5 * lam
