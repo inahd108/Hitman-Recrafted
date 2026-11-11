@@ -1,0 +1,10 @@
+{
+  "slot": "recrafted:attachment/slot/argento_suppressor",
+  "model": "recrafted:attachment/argento_suppressor_geo",
+  "texture": "recrafted:attachment/uv/argento_suppressor",
+  "sounds": {
+    "install": "tacz:attachments/muzzle_general",
+    "uninstall": "tacz:attachments/muzzle_general"
+  },
+  "muzzle_flash_offset": 7.4
+}

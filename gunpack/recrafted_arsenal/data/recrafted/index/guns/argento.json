@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.argento.name",
+  "display": "recrafted:argento_display",
+  "data": "recrafted:argento_data",
+  "tooltip": "recrafted.gun.argento.desc",
+  "type": "pistol",
+  "sort": 1
+}

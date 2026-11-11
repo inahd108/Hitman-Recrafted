@@ -1,0 +1,7 @@
+{
+  "name": "recrafted.attachment.argento_suppressor.name",
+  "display": "recrafted:argento_suppressor_display",
+  "data": "recrafted:argento_suppressor_data",
+  "type": "muzzle",
+  "sort": 1
+}

@@ -23,6 +23,13 @@ legacyForge {
     runs {
         client {
             client()
+            if (project.hasProperty('gunshots')) {
+                systemProperty 'recrafted.gunshots', project.findProperty('gunshots')
+                if (project.hasProperty('gunshotsAt')) systemProperty 'recrafted.gunshots.at', project.findProperty('gunshotsAt')
+                if (project.hasProperty('gunshotsGui')) systemProperty 'recrafted.gunshots.gui', 'true'
+                programArguments.addAll('--quickPlaySingleplayer', project.findProperty('world') ?: 'corvara_test',
+                        '--width', '1280', '--height', '720')
+            }
             if (project.hasProperty('clienttest')) {
                 systemProperty 'recrafted.clienttest', 'true'
                 systemProperty 'recrafted.clienttest.settle', project.findProperty('settle') ?: '20000'
@@ -55,8 +62,22 @@ mixin {
     config "${mod_id}.mixins.json"
 }
 
+repositories {
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Modrinth'
+                url = 'https://api.modrinth.com/maven'
+            }
+        }
+        filter { includeGroup 'maven.modrinth' }
+    }
+}
+
 dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    // TACZ is optional at runtime for players; the dev client loads it to test the gun pack
+    modRuntimeOnly "maven.modrinth:timeless-and-classics-zero:${tacz_version}"
 }
 
 jar {

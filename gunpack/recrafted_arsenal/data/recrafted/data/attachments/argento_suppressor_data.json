@@ -1,0 +1,22 @@
+{
+  "weight": 0.3,
+  "flash_hider": 0.1,
+  "smoke_directions": {
+    "plane_angle": 0,
+    "out_angle": 90
+  },
+  "smoke_spread_angle": 90,
+  "ads": {
+    "addend": 0.05
+  },
+  "inaccuracy": {
+    "multiplier": 1.05
+  },
+  "effective_range": {
+    "multiplier": 0.9
+  },
+  "silence": {
+    "distance_addend": -30,
+    "use_silence_sound": true
+  }
+}
