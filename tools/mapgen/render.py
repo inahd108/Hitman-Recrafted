@@ -46,7 +46,7 @@ COLORS = {
     'barrel': (134, 100, 58), 'composter': (112, 70, 31), 'bookshelf': (116, 94, 59),
     'red_nether_bricks': (69, 7, 9), 'nether_bricks': (44, 21, 26),
     'packed_ice': (141, 180, 250), 'blue_ice': (116, 167, 253), 'snow_block': (249, 254, 254),
-    'copper_block': (192, 107, 79), 'cut_copper': (191, 106, 80), 'oxidized_copper': (82, 162, 132),
+    'waxed_cut_copper': (196, 112, 82), 'copper_block': (192, 107, 79), 'cut_copper': (191, 106, 80), 'oxidized_copper': (82, 162, 132),
     'oxidized_cut_copper': (79, 153, 126), 'weathered_copper': (108, 153, 110),
     'prismarine': (99, 156, 151), 'dark_prismarine': (51, 91, 75), 'prismarine_bricks': (99, 171, 158),
     'obsidian': (15, 10, 24), 'coal_block': (16, 15, 15), 'gold_block': (246, 208, 61),

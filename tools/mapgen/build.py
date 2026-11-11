@@ -28,7 +28,7 @@ def main():
     H, K, land = terrain.build_terrain(w)
     ctx = dict(w=w, H=H, K=K, land=land, rng=random.Random(2024), anchors={}, props=[], npcs=[], zones=[])
     stages = []
-    for modname in ('town', 'landmarks', 'lab', 'mission'):
+    for modname in ('town', 'landmarks', 'estate', 'lab', 'mission'):
         try:
             mod = __import__(modname)
         except ModuleNotFoundError as e:
@@ -38,10 +38,18 @@ def main():
         stages.append(mod)
     mission = None
     for mod in stages:
+        if mod.__name__ == 'mission':
+            for m2 in stages:
+                if hasattr(m2, 'finish'):
+                    m2.finish(ctx)
         res = mod.build(ctx)
         if mod.__name__ == 'mission':
             mission = res
         print(f'  {mod.__name__} done ({time.time() - t:.1f}s)')
+    if mission is None:
+        for m2 in stages:
+            if hasattr(m2, 'finish'):
+                m2.finish(ctx)
 
     os.makedirs(os.path.dirname(OUT_MAP), exist_ok=True)
     os.makedirs(os.path.dirname(OUT_MISSION), exist_ok=True)

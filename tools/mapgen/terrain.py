@@ -1,7 +1,7 @@
 """Island terrain for Corvara: a terraced harbour town on a limestone island.
 
 Layout (x east, z south):
-  T0  y=65  z>=168   harbour front and quay
+  T0  y=65  z>=170   harbour front and quay
   T1  y=73  z 132..  Piazza del Sale
   T2  y=81  z 96..   upper town
   T3  y=89  z 58..   Tenuta Belmonte (west), olive grove, chapel (east)
@@ -16,7 +16,7 @@ from core import value_noise, smoothstep
 SX, SY, SZ = 320, 136, 288
 SEA = 62
 T0, T1, T2, T3 = 65, 73, 81, 89
-Z0, Z1, Z2, Z3 = 168, 132, 96, 58      # south edge (inclusive start) of each terrace band
+Z0, Z1, Z2, Z3 = 170, 132, 96, 58      # first row (north edge) of each terrace band
 CORE_W, CORE_E = 70, 250
 QUAY_Z = 204                            # last land row of the harbour front
 K_SEA, K_SAND, K_GRASS, K_ROCK, K_PAVED, K_YARD = range(6)
