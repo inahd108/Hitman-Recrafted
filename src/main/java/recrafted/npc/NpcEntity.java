@@ -923,7 +923,17 @@ public class NpcEntity extends PathfinderMob {
     public boolean hurt(DamageSource src, float amount) {
         if (level().isClientSide) return false;
         if (src.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return super.hurt(src, amount);
-        if (isDown()) return false;
+        if (isDead()) return false;
+        if (isDown()) {
+            // someone out cold still drowns, burns, or breaks on a long drop: an accident, not a crime
+            boolean deadly = src.getEntity() == null && (src.is(DamageTypeTags.IS_DROWNING) || src.is(DamageTypeTags.IS_FIRE)
+                    || (src.is(DamageTypeTags.IS_FALL) && amount >= 6f));
+            if (deadly) {
+                kill(null, true);
+                return true;
+            }
+            return false;
+        }
         ServerPlayer by = src.getEntity() instanceof ServerPlayer sp ? sp : null;
         if (amount >= getHealth()) {
             kill(by, by == null);
@@ -942,6 +952,11 @@ public class NpcEntity extends PathfinderMob {
         if (isDown()) {
             if (level().isClientSide) return InteractionResult.SUCCESS;
             ServerPlayer sp = (ServerPlayer) player;
+            PropType heldType = PropItem.typeOf(held);
+            if (heldType != null && (heldType.kind == PropType.Kind.INJECT || heldType.kind == PropType.Kind.SEDATIVE)) {
+                Combat.inject(sp, this, held, heldType);
+                return InteractionResult.CONSUME;
+            }
             if (player.isShiftKeyDown()) toggleDrag(sp);
             else takeOutfit(sp);
             return InteractionResult.CONSUME;
@@ -953,6 +968,15 @@ public class NpcEntity extends PathfinderMob {
             return InteractionResult.CONSUME;
         }
         return InteractionResult.PASS;
+    }
+
+    /** A real death (the /kill command, the void) still counts for the contract. */
+    @Override
+    public void die(DamageSource src) {
+        if (!level().isClientSide && !isDead()) {
+            MissionManager.onNpcDeath((ServerLevel) level(), this, src.getEntity() instanceof ServerPlayer sp ? sp : null, true);
+        }
+        super.die(src);
     }
 
     // ---- persistence ------------------------------------------------------------------------------

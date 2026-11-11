@@ -183,6 +183,16 @@ public final class ClientTest {
                 net.minecraft.world.level.block.state.BlockState ds = level.getBlockState(door);
                 check("keycard opens security door", ds.getBlock() instanceof net.minecraft.world.level.block.DoorBlock
                         && ds.getValue(net.minecraft.world.level.block.DoorBlock.OPEN), rs.getBlock() + " / " + ds);
+                // lockpick used on the other airlock door itself, through the normal right-click path
+                net.minecraft.core.BlockPos door2 = new net.minecraft.core.BlockPos(273, 41, 142);
+                sp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND,
+                        new net.minecraft.world.item.ItemStack(recrafted.ModRegistry.prop(recrafted.prop.PropType.LOCKPICK)));
+                sp.gameMode.useItemOn(sp, level, sp.getMainHandItem(), net.minecraft.world.InteractionHand.MAIN_HAND,
+                        new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(door2),
+                                net.minecraft.core.Direction.SOUTH, door2, false));
+                net.minecraft.world.level.block.state.BlockState d2 = level.getBlockState(door2);
+                check("lockpick works on the door itself", d2.getBlock() instanceof net.minecraft.world.level.block.DoorBlock
+                        && d2.getValue(net.minecraft.world.level.block.DoorBlock.OPEN), d2);
                 // sabotage the cannery fuse box
                 sp.teleportTo(level, 262.5, 68, 180.5, 90, 10);
             });
@@ -231,9 +241,23 @@ public final class ClientTest {
                     check("purge destroys the sample", st.done.contains("destroy_core")
                             && !level.getBlockState(new net.minecraft.core.BlockPos(234, 42, 118)).is(recrafted.ModRegistry.PATHOGEN_CORE.get()), st.done);
                     int killed = 0;
-                    for (String name : new String[]{"Marco Belmonte", "Dr. Ilse Varga", "Capitano Renzo Sordi"}) {
+                    for (String name : new String[]{"Marco Belmonte", "Dr. Ilse Varga"}) {
                         recrafted.npc.NpcEntity t = npc(level, name);
                         if (t != null) { t.kill(sp, false); killed++; }
+                    }
+                    // the third target is knocked out first, then finished by hand
+                    recrafted.npc.NpcEntity sordi = npc(level, "Capitano Renzo Sordi");
+                    if (sordi != null) {
+                        sordi.knockOut(sp);
+                        sp.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, net.minecraft.world.item.ItemStack.EMPTY);
+                        sp.setShiftKeyDown(false);
+                        recrafted.mission.Combat.melee(sp, sordi);
+                        check("a plain punch does not kill a body", sordi.getState() == recrafted.npc.NpcEntity.State.UNCONSCIOUS, sordi.getState());
+                        sp.setShiftKeyDown(true);
+                        recrafted.mission.Combat.melee(sp, sordi);
+                        sp.setShiftKeyDown(false);
+                        check("sneak + attack finishes an unconscious target", sordi.isDead(), sordi.getState());
+                        if (sordi.isDead()) killed++;
                     }
                     check("all three targets reachable and eliminated", killed == 3 && st.done.size() == 4, "killed=" + killed + " done=" + st.done);
                 });

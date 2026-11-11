@@ -21,9 +21,31 @@ public final class Combat {
         p.displayClientMessage(Component.literal(text).withStyle(col), true);
     }
 
+    /** Attacking a body: a blade or the wire finishes it, and so do bare hands while sneaking. */
+    private static void finish(ServerPlayer player, NpcEntity npc) {
+        ServerLevel level = (ServerLevel) npc.level();
+        PropType type = PropItem.typeOf(player.getMainHandItem());
+        boolean lethal = type != null && type.lethalMelee();
+        boolean bareHands = player.getMainHandItem().isEmpty() && player.isShiftKeyDown();
+        if (!lethal && !bareHands) {
+            msg(player, "Unconscious. Finish with a blade or the wire — or sneak and attack with empty hands", ChatFormatting.GRAY);
+            return;
+        }
+        player.resetAttackStrengthTicker();
+        level.playSound(null, npc.blockPosition(), lethal ? SoundEvents.PLAYER_ATTACK_CRIT : SoundEvents.PLAYER_ATTACK_STRONG,
+                SoundSource.PLAYERS, 0.7f, 0.7f);
+        npc.kill(player, false);
+        msg(player, lethal ? "Finished" : "Neck snapped", ChatFormatting.DARK_RED);
+        Awareness.crime(level, player, npc);
+    }
+
     public static void melee(ServerPlayer player, NpcEntity npc) {
-        if (npc.isDown()) return;
+        if (npc.isDead()) return;
         if (player.getAttackStrengthScale(0.5f) < 0.85f) return;
+        if (npc.isDown()) {
+            finish(player, npc);
+            return;
+        }
         ServerLevel level = (ServerLevel) npc.level();
         ItemStack held = player.getMainHandItem();
         PropType type = PropItem.typeOf(held);
@@ -76,6 +98,19 @@ public final class Combat {
 
     public static void inject(ServerPlayer player, NpcEntity npc, ItemStack held, PropType type) {
         ServerLevel level = (ServerLevel) npc.level();
+        if (npc.isDead()) return;
+        if (npc.isDown()) {
+            if (type.kind != PropType.Kind.INJECT) {
+                msg(player, "Already out cold", ChatFormatting.GRAY);
+                return;
+            }
+            if (!player.isCreative()) held.shrink(1);
+            level.playSound(null, npc.blockPosition(), SoundEvents.BEE_STING, SoundSource.PLAYERS, 0.5f, 1.3f);
+            npc.kill(player, false);
+            msg(player, "Injected", ChatFormatting.DARK_RED);
+            Awareness.crime(level, player, npc);
+            return;
+        }
         if (npc.inCombat() || (!npc.isBehind(player) && npc.canSeePlayer(player))) {
             msg(player, "They are looking right at you", ChatFormatting.YELLOW);
             npc.addSuspicion(player, 0.6f);
@@ -94,7 +129,14 @@ public final class Combat {
     }
 
     public static void thrownHit(ServerPlayer player, NpcEntity npc, PropType type) {
-        if (npc.isDown()) return;
+        if (npc.isDead()) return;
+        if (npc.isDown()) {
+            if (type.kind == PropType.Kind.SHARP) {
+                npc.kill(player, false);
+                Awareness.crime((ServerLevel) npc.level(), player, npc);
+            }
+            return;
+        }
         ServerLevel level = (ServerLevel) npc.level();
         if (type.kind == PropType.Kind.SHARP) {
             npc.kill(player, false);

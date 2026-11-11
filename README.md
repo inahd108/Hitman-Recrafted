@@ -42,6 +42,9 @@ Hold **V** (Focus) to outline targets (red), guards (blue) and anyone who can se
   NPCs marked with a white dot — wear *their* uniform up close. The bar above the hotbar shows the worst case.
 - **Crimes** have witnesses. Civilians run and call for help; guards attack and pull in other guards.
   Break line of sight for a while and they search, then go back to their routines.
+- **Finishing** someone who is out cold: attack the body with a blade or the fiber wire, use a lethal syringe
+  on it, or sneak + attack with empty hands. An unconscious body left in water, in fire or dropped from a
+  height dies as an accident.
 - **Bodies** get found. A guard who finds an unconscious colleague wakes them; a dead one triggers a sweep.
   Sneak + right-click a body to drag it, and right-click a green **hiding crate** to stash it.
 - **Outfits** come from a body (right-click it) or from folded uniforms lying around. Each restricted zone
@@ -50,7 +53,8 @@ Hold **V** (Focus) to outline targets (red), guards (blue) and anyone who can se
   emetics send them somewhere private, lethal doses look like bad luck.
 - **Noise** moves people. Thrown coins, broken bottles, a pocket radio, or a sabotaged fuse box
   (wrench or screwdriver) all pull someone off their post.
-- **Security doors** open to the matching keycard, quietly to a lockpick, loudly to a crowbar.
+- **Security doors** open to the matching keycard, quietly to a lockpick, loudly to a crowbar. Right-click
+  either the door itself or the card reader beside it.
   Staff with clearance walk through on their own.
 
 ### Props
@@ -150,8 +154,8 @@ Nothing here was checked by eye alone. Two harnesses ship with the mod (`recraft
 - **Client tour** (`runClient -Pclienttest`): opens a world, starts the contract, takes the screenshots above,
   then plays a scripted run with the real player on the integrated server and asserts each mechanic:
   subdue from behind · take the outfit · disguise grants access · trespass raises suspicion ·
-  poisoned meal kills · drag and hide a body · keycard opens a security door · fuse-box sabotage lures a
-  repairer · thrown coin distracts · purge destroys the sample · all three targets eliminated · exit
+  poisoned meal kills · drag and hide a body · keycard opens a security door · lockpick on the door itself · fuse-box sabotage lures a
+  repairer · thrown coin distracts · purge destroys the sample · knock out then finish a target · exit
   completes the contract.
 
 | | |

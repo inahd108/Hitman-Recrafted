@@ -573,6 +573,19 @@ public final class MissionManager {
         }
     }
 
+    /** Security doors answer to a right-click directly, not only through the reader panel. */
+    @SubscribeEvent
+    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock e) {
+        BlockState state = e.getLevel().getBlockState(e.getPos());
+        if (!DoorTimers.isSecurityDoor(state) || e.getHand() != net.minecraft.world.InteractionHand.MAIN_HAND) return;
+        if (state.getValue(net.minecraft.world.level.block.DoorBlock.OPEN)) return;
+        e.setCanceled(true);
+        e.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);
+        if (e.getEntity() instanceof ServerPlayer sp && e.getLevel() instanceof ServerLevel sl) {
+            recrafted.block.CardReaderBlock.operateDoor(sl, sp, e.getPos());
+        }
+    }
+
     @SubscribeEvent
     public static void onPlayerDeath(LivingDeathEvent e) {
         if (e.getEntity() instanceof ServerPlayer p && inMission(p) && MissionState.get(p.serverLevel()).active) {
