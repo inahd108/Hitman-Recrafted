@@ -155,7 +155,7 @@ public final class SelfTest {
         // the chandelier: Ostendorp at the lectern, somebody lets go of the rope on the balcony
         BlockPos hw = find(level, ModRegistry.WINCH.get(), new BlockPos(60, 60, 222), new BlockPos(92, 80, 252));
         ok &= check(hw != null, "saleroom winch at " + hw);
-        BlockPos chand = find(level, net.minecraft.world.level.block.Blocks.GOLD_BLOCK, new BlockPos(70, 66, 245), new BlockPos(80, 74, 252));
+        BlockPos chand = find(level, ModRegistry.CHANDELIER.get(), new BlockPos(70, 66, 245), new BlockPos(80, 74, 252));
         ok &= check(chand != null, "chandelier at " + chand);
         if (hw != null && chand != null) {
             ost.getNavigation().stop();

@@ -164,8 +164,7 @@ def gulden_hamer(ctx):
     # on the press balcony; let it go and it comes down on whoever is at the lectern.
     for y in range(f2 - 1, f2 - 4, -1):
         w.set(xm, y, iz1, 'chain')
-    for dx, dz in ((0, 0), (1, 0), (-1, 0), (0, -1)):
-        w.set(xm + dx, f2 - 4, iz1 + dz, 'lantern[hanging=true]' if (dx, dz) != (0, 0) else 'gold_block')
+    w.set(xm, f2 - 4, iz1, 'recrafted:chandelier')
     A['hamer.chandelier'] = (xm, f2 - 4, iz1)
     # press balcony along the saleroom's front wall at first-floor level
     for x in range(ix0, ix1 + 1):
@@ -274,6 +273,8 @@ def cafe(ctx, info):
         if (here.endswith('air') or here.endswith('carpet')) and w.is_air(bx + dx, by + 1, bz):
             w.set(bx + dx, by, bz, 'recrafted:wage_book')
             A['cafe.wage_book'] = (bx + dx, by, bz)
+            if w.name(w.get(bx + dx, by, bz + 1)).endswith(('air', 'carpet')):
+                chair(w, bx + dx, by, bz + 1, 'north', 'spruce')
             break
 
 
@@ -294,6 +295,9 @@ def studio(ctx, info):
     fr.set(W - 2, y, D - 3, 'smoker[facing={L},lit=true]')
     for v in range(3, D - 4, 2):
         fr.set(W - 2, y, v, rng.choice(['brewing_stand', 'decorated_pot', 'flower_pot', 'cauldron']))
+    for v in (4, 8, 12):
+        fr.set(W // 2, y + 2, v, 'lantern[hanging=true]')
+    fr.set(1, y + 2, 6, 'light[level=12]')
     A['studio.stove'] = fr.pos(W - 2, y, D - 4)
     A['studio'] = fr.pos(W // 2, y, D // 2)
     A['studio.window'] = fr.pos(W // 2, y, 2)

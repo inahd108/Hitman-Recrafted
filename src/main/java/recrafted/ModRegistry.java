@@ -89,6 +89,8 @@ public final class ModRegistry {
     public static final RegistryObject<Block> SHUTTER = block("shutter", () -> new recrafted.block.ams.ShutterBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(-1f, 3600000f).sound(SoundType.WOOD).noOcclusion()));
 
+    public static final RegistryObject<Block> CHANDELIER = block("chandelier", () -> new recrafted.block.ams.PostBlock(
+            fixture().lightLevel(s -> 14).sound(SoundType.CHAIN), 1, 2, 1, 15, 16, 15));
     public static final RegistryObject<Block> WINCH = block("winch", () -> new ActionBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(-1f, 3600000f).sound(SoundType.WOOD).noOcclusion(),
             ActionBlock.Action.WINCH));

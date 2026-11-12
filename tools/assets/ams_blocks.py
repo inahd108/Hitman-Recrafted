@@ -8,6 +8,7 @@ bicycle (facing, paint).
 import json
 import os
 import random
+import zlib
 
 from PIL import Image
 
@@ -27,6 +28,7 @@ LANG = {
     'block.recrafted.hoist_beam': 'Hoisting Beam',
     'block.recrafted.shutter': 'Warehouse Shutter',
     'block.recrafted.winch': 'Winch',
+    'block.recrafted.chandelier': 'Brass Chandelier',
     'block.recrafted.wage_book': 'Wage Book',
 }
 
@@ -141,7 +143,7 @@ def lamp_glass_tex():
 
 def bike_tex(paint):
     """4 colour swatches in one texture: paint, tyre, steel, saddle (each a 4-px column)."""
-    rnd = random.Random(hash(paint) & 0xff)
+    rnd = random.Random(zlib.crc32(paint.encode()) & 0xff)
     im = Image.new('RGB', (16, 16))
     px = im.load()
     cols = [PAINTS[paint], (22, 22, 22), (150, 152, 156), (58, 40, 30)]
@@ -378,6 +380,27 @@ def main():
                 'east': {'texture': '#p'}, 'west': {'texture': '#p'}}}]})
     write('blockstates/wage_book.json', {'variants': {'': {'model': NS + 'wage_book'}}})
     write('models/item/wage_book.json', {'parent': NS + 'wage_book'})
+
+    # brass chandelier, two and a half blocks across: stem, bowl, two square rings of arms, twelve candles
+    G = 'minecraft:block/gold_block'
+    els = [el([7.5, 5, 7.5], [8.5, 16, 8.5]), el([7, 15, 7], [9, 16, 9]), el([5.5, 0, 5.5], [10.5, 4, 10.5]),
+           el([7, -3, 7], [9, 0, 9]), el([6.5, 9, 6.5], [9.5, 11, 9.5])]
+    for r, y, lo in ((16, 4, 0), (8, 10, 1)):
+        a, b = 8 - r, 8 + r
+        els += [el([a, y, a], [b, y + 1, a + 1]), el([a, y, b - 1], [b, y + 1, b]),
+                el([a, y, a + 1], [a + 1, y + 1, b - 1]), el([b - 1, y, a + 1], [b, y + 1, b - 1]),
+                el([a, y, 7.5], [b, y + 1, 8.5]), el([7.5, y, a], [8.5, y + 1, b])]
+        spots = [(a + .5, a + .5), (b - .5, a + .5), (a + .5, b - .5), (b - .5, b - .5)]
+        if lo == 0:
+            spots += [(8, a + .5), (8, b - .5), (a + .5, 8), (b - .5, 8)]
+        for cx, cz in spots:
+            els.append(el([cx - 1, y + 1, cz - 1], [cx + 1, y + 1.5, cz + 1]))                       # drip cup
+            els.append(el([cx - .7, y + 1.5, cz - .7], [cx + .7, y + 5, cz + .7], tex='#c'))
+            els.append(el([cx - .4, y + 5, cz - .4], [cx + .4, y + 6.3, cz + .4], tex='#f', shade_=False))
+    write('models/block/chandelier.json', {'textures': {'t': G, 'c': 'minecraft:block/white_candle', 'f': 'minecraft:block/glowstone',
+                                                        'particle': G}, 'elements': els})
+    write('blockstates/chandelier.json', {'variants': {'': {'model': NS + 'chandelier'}}})
+    write('models/item/chandelier.json', {'parent': NS + 'chandelier'})
 
     # language
     lang_path = os.path.join(ASSETS, 'lang/en_us.json')
