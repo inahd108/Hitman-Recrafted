@@ -109,19 +109,19 @@ def canal_house(ctx, x0, z0, x1, z1, front, floors, st, base=FLOOR0, side_window
                 fr.set(u, ly + 3, 0, 'air')
                 fr.set(u, ly + 1, 1, f'{st.door}_door[facing={{F}},half=lower,hinge=left]')
                 fr.set(u, ly + 2, 1, f'{st.door}_door[facing={{F}},half=upper,hinge=left]')
-                fr.set(u, ly + 3, 1, window(fr, rng, 1.0))
+                fr.set(u, ly + 3, 0, window(fr, rng, 1.0))                   # fanlight over the door
                 fr.set(u, ly, -1, f'stone_brick_stairs[facing={{B}}]')
                 continue
             rows = (ly + 2, ly + 3) if li == 0 else (ly + 1, ly + 2)
             pane = window(fr, rng, st.lit)                                   # one state per window, both rows
             for yy in rows:
-                fr.set(u, yy, 0, 'air')
-                fr.set(u, yy, 1, pane)
+                fr.set(u, yy, 0, pane)                                       # flush: recesses hide them along a canal
+                fr.set(u, yy, 1, 'air')
             if li > 0:
                 fr.set(u, rows[-1] + 1, 0, f'{tsl}[type=top]')               # white lintel
             if st.shop and li == 0:
-                fr.set(u, ly + 1, 0, 'air')
-                fr.set(u, ly + 1, 1, pane)
+                fr.set(u, ly + 1, 0, pane)
+                fr.set(u, ly + 1, 1, 'air')
     if st.shop:
         for u in range(0, W):
             fr.set(u, base + 4, -1, f'{st.shop}_wool' if u % 2 == 0 else 'white_wool')
