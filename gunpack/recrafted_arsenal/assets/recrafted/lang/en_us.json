@@ -15,5 +15,7 @@
   "recrafted.gun.bulwark.name": "Bulwark AR",
   "recrafted.gun.bulwark.desc": "Full-size 5.56 rifle. Thirty rounds, automatic, and not subtle at all.",
   "recrafted.gun.cicala.name": "Cicala",
-  "recrafted.gun.cicala.desc": "Takedown sniper rifle with an integral suppressor. Travels in a briefcase."
+  "recrafted.gun.cicala.desc": "Takedown sniper rifle with an integral suppressor. Travels in a briefcase.",
+  "recrafted.gun.falco.name": "Falco",
+  "recrafted.gun.falco.desc": "Semi-automatic .308 marksman rifle. Ten rounds, reach and authority."
 }

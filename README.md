@@ -191,7 +191,6 @@ The headless self-test currently reports, for two minutes of simulated town life
 
 ## Roadmap
 
-- More guns for the Recrafted Arsenal (sawn-off, PDW, rifles, the briefcase sniper).
 - More accident kills, more exits, a second mission.
 
 ## Licence

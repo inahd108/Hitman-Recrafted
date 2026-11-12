@@ -51,6 +51,7 @@ def rig(m):
     lh = m.part('lefthand_pos', 'lefthand', list(np.array([0, 8, 0]) + off))
     lo = np.array([-8, 8, -2]) + off
     lh.box(list(lo), list(lo + [4, 12, 4]), 'arm', data={'k': 2})
+    m.part('scope_pos', ID, [0, 11.3, 5.95])                    # optics sit on the receiver rail
     m.part('muzzle_flash', ID, [0, BORE_Y, MUZZLE_Z - 0.4])
     m.part('shell', ID, [-0.2, 9.75, 2.2])
     m.part('constraint', ID, [0, 12.64, -1])
@@ -65,6 +66,7 @@ def views(m):
     m.part('refit_view', 'view', [23, 10, 2], [0, 89.9, 0])
     m.part('refit_muzzle_view', 'view', [10, 9, -18], [0, 120, 0])
     m.part('refit_extended_mag_view', 'view', [10.62, 5.15, -4.72], [0, 117.5, 0])
+    m.part('refit_scope_view', 'view', [8, 12.93, 12.3], [0, 50, 0])
     m.part('positioning', None, [0, 0, 0])
     m.part('thirdperson_hand', 'positioning', [0, 7.03, 6.65])
     m.part('ground', 'positioning', [0, -0.9, 4.65])

@@ -379,3 +379,9 @@ def gunmetal(p, normal, seed=0):
     """Cerakoted gunmetal grey, matte with a soft mottle."""
     base = np.array([98, 102, 108], dtype=float)
     return base[None] * (0.92 + 0.1 * fbm(p, [6, 6, 6], 2, seed))[:, None]
+
+
+def fde(p, normal, seed=0):
+    """Flat dark earth Cerakote: a dusty sand-brown, very matte."""
+    base = np.array([150, 128, 98], dtype=float)
+    return base[None] * (0.93 + 0.08 * fbm(p, [9, 9, 9], 2, seed))[:, None]

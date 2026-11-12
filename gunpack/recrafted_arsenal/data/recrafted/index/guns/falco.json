@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.falco.name",
+  "display": "recrafted:falco_display",
+  "data": "recrafted:falco_data",
+  "tooltip": "recrafted.gun.falco.desc",
+  "type": "rifle",
+  "sort": 9
+}

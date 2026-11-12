@@ -1,0 +1,27 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 24
+    },
+    {
+      "item": {
+        "item": "minecraft:brown_dye"
+      },
+      "count": 2
+    },
+    {
+      "item": {
+        "item": "minecraft:glass_pane"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "recrafted:falco"
+  },
+  "type": "tacz:gun_smith_table_crafting"
+}

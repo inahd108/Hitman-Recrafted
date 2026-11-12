@@ -413,7 +413,7 @@ def build_bulwark():
             'draw_time': 0.55, 'put_away_time': 0.45, 'aim_time': 0.22, 'sprint_time': 0.15, 'weight': 3.0,
             'movement_speed': {'base': -0.05, 'aim': -0.15, 'reload': -0.05}, 'crawl_recoil_multiplier': 0.6,
             'fire_mode': ['auto', 'semi'],
-            'allow_attachment_types': ['muzzle', 'extended_mag'],
+            'allow_attachment_types': ['scope', 'muzzle', 'extended_mag'],
             'recoil': {'pitch': [{'time': 0, 'value': [0.7, 0.9]}, {'time': 0.12, 'value': [0.12, 0.12]},
                                  {'time': 0.24, 'value': [0, 0]}],
                        'yaw': [{'time': 0, 'value': [-0.4, 0.4]}, {'time': 0.14, 'value': [0, 0]}]},
@@ -422,7 +422,7 @@ def build_bulwark():
         },
         sounds={'draw': H + 'draw', 'put_away': H + 'put_away', 'shoot': H + 'shoot', 'shoot_3p': H + 'shoot_3p',
                 'silence': H + 'silence', 'silence_3p': H + 'silence_3p'},
-        allow=['#tacz:muzzle', '#tacz:extended_mag'],
+        allow=['#tacz:scope_sight', '#tacz:scope', '#tacz:muzzle', '#tacz:extended_mag'],
         recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 22},
                 {'item': {'item': 'minecraft:green_dye'}, 'count': 2},
                 {'item': {'tag': 'forge:ingots/copper'}, 'count': 2}],
@@ -470,6 +470,49 @@ def build_cicala():
                 {'item': {'tag': 'forge:ingots/gold'}, 'count': 2},
                 {'item': {'item': 'minecraft:glass_pane'}, 'count': 2}],
         side_cz=-0.4, hud_ortho=14.0, slot_ortho=42.0,
+    )
+
+
+def build_falco():
+    import falco
+    import falco_anim
+    H = 'tacz:hk416d/hk416d_'
+    display = dict(SMG_DISPLAY)
+    display.update({'iron_zoom': 1.35, 'zoom_model_fov': 45,
+                    'muzzle_flash': {'type': 'renew', 'texture': 'tacz:flash/common_muzzle_flash', 'scale': 0.8,
+                                     'smoke_scale': 1.4, 'initial_speed_scale': 1.3}})
+    emit_pistol(
+        falco, falco_anim.animations(),
+        name='Falco', desc='Semi-automatic .308 marksman rifle. Ten rounds, reach and authority.', sort=9,
+        gun_type='rifle', base_display=display, side_cy=8.0,
+        data={
+            'allow_ammo_unload': True, 'ammo': 'tacz:308', 'rpm': 300,
+            'bullet': {'life': 1.5, 'bullet_amount': 1, 'damage': 15, 'tracer_count_interval': 0,
+                       'extra_damage': {'armor_ignore': 0.45, 'head_shot_multiplier': 2.0,
+                                        'damage_adjust': [{'distance': 50, 'damage': 15}, {'distance': 100, 'damage': 13},
+                                                          {'distance': 'infinite', 'damage': 10}]},
+                       'speed': 450, 'gravity': 0.12, 'knockback': 0.05, 'friction': 0.012, 'ignite': False, 'pierce': 1},
+            'ammo_amount': 10, 'extended_mag_ammo_amount': [15, 20, 25], 'bolt': 'closed_bolt',
+            'reload': {'type': 'magazine', 'feed': {'empty': 1.5, 'tactical': 1.25},
+                       'cooldown': {'empty': 2.5, 'tactical': 2.2}},
+            'draw_time': 0.6, 'put_away_time': 0.5, 'aim_time': 0.26, 'sprint_time': 0.16, 'weight': 3.4,
+            'movement_speed': {'base': -0.05, 'aim': -0.2, 'reload': -0.05}, 'crawl_recoil_multiplier': 0.5,
+            'fire_mode': ['semi'],
+            'allow_attachment_types': ['scope', 'muzzle', 'extended_mag'],
+            'recoil': {'pitch': [{'time': 0, 'value': [1.5, 1.8]}, {'time': 0.15, 'value': [0.25, 0.25]},
+                                 {'time': 0.3, 'value': [0, 0]}],
+                       'yaw': [{'time': 0, 'value': [-0.5, 0.5]}, {'time': 0.15, 'value': [0, 0]}]},
+            'inaccuracy': {'stand': 3.4, 'move': 4.2, 'sneak': 2.6, 'lie': 1.4, 'aim': 0.05},
+            'fire_sound': {'fire_multiplier': 1.3, 'silence_multiplier': 1.0},
+        },
+        sounds={'draw': H + 'draw', 'put_away': H + 'put_away', 'shoot': 'tacz:mk20/mk20_shoot',
+                'shoot_3p': 'tacz:mk20/mk20_shoot_3p', 'silence': 'tacz:mk20/mk20_silence',
+                'silence_3p': 'tacz:mk20/mk20_silence_3p'},
+        allow=['#tacz:scope', '#tacz:muzzle', '#tacz:sniper_extended_mag'],
+        recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 24},
+                {'item': {'item': 'minecraft:brown_dye'}, 'count': 2},
+                {'item': {'item': 'minecraft:glass_pane'}, 'count': 1}],
+        side_cz=-1.0, hud_ortho=16.0, slot_ortho=38.0,
     )
 
 
@@ -646,6 +689,7 @@ def main():
     build_halcyon()
     build_bulwark()
     build_cicala()
+    build_falco()
     write_json(f'assets/{NS}/lang/en_us.json', LANG)
     os.makedirs(DIST, exist_ok=True)
     zpath = os.path.join(DIST, f'{PACK_NAME}.zip')
