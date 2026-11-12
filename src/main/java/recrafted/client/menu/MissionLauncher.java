@@ -38,6 +38,7 @@ public final class MissionLauncher {
 
     private static boolean pending;
     private static int waitTicks;
+    private static String missionId = "corvara";
 
     private MissionLauncher() {}
 
@@ -50,7 +51,12 @@ public final class MissionLauncher {
     }
 
     public static void play(Screen from) {
+        play(from, "corvara");
+    }
+
+    public static void play(Screen from, String mission) {
         Minecraft mc = Minecraft.getInstance();
+        missionId = mission;
         pending = true;
         waitTicks = 30;
         if (worldExists()) {
@@ -76,7 +82,7 @@ public final class MissionLauncher {
         if (mc.player == null || mc.getConnection() == null || mc.screen != null) return;
         if (--waitTicks > 0) return;
         pending = false;
-        mc.player.connection.sendCommand("contract start");
+        mc.player.connection.sendCommand("contract start " + missionId);
     }
 
     @SubscribeEvent

@@ -21,9 +21,12 @@ import ams_water  # noqa: E402
 import ams_harbour  # noqa: E402
 import ams_city  # noqa: E402
 import ams_street  # noqa: E402
+import ams_mission  # noqa: E402
+import json  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..'))
 OUT_MAP = os.path.join(ROOT, 'src/main/resources/data/recrafted/maps/amsterdam.rcmap')
+OUT_MISSION = os.path.join(ROOT, 'src/main/resources/data/recrafted/missions/amsterdam.json')
 PREVIEW = os.path.join(ROOT, 'docs/preview')
 
 
@@ -56,8 +59,11 @@ def main():
     for name, fn in steps:
         fn(ctx)
         print(f'  {name} done ({time.time() - t:.1f}s)')
+    mission = ams_mission.build(ctx)
     os.makedirs(os.path.dirname(OUT_MAP), exist_ok=True)
     w.save(OUT_MAP)
+    with open(OUT_MISSION, 'w') as f:
+        json.dump(mission, f, indent=1)
     print(f'houses {len(ctx.get("houses", [])) + len(ctx.get("warehouses", []))}, palette {len(w.palette)} states, '
           f'map {os.path.getsize(OUT_MAP) / 1024:.0f} KiB')
     if '--no-preview' not in sys.argv:

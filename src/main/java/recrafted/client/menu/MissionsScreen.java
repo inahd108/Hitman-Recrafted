@@ -26,12 +26,14 @@ public class MissionsScreen extends ScaledScreen {
     private final long opened = Util.getMillis();
     private final List<ResourceLocation> frames = new ArrayList<>();
     private Mission mission;
+    private static int selected;
+    private final List<float[]> tabBoxes = new ArrayList<>();
     private MenuButton play;
 
     public MissionsScreen(Screen parent) {
         super(Component.literal("Missions"));
         this.parent = parent;
-        for (int i = 0; i < FRAMES; i++) frames.add(MenuUi.gui("preview_" + i));
+        loadFrames();
     }
 
     private int margin() {
@@ -50,18 +52,20 @@ public class MissionsScreen extends ScaledScreen {
     @Override
     protected void layout() {
         MissionLauncher.cancelPending();
+        selected = Math.floorMod(selected, Mission.IDS.size());
         try {
-            mission = Mission.corvara();
+            mission = Mission.byId(Mission.IDS.get(selected));
         } catch (Exception e) {
             mission = null;
         }
+        loadFrames();
         for (ResourceLocation f : frames) MenuUi.smooth(f);
         MenuUi.smooth(MenuUi.BACKGROUND);
         int m = margin();
         int by = height - m - 18;
         addRenderableWidget(new MenuButton(m, by, 64, 18, "BACK", null, MenuButton.Style.GHOST, this::onClose));
         play = new MenuButton(width - m - 118, by, 118, 18, "PLAY MISSION", null, MenuButton.Style.PRIMARY,
-                () -> MissionLauncher.play(this));
+                () -> MissionLauncher.play(this, Mission.IDS.get(selected)));
         play.active = mission != null;
         addRenderableWidget(play);
         setInitialFocus(play);
@@ -104,14 +108,58 @@ public class MissionsScreen extends ScaledScreen {
         renderWidgets(g, mouseX, mouseY, partial);
     }
 
+    /** Corvara's frames are preview_N; later contracts prefix theirs with the mission id. */
+    private void loadFrames() {
+        frames.clear();
+        String id = Mission.IDS.get(Math.floorMod(selected, Mission.IDS.size()));
+        for (int i = 0; i < FRAMES; i++) frames.add(MenuUi.gui(id.equals("corvara") ? "preview_" + i : id + "_preview_" + i));
+    }
+
     private void drawTabs(GuiGraphics g, Font font, float x, float y, float a) {
         MenuUi.tracked(g, font, "LOCATIONS", MenuUi.SMALL, x, y + 1, 1.2f, MenuUi.alpha(MenuUi.FAINT, a));
         float cx = x + MenuUi.trackedWidth(font, "LOCATIONS", MenuUi.SMALL, 1.2f) + 14;
-        float w = MenuUi.tracked(g, font, "CORVARA", MenuUi.LABEL, cx, y, 1.6f, MenuUi.alpha(MenuUi.WHITE, a));
-        MenuUi.rect(g, cx, y + 10, cx + w, y + 11, MenuUi.alpha(MenuUi.ACCENT, a));
-        cx += w + 16;
-        float lw = MenuUi.tracked(g, font, "CLASSIFIED", MenuUi.LABEL, cx, y, 1.6f, MenuUi.alpha(0x50E8E6E2, a));
-        MenuUi.draw(g, font, "more contracts on the way", MenuUi.SMALL, cx + lw + 8, y + 1, MenuUi.alpha(0x40E8E6E2, a));
+        tabBoxes.clear();
+        for (int i = 0; i < Mission.IDS.size(); i++) {
+            String name = Mission.IDS.get(i).toUpperCase(Locale.ROOT);
+            boolean on = i == selected;
+            float w = MenuUi.tracked(g, font, name, MenuUi.LABEL, cx, y, 1.6f, MenuUi.alpha(on ? MenuUi.WHITE : 0x80E8E6E2, a));
+            if (on) MenuUi.rect(g, cx, y + 10, cx + w, y + 11, MenuUi.alpha(MenuUi.ACCENT, a));
+            tabBoxes.add(new float[]{cx - 3, y - 3, cx + w + 3, y + 13});
+            cx += w + 16;
+        }
+    }
+
+    @Override
+    public boolean mouseClicked(double mx, double my, int button) {
+        double x = mx / k, y = my / k;
+        for (int i = 0; i < tabBoxes.size(); i++) {
+            float[] b = tabBoxes.get(i);
+            if (x >= b[0] && x <= b[2] && y >= b[1] && y <= b[3] && i != selected) {
+                selected = i;
+                rebuildWidgets();
+                return true;
+            }
+        }
+        return super.mouseClicked(mx, my, button);
+    }
+
+    @Override
+    public boolean keyPressed(int key, int scan, int mods) {
+        if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT || key == org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT) {
+            selected += key == org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT ? 1 : -1;
+            rebuildWidgets();
+            return true;
+        }
+        return super.keyPressed(key, scan, mods);
+    }
+
+    /** For the menu test: switch to a contract by id. */
+    public void select(String id) {
+        int i = Mission.IDS.indexOf(id);
+        if (i >= 0) {
+            selected = i;
+            rebuildWidgets();
+        }
     }
 
     /** Cross-fading flyover frames around the island, each drifting in slowly, so the map seems to turn. */
@@ -201,9 +249,16 @@ public class MissionsScreen extends ScaledScreen {
     }
 
     /** The target's face, cut from their skin, behind a thin frame. */
-    private static void face(GuiGraphics g, String id, float x, float y, int size, float a) {
+    private void face(GuiGraphics g, String id, float x, float y, int size, float a) {
         ResourceLocation skin = new ResourceLocation(Recrafted.MODID, "textures/entity/npc/" + id + "_0.png");
         MenuUi.rect(g, x - 1, y - 1, x + size + 1, y + size + 1, MenuUi.alpha(0x50FFFFFF, a));
+        if (id.equals("meester") || minecraft.getResourceManager().getResource(skin).isEmpty()) {
+            MenuUi.rect(g, x, y, x + size, y + size, MenuUi.alpha(0xFF1A1C21, a));
+            MenuUi.rect(g, x + size * .3f, y + size * .2f, x + size * .7f, y + size * .62f, MenuUi.alpha(0xFF3A3E46, a));
+            MenuUi.rect(g, x + size * .15f, y + size * .66f, x + size * .85f, y + size, MenuUi.alpha(0xFF3A3E46, a));
+            MenuUi.draw(g, font, "?", MenuUi.LABEL, x + size / 2f - 2, y + size * .28f, MenuUi.alpha(MenuUi.ACCENT, a));
+            return;
+        }
         com.mojang.blaze3d.systems.RenderSystem.setShaderColor(1f, 1f, 1f, a);
         com.mojang.blaze3d.systems.RenderSystem.enableBlend();
         g.blit(skin, (int) x, (int) y, size, size, 8f, 8f, 8, 8, 64, 64);

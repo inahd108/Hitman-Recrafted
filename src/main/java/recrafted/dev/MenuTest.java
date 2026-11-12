@@ -81,9 +81,9 @@ public final class MenuTest {
         mc.resizeDisplay();
     }
 
-    private static boolean inContract(Minecraft mc) {
+    private static boolean inContract(Minecraft mc, String id) {
         return mc.player != null && mc.screen == null && mc.level != null
-                && mc.level.dimension().equals(Mission.corvara().dimension);
+                && mc.level.dimension().equals(Mission.byId(id).dimension);
     }
 
     private static void leaveWorld(Minecraft mc) {
@@ -107,14 +107,22 @@ public final class MenuTest {
             step(200, () -> mc.setScreen(new MissionsScreen(mc.screen)));
             step(2500, () -> shot(mc, "missions_" + tag));
             step(2600, () -> shot(mc, "missions_fade_" + tag));
+            step(200, () -> {
+                if (mc.screen instanceof MissionsScreen ms) ms.select("amsterdam");
+            });
+            step(2500, () -> shot(mc, "missions_amsterdam_" + tag));
+            step(200, () -> {
+                if (mc.screen instanceof MissionsScreen ms) ms.select("corvara");
+            });
         }
         step(500, () -> scale(mc, 0));
         if (PLAY) {
-            for (String pass : new String[]{"create", "reopen"}) {
+            for (String pass : new String[]{"create", "reopen", "amsterdam"}) {
+                String id = pass.equals("amsterdam") ? "amsterdam" : "corvara";
                 step(500, () -> {
-                    if (pass.equals("reopen")) check("reopen: contracts world exists", MissionLauncher.worldExists());
+                    if (!pass.equals("create")) check(pass + ": contracts world exists", MissionLauncher.worldExists());
                     else LOG.info("MENUTEST create: contracts world {}", MissionLauncher.worldExists() ? "already there (reopening)" : "absent");
-                    MissionLauncher.play(new MissionsScreen(new RecraftedTitleScreen()));
+                    MissionLauncher.play(new MissionsScreen(new RecraftedTitleScreen()), id);
                 });
                 await(pass + ": no experimental-settings prompt", 120_000, () -> {
                     if (mc.screen instanceof ConfirmScreen) {
@@ -123,9 +131,9 @@ public final class MenuTest {
                     }
                     return mc.player != null;
                 });
-                await(pass + ": contract started on Corvara", 90_000, () -> inContract(mc));
+                await(pass + ": contract started in " + id, 90_000, () -> inContract(mc, id));
                 step(8000, () -> {
-                    check(pass + ": arrived on Corvara", inContract(mc));
+                    check(pass + ": arrived in " + id, inContract(mc, id));
                     shot(mc, "play_" + pass);
                 });
                 step(1500, () -> leaveWorld(mc));

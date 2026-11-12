@@ -1,5 +1,7 @@
 """Turn the MenuShots screenshots into the title-screen background and the mission-browser preview frames.
-Usage: python3 tools/assets/menu_images.py <scene.png> <orbit_dir>   (orbit_dir holds menu_orbit_*.png)"""
+Usage: python3 tools/assets/menu_images.py <scene.png|-> <orbit_dir> [prefix]
+    (orbit_dir holds menu_orbit_*.png; '-' skips the background; prefix e.g. amsterdam_ names the frames
+     amsterdam_preview_N for a contract other than Corvara)"""
 import glob
 import os
 import sys
@@ -30,14 +32,16 @@ def save_small(im, path, colors=None):
 
 def main():
     os.makedirs(OUT, exist_ok=True)
-    scene = Image.open(sys.argv[1]).convert('RGB')
-    bg = grade(scene, warmth=1.02)
-    save_small(bg, os.path.join(OUT, 'background.png'), colors=256)
+    prefix = sys.argv[3] if len(sys.argv) > 3 else ''
+    if sys.argv[1] != '-':
+        scene = Image.open(sys.argv[1]).convert('RGB')
+        bg = grade(scene, warmth=1.02)
+        save_small(bg, os.path.join(OUT, 'background.png'), colors=256)
     frames = sorted(glob.glob(os.path.join(sys.argv[2], 'menu_orbit_*.png')), key=lambda p: int(p.rsplit('_', 1)[1][:-4]))
     for i, f in enumerate(frames):
         im = grade(Image.open(f).convert('RGB'), warmth=1.03, contrast=1.04, saturation=1.1)
         im = im.resize((960, 540), Image.LANCZOS)
-        save_small(im, os.path.join(OUT, f'preview_{i}.png'), colors=256)
+        save_small(im, os.path.join(OUT, f'{prefix}preview_{i}.png'), colors=256)
 
 
 if __name__ == '__main__':

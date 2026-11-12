@@ -37,7 +37,7 @@ legacyForge {
             if (project.hasProperty('menushots')) {
                 systemProperty 'recrafted.menushots', project.findProperty('menushots')
                 ['anchor', 'cam', 'times', 'poses', 'fov', 'distance', 'settle', 'agentYaw', 'agentPitch',
-                 'orbitAt', 'orbitCount', 'orbitStart', 'orbitSettle', 'orbitTime', 'orbitFov'].each { k ->
+                 'orbitAt', 'orbitCount', 'orbitStart', 'orbitSettle', 'orbitTime', 'orbitFov', 'orbitDim'].each { k ->
                     def prop = 'menu' + k.capitalize()
                     if (project.hasProperty(prop)) systemProperty "recrafted.menushots.${k}", project.findProperty(prop)
                 }

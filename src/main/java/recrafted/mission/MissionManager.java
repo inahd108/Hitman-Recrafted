@@ -20,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -73,12 +74,18 @@ public final class MissionManager {
     }
 
     public static boolean inMission(Entity e) {
-        return e.level().dimension().equals(Mission.corvara().dimension);
+        return Mission.forDimension(e.level().dimension()) != null;
+    }
+
+    /** The mission of this level; callers have checked that there is one. */
+    private static Mission of(Level level) {
+        Mission m = Mission.forDimension(level.dimension());
+        return m != null ? m : Mission.corvara();
     }
 
     @Nullable
     private static MissionState activeState(ServerLevel level) {
-        if (!level.dimension().equals(Mission.corvara().dimension)) return null;
+        if (Mission.forDimension(level.dimension()) == null) return null;
         MissionState st = MissionState.get(level);
         return st.active ? st : null;
     }
@@ -89,7 +96,7 @@ public final class MissionManager {
         if (!inMission(p)) return null;
         NpcRole worn = PlayerData.disguise(p);
         Vec3 at = p.position();
-        for (Mission.Zone z : Mission.corvara().zones) {
+        for (Mission.Zone z : of(p.level()).zones) {
             if (z.box().contains(at) && (worn == null || !z.allow().contains(worn))) return z;
         }
         return null;
@@ -146,7 +153,7 @@ public final class MissionManager {
     public static void onNpcDeath(ServerLevel level, NpcEntity npc, @Nullable ServerPlayer by, boolean accident) {
         MissionState st = activeState(level);
         if (st == null) return;
-        Mission m = Mission.corvara();
+        Mission m = of(level);
         boolean wasObjective = false;
         for (Mission.Objective o : m.objectives) {
             if (o.type().equals("eliminate") && !npc.contractId.isEmpty() && o.target().equals(npc.contractId)) {
@@ -167,9 +174,9 @@ public final class MissionManager {
     }
 
     private static void checkAllDone(ServerLevel level, MissionState st) {
-        Mission m = Mission.corvara();
+        Mission m = of(level);
         for (Mission.Objective o : m.objectives) {
-            if (!o.type().equals("exit") && !st.done.contains(o.id())) return;
+            if (!o.type().equals("exit") && !o.optional() && !st.done.contains(o.id())) return;
         }
         for (ServerPlayer p : level.players()) {
             p.displayClientMessage(Component.literal("All objectives complete — find an exit").withStyle(ChatFormatting.GOLD), false);
@@ -186,7 +193,7 @@ public final class MissionManager {
 
     /** Changes a block and remembers the original so a restart can put it back. */
     public static void setTracked(ServerLevel level, BlockPos pos, BlockState state) {
-        if (level.dimension().equals(Mission.corvara().dimension)) {
+        if (Mission.forDimension(level.dimension()) != null) {
             MissionState st = MissionState.get(level);
             st.changed.putIfAbsent(pos.immutable(), level.getBlockState(pos));
             st.setDirty();
@@ -225,7 +232,7 @@ public final class MissionManager {
         level.sendParticles(ParticleTypes.SNEEZE, pos.getX() + .5, pos.getY() + .5, pos.getZ() + .5, 60, .6, .6, .6, .05);
         MissionState st = activeState(level);
         if (st == null) return;
-        for (Mission.Objective o : Mission.corvara().objectives) {
+        for (Mission.Objective o : of(level).objectives) {
             if (o.type().equals("destroy_core") && st.done.add(o.id())) {
                 announce(level, Component.literal("✔ " + o.text()).withStyle(ChatFormatting.GREEN), Component.literal("Sample destroyed").withStyle(ChatFormatting.GRAY));
             }
@@ -287,10 +294,10 @@ public final class MissionManager {
             p.displayClientMessage(Component.literal("No contract is running. Use /contract start"), true);
             return;
         }
-        Mission m = Mission.corvara();
+        Mission m = of(level);
         List<String> open = new ArrayList<>();
         for (Mission.Objective o : m.objectives) {
-            if (!o.type().equals("exit") && !st.done.contains(o.id())) open.add(o.text());
+            if (!o.type().equals("exit") && !o.optional() && !st.done.contains(o.id())) open.add(o.text());
         }
         if (!open.isEmpty()) {
             p.displayClientMessage(Component.literal("Not yet: " + String.join(", ", open)).withStyle(ChatFormatting.YELLOW), true);
@@ -324,7 +331,7 @@ public final class MissionManager {
     /** Resets the world state and queues the whole cast and every prop for spawning. */
     public static void begin(ServerLevel level) {
         Mission.reload();
-        Mission m = Mission.corvara();
+        Mission m = of(level);
         MissionState st = MissionState.get(level);
         for (Map.Entry<BlockPos, BlockState> e : st.changed.entrySet()) level.setBlock(e.getKey(), e.getValue(), 3);
         st.changed.clear();
@@ -354,14 +361,25 @@ public final class MissionManager {
     }
 
     public static boolean start(ServerPlayer p) {
+        return start(p, "corvara");
+    }
+
+    public static boolean start(ServerPlayer p, String missionId) {
+        Mission m;
+        try {
+            m = Mission.byId(missionId);
+        } catch (Exception e) {
+            p.sendSystemMessage(Component.literal("No such contract: " + missionId).withStyle(ChatFormatting.RED));
+            return false;
+        }
         MinecraftServer server = p.getServer();
-        ServerLevel level = server.getLevel(Mission.corvara().dimension);
+        ServerLevel level = server.getLevel(m.dimension);
         if (level == null) {
-            p.sendSystemMessage(Component.literal("The Corvara dimension is missing. Create a new world with the mod installed, or restart the server.").withStyle(ChatFormatting.RED));
+            p.sendSystemMessage(Component.literal("The " + m.location + " dimension is missing. Create a new world with the mod installed, or restart the server.").withStyle(ChatFormatting.RED));
             return false;
         }
         begin(level);
-        Mission m = Mission.corvara();
+        m = of(level);
         p.teleportTo(level, m.spawn.x, m.spawn.y, m.spawn.z, m.spawnYaw, 0f);
         if (p.gameMode.getGameModeForPlayer() == GameType.SURVIVAL) p.setGameMode(GameType.ADVENTURE);
         PlayerData.setDisguise(p, null, 0);
@@ -464,7 +482,7 @@ public final class MissionManager {
 
     /** Writes the cast as it currently stands in the world to config/recrafted/corvara.cast.json. */
     public static int exportCast(ServerLevel level) throws Exception {
-        Mission m = Mission.corvara();
+        Mission m = of(level);
         MissionState st = MissionState.get(level);
         Map<Integer, NpcEntity> live = new HashMap<>();
         List<NpcEntity> extra = new ArrayList<>();
@@ -491,7 +509,7 @@ public final class MissionManager {
     }
 
     private static void spawnPending(ServerLevel level, MissionState st) {
-        Mission m = Mission.corvara();
+        Mission m = of(level);
         int budget = 24;
         if (!st.pendingNpcs.isEmpty()) {
             for (Integer i : new ArrayList<>(st.pendingNpcs)) {
@@ -525,7 +543,7 @@ public final class MissionManager {
 
     // ---- HUD ------------------------------------------------------------------------------------
     private static void sendHud(ServerLevel level, ServerPlayer p) {
-        Mission m = Mission.corvara();
+        Mission m = of(level);
         MissionState st = MissionState.get(level);
         float max = 0;
         for (NpcEntity n : level.getEntitiesOfClass(NpcEntity.class, p.getBoundingBox().inflate(40, 12, 40), e -> !e.isDown())) {
@@ -538,7 +556,7 @@ public final class MissionManager {
         List<Boolean> done = new ArrayList<>();
         if (st.active || st.complete) {
             for (Mission.Objective o : m.objectives) {
-                texts.add(o.text());
+                texts.add(o.optional() ? "Bonus: " + o.text() : o.text());
                 done.add(st.done.contains(o.id()));
             }
         }
@@ -551,7 +569,7 @@ public final class MissionManager {
     public static void onLevelTick(TickEvent.LevelTickEvent e) {
         if (e.phase != TickEvent.Phase.END || !(e.level instanceof ServerLevel level)) return;
         DoorTimers.tick(level);
-        if (!level.dimension().equals(Mission.corvara().dimension)) return;
+        if (Mission.forDimension(level.dimension()) == null) return;
         serverTick = level.getGameTime();
         MissionState st = MissionState.get(level);
         if (st.active) {
@@ -565,7 +583,7 @@ public final class MissionManager {
 
     @SubscribeEvent
     public static void onJoin(EntityJoinLevelEvent e) {
-        if (!(e.getLevel() instanceof ServerLevel level) || !level.dimension().equals(Mission.corvara().dimension)) return;
+        if (!(e.getLevel() instanceof ServerLevel level) || Mission.forDimension(level.dimension()) == null) return;
         int gen = MissionState.get(level).gen;
         if (e.getEntity() instanceof NpcEntity n && n.missionGen != -1 && n.missionGen != gen) e.setCanceled(true);
         else if (e.getEntity() instanceof PropEntity p && p.missionGen != -1 && p.missionGen != gen) e.setCanceled(true);

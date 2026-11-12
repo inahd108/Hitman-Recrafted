@@ -30,12 +30,14 @@ public final class AmsterdamAtmosphere {
     static final float DRIZZLE = 0.5f;
     static final float FOG_NEAR = 10f, FOG_FAR = 120f;
     static final Vec3 SLATE = new Vec3(0.24, 0.29, 0.38);
+    /** Dev harness only: a clear evening for the mission browser's flyover frames. */
+    public static boolean clearForPhotos;
 
     private AmsterdamAtmosphere() {}
 
     static boolean inAmsterdam() {
         Minecraft mc = Minecraft.getInstance();
-        return mc.level != null && mc.level.dimension().equals(DIMENSION);
+        return !clearForPhotos && mc.level != null && mc.level.dimension().equals(DIMENSION);
     }
 
     @SubscribeEvent

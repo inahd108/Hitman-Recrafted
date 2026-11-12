@@ -21,7 +21,10 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -29,10 +32,13 @@ import java.util.Set;
 /** Immutable mission definition read from data/recrafted/missions/&lt;id&gt;.json. */
 public final class Mission {
     private static final Logger LOG = LogManager.getLogger("recrafted");
-    private static Mission corvara;
+    /** Every contract the mod ships, in menu order. */
+    public static final List<String> IDS = List.of("corvara", "amsterdam");
+    private static final Map<String, Mission> CACHE = new HashMap<>();
 
     public record Zone(String name, String label, AABB box, Set<NpcRole> allow) {}
-    public record Objective(String id, String type, String target, String text) {}
+    /** optional objectives (bonuses) never hold up the exit. */
+    public record Objective(String id, String type, String target, String text, boolean optional) {}
     public record Target(String id, String name, String desc) {}
     public record PropSpawn(ResourceLocation item, Vec3 pos) {}
 
@@ -53,14 +59,32 @@ public final class Mission {
         return FMLPaths.CONFIGDIR.get().resolve("recrafted").resolve(id + ".cast.json");
     }
 
-    public static synchronized Mission corvara() {
-        if (corvara == null) corvara = load("corvara");
-        return corvara;
+    public static Mission corvara() {
+        return byId("corvara");
     }
 
-    /** Forget the cached mission so an exported cast is picked up. */
+    public static synchronized Mission byId(String id) {
+        return CACHE.computeIfAbsent(id, Mission::load);
+    }
+
+    /** The mission played in this dimension, or null outside every contract. */
+    @Nullable
+    public static Mission forDimension(ResourceKey<Level> dim) {
+        for (String id : IDS) {
+            Mission m;
+            try {
+                m = byId(id);
+            } catch (Exception e) {
+                continue;
+            }
+            if (m.dimension.equals(dim)) return m;
+        }
+        return null;
+    }
+
+    /** Forget the cached missions so an exported cast is picked up. */
     public static synchronized void reload() {
-        corvara = null;
+        CACHE.clear();
     }
 
     private static Vec3 vec(JsonArray a) {
@@ -89,7 +113,8 @@ public final class Mission {
             for (JsonElement e : o.getAsJsonArray("objectives")) {
                 JsonObject t = e.getAsJsonObject();
                 m.objectives.add(new Objective(t.get("id").getAsString(), t.get("type").getAsString(),
-                        t.has("target") ? t.get("target").getAsString() : "", t.get("text").getAsString()));
+                        t.has("target") ? t.get("target").getAsString() : "", t.get("text").getAsString(),
+                        t.has("optional") && t.get("optional").getAsBoolean()));
             }
             for (JsonElement e : o.getAsJsonArray("zones")) {
                 JsonObject z = e.getAsJsonObject();

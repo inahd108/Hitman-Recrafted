@@ -53,6 +53,8 @@ public final class MenuShots {
     private static long nextAt;
     private static boolean prepared;
     private static NpcEntity agent;
+    /** null = Corvara; the orbit can be pointed at another contract's dimension. */
+    private static net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> dimension;
 
     private MenuShots() {}
 
@@ -75,7 +77,8 @@ public final class MenuShots {
     private static void onServer(IntegratedServer server, java.util.function.BiConsumer<ServerLevel, ServerPlayer> work) {
         server.execute(() -> {
             try {
-                work.accept(MissionManager.missionLevel(server), server.getPlayerList().getPlayers().get(0));
+                ServerLevel level = dimension == null ? MissionManager.missionLevel(server) : server.getLevel(dimension);
+                work.accept(level, server.getPlayerList().getPlayers().get(0));
             } catch (Exception e) {
                 LOG.error("MENUSHOTS server step failed", e);
             }
@@ -281,6 +284,15 @@ public final class MenuShots {
         double start = nums("recrafted.menushots.orbitStart", "200")[0];
         long settle = (long) nums("recrafted.menushots.orbitSettle", "25000")[0];
         String time = System.getProperty("recrafted.menushots.orbitTime", "-1");
+        String dim = System.getProperty("recrafted.menushots.orbitDim", "");
+        step(0, () -> {
+            if (!dim.isEmpty()) {
+                dimension = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.DIMENSION,
+                        new net.minecraft.resources.ResourceLocation(dim));
+                recrafted.client.AmsterdamAtmosphere.clearForPhotos = true;
+                server.execute(() -> server.overworld().setWeatherParameters(12000, 0, false, false));
+            }
+        });
         int fov = (int) nums("recrafted.menushots.orbitFov", "55")[0];
         step(0, () -> {
             SkyTime.override = Long.parseLong(time);
