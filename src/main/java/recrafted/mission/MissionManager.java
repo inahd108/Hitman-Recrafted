@@ -914,9 +914,11 @@ public final class MissionManager {
                 if (i >= m.props.size()) { st.pendingProps.remove(i); continue; }
                 Mission.PropSpawn ps = m.props.get(i);
                 if (!level.isPositionEntityTicking(BlockPos.containing(ps.pos()))) continue;
-                Item item = ForgeRegistries.ITEMS.getValue(ps.item());
-                if (item != null && item != net.minecraft.world.item.Items.AIR) {
-                    PropEntity e = new PropEntity(level, ps.pos().x, ps.pos().y + 0.02, ps.pos().z, new ItemStack(item));
+                Item item = ps.gun() ? null : ForgeRegistries.ITEMS.getValue(ps.item());
+                ItemStack stack = ps.gun() ? Guns.pickup(ps.item())
+                        : item != null && item != net.minecraft.world.item.Items.AIR ? new ItemStack(item) : ItemStack.EMPTY;
+                if (!stack.isEmpty()) {
+                    PropEntity e = new PropEntity(level, ps.pos().x, ps.pos().y + 0.02, ps.pos().z, stack);
                     e.missionGen = st.gen;
                     level.addFreshEntity(e);
                 }

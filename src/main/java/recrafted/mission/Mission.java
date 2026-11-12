@@ -41,7 +41,8 @@ public final class Mission {
     /** optional objectives (bonuses) never hold up the exit. */
     public record Objective(String id, String type, String target, String text, boolean optional) {}
     public record Target(String id, String name, String desc) {}
-    public record PropSpawn(ResourceLocation item, Vec3 pos) {}
+    /** An item lying on the map; with gun set, item is a gun-pack gun id instead of an item id. */
+    public record PropSpawn(ResourceLocation item, Vec3 pos, boolean gun) {}
     /** A line announced when the mission clock reaches a minute (relative to the start, repeating every period). */
     public record ClockEvent(int at, String text, String sub) {}
     /**
@@ -163,7 +164,8 @@ public final class Mission {
             }
             for (JsonElement e : o.getAsJsonArray("props")) {
                 JsonObject p = e.getAsJsonObject();
-                m.props.add(new PropSpawn(new ResourceLocation(p.get("item").getAsString()), vec(p.getAsJsonArray("pos"))));
+                boolean gun = p.has("gun");
+                m.props.add(new PropSpawn(new ResourceLocation(p.get(gun ? "gun" : "item").getAsString()), vec(p.getAsJsonArray("pos")), gun));
             }
             for (JsonElement e : o.getAsJsonArray("npcs")) m.npcs.add(e.getAsJsonObject());
             if (o.has("boats")) for (JsonElement e : o.getAsJsonArray("boats")) {

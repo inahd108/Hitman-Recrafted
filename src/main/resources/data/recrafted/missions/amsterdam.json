@@ -415,6 +415,46 @@
    ]
   },
   {
+   "gun": "recrafted:reiger",
+   "pos": [
+    129.5,
+    65,
+    224.5
+   ]
+  },
+  {
+   "gun": "recrafted:snoek",
+   "pos": [
+    344.5,
+    64,
+    65.5
+   ]
+  },
+  {
+   "gun": "recrafted:kievit",
+   "pos": [
+    64.5,
+    58,
+    233.5
+   ]
+  },
+  {
+   "gun": "recrafted:kievit",
+   "pos": [
+    64.5,
+    70,
+    230.5
+   ]
+  },
+  {
+   "gun": "recrafted:harpoen",
+   "pos": [
+    155.5,
+    64,
+    112.5
+   ]
+  },
+  {
    "item": "recrafted:chain_lock",
    "pos": [
     250.5,

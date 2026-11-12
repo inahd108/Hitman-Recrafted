@@ -50,9 +50,9 @@ public final class Guns {
             case SECURITY -> "bulwark";
             case LAB_GUARD -> "halcyon";
             case SORDI -> "argento";
-            // Amsterdam: placeholders until its own guns are in the pack
-            case POLICE, AUCTION_SECURITY -> "argento";
-            case DECKHAND -> "halcyon";
+            // Amsterdam
+            case POLICE, AUCTION_SECURITY -> "reiger";
+            case DECKHAND -> "snoek";
             case KOOISTRA -> "vento";
             default -> null;
         };
@@ -63,7 +63,23 @@ public final class Guns {
     public static ItemStack sidearmFor(NpcRole role) {
         ResourceLocation id = sidearmId(role);
         if (id == null) return ItemStack.EMPTY;
-        return safely(() -> TaczBridge.loadedGun(id), ItemStack.EMPTY);
+        ItemStack gun = safely(() -> TaczBridge.loadedGun(id), ItemStack.EMPTY);
+        if (gun.isEmpty() && FALLBACK.containsKey(id.getPath())) {         // an older gun pack without the Amsterdam guns
+            ResourceLocation old = new ResourceLocation(Recrafted.MODID, FALLBACK.get(id.getPath()));
+            gun = safely(() -> TaczBridge.loadedGun(old), ItemStack.EMPTY);
+        }
+        return gun;
+    }
+
+    /** What to hand out instead when the installed gun pack predates a gun. */
+    private static final java.util.Map<String, String> FALLBACK = java.util.Map.of(
+            "reiger", "argento", "snoek", "halcyon", "kievit", "passero", "harpoen", "passero");
+
+    /** A gun lying in the world as a pickup: the pack's gun, or its stand-in from an older pack, or empty. */
+    public static ItemStack pickup(ResourceLocation id) {
+        ItemStack gun = loadedGun(id);
+        if (gun.isEmpty() && FALLBACK.containsKey(id.getPath())) gun = loadedGun(new ResourceLocation(id.getNamespace(), FALLBACK.get(id.getPath())));
+        return gun;
     }
 
     public static final ResourceLocation CICALA = new ResourceLocation(Recrafted.MODID, "cicala");

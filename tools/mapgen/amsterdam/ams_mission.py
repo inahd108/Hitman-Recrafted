@@ -141,6 +141,17 @@ def props(ctx):
     decks = [b['deck'] for b in ctx.get('boats', []) if b.get('name') is None]
     for i, (x, y, z) in enumerate(decks[:4]):
         out.append({'item': 'recrafted:' + ('clog' if i % 2 == 0 else 'boat_hook'), 'pos': [x + .5, y, z + .5]})
+    # spare guns (Recrafted Arsenal): the police post, the smuggler's dock, the vault and Ostendorp's desk, a diver's boat
+    for gun, (a, (ox, oy, oz)) in (('reiger', ('police.door', (0, 0, 3))), ('snoek', ('dock.jetty', (0, 0, -6))),
+                                   ('kievit', ('hamer.vault.case', (0, 0, -1))), ('kievit', ('hamer.office.desk', (-1, 0, 1)))):
+        if a in A:
+            x, y, z = A[a]
+            p = _floor(w, int(x) + ox, int(y) + oy, int(z) + oz)
+            if p:
+                out.append({'gun': f'recrafted:{gun}', 'pos': [p[0] + .5, p[1], p[2] + .5]})
+    if len(decks) > 4:
+        x, y, z = decks[4]
+        out.append({'gun': 'recrafted:harpoen', 'pos': [x + .5, y, z + .5]})
     for x, z in ((250, 185), (120, 89), (330, 217)):
         p = _floor(w, x, STREET + 1, z, 4)
         if p:
