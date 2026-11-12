@@ -22,14 +22,22 @@ def track(keys, smooth=True):
 
 
 def step_track(keys):
-    """Instant changes (e.g. hiding a round): value holds until the next key."""
+    """Instant changes (e.g. hiding a round): the value holds until the next key, then jumps.
+
+    TACZ interpolates between one key's 'post' and the next key's 'pre', so each key's 'pre' repeats the
+    previous value.
+    """
     out = {}
+    prev = None
     for t in sorted(keys):
         k = f'{float(t):.4f}'.rstrip('0').rstrip('.') if t else '0.0'
         if '.' not in k:
             k += '.0'
         v = keys[t]
-        out[k] = {'pre': v, 'post': v}
+        if isinstance(v, (int, float)):            # TACZ needs three-axis values in keyed channels
+            v = [v, v, v]
+        out[k] = {'pre': prev if prev is not None else v, 'post': v}
+        prev = v
     return out
 
 
@@ -101,6 +109,13 @@ def pose_at(anim_json, t, bones):
         r = sample(anim_json, b, 'rotation', t)
         p = sample(anim_json, b, 'position', t)
         sc = anim_json['bones'].get(b, {}).get('scale')
+        if isinstance(sc, dict):                       # step track: the last key at or before t holds
+            keys = sorted((float(k), v['post'] if isinstance(v, dict) else v) for k, v in sc.items())
+            cur = keys[0][1]
+            for kt, kv in keys:
+                if kt <= t + 1e-9:
+                    cur = kv
+            sc = cur[0] if isinstance(cur, list) and len(set(cur)) == 1 else cur
         if r is not None or p is not None or sc is not None:
             pose[b] = {}
             if r is not None:

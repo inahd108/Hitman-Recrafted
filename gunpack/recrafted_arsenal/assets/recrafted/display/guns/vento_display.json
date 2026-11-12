@@ -1,0 +1,85 @@
+{
+  "state_machine": "tacz:taurus500_state_machine",
+  "ads_preset": "tacz:renew",
+  "use_default_animation": "pistol",
+  "player_animator_3rd": "tacz:pistol_default.player_animation",
+  "transform": {
+    "scale": {
+      "thirdperson": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "ground": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "fixed": [
+        1.1,
+        1.1,
+        1.1
+      ]
+    }
+  },
+  "muzzle_flash": {
+    "type": "renew",
+    "texture": "tacz:flash/common_muzzle_flash",
+    "scale": 0.85,
+    "smoke_scale": 1.3,
+    "initial_speed_scale": 1.2,
+    "smoke_particle_count": 20
+  },
+  "iron_zoom": 1.25,
+  "model_fov": 60,
+  "zoom_model_fov": 45,
+  "offhand_show": {
+    "pos": [
+      4,
+      13,
+      -1
+    ],
+    "rotate": [
+      -90,
+      -35,
+      90
+    ],
+    "scale": [
+      0.5,
+      0.5,
+      0.5
+    ]
+  },
+  "hotbar_show": {
+    "0": {
+      "pos": [
+        -5,
+        13,
+        -1
+      ],
+      "rotate": [
+        -90,
+        -35,
+        90
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  },
+  "model": "recrafted:gun/vento_geo",
+  "texture": "recrafted:gun/uv/vento",
+  "hud": "recrafted:gun/hud/vento",
+  "slot": "recrafted:gun/slot/vento",
+  "animation": "recrafted:vento",
+  "sounds": {
+    "draw": "tacz:rhino357/rhino_draw",
+    "put_away": "tacz:rhino357/rhino_put_away",
+    "shoot": "tacz:rhino357/rhino_shoot",
+    "shoot_3p": "tacz:rhino357/rhino_shoot_3p",
+    "silence": "tacz:deagle/deagle_silence",
+    "silence_3p": "tacz:deagle/deagle_silence_3p"
+  }
+}

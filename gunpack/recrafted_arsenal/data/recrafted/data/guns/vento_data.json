@@ -1,0 +1,133 @@
+{
+  "allow_ammo_unload": true,
+  "ammo": "tacz:357mag",
+  "rpm": 220,
+  "bullet": {
+    "life": 1,
+    "bullet_amount": 1,
+    "damage": 12.5,
+    "tracer_count_interval": 0,
+    "extra_damage": {
+      "armor_ignore": 0.3,
+      "head_shot_multiplier": 2.0,
+      "damage_adjust": [
+        {
+          "distance": 25,
+          "damage": 12.5
+        },
+        {
+          "distance": 40,
+          "damage": 9.5
+        },
+        {
+          "distance": "infinite",
+          "damage": 6.5
+        }
+      ]
+    },
+    "speed": 210,
+    "gravity": 0.15,
+    "knockback": 0.08,
+    "friction": 0.03,
+    "ignite": false,
+    "pierce": 1
+  },
+  "ammo_amount": 6,
+  "bolt": "open_bolt",
+  "reload": {
+    "type": "magazine",
+    "feed": {
+      "empty": 2.1,
+      "tactical": 2.1
+    },
+    "cooldown": {
+      "empty": 3.9,
+      "tactical": 3.25
+    }
+  },
+  "draw_time": 0.55,
+  "put_away_time": 0.4,
+  "aim_time": 0.16,
+  "sprint_time": 0.05,
+  "weight": 1.6,
+  "movement_speed": {
+    "base": 0,
+    "aim": 0,
+    "reload": 0.1
+  },
+  "crawl_recoil_multiplier": 0.5,
+  "fire_mode": [
+    "semi"
+  ],
+  "allow_attachment_types": [],
+  "recoil": {
+    "pitch": [
+      {
+        "time": 0,
+        "value": [
+          2.4,
+          2.4
+        ]
+      },
+      {
+        "time": 0.25,
+        "value": [
+          0.2,
+          0.2
+        ]
+      },
+      {
+        "time": 0.4,
+        "value": [
+          0,
+          0
+        ]
+      }
+    ],
+    "yaw": [
+      {
+        "time": 0,
+        "value": [
+          -0.7,
+          -0.7
+        ]
+      },
+      {
+        "time": 0.06,
+        "value": [
+          0.4,
+          0.4
+        ]
+      },
+      {
+        "time": 0.3,
+        "value": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "inaccuracy": {
+    "stand": 1.5,
+    "move": 1.9,
+    "sneak": 1.0,
+    "lie": 0.8,
+    "aim": 0.08
+  },
+  "charging": {
+    "semi": {
+      "type": "auto",
+      "increase_per_tick": 0.1,
+      "decrease_per_tick": 0.1,
+      "decrease_on_fire": 0.3,
+      "max_charge": 0.3,
+      "fire_threshold": 0.3,
+      "charge_during_cooldown": false
+    }
+  },
+  "fire_sound": {
+    "fire_multiplier": 1.35,
+    "silence_multiplier": 1.0
+  }
+}

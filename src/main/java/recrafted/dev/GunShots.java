@@ -116,18 +116,31 @@ public final class GunShots {
             step(1600, () -> shot(mc, label + "_2_aim"));
             step(200, () -> holdAim(false));
             step(1200, () -> call(mc, "reload"));
-            step(Long.getLong("recrafted.gunshots.reloadAt", 450L), () -> shot(mc, label + "_3_reload_a"));
-            step(650, () -> shot(mc, label + "_4_reload_b"));
-            step(3200, () -> call(mc, "inspect"));
-            step(1150, () -> shot(mc, label + "_5_inspect_a"));
-            step(1500, () -> shot(mc, label + "_5_inspect_b"));
-            step(4000, () -> mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT));
+            phase(mc, label, "reload", System.getProperty("recrafted.gunshots.reload", "450,1100"),
+                    Long.getLong("recrafted.gunshots.reloadLen", 4300L), new String[]{"_3_reload_a", "_4_reload_b"});
+            step(0, () -> call(mc, "inspect"));
+            phase(mc, label, "inspect", System.getProperty("recrafted.gunshots.inspect", "1150,2650"),
+                    Long.getLong("recrafted.gunshots.inspectLen", 6650L), new String[]{"_5_inspect_a", "_5_inspect_b"});
+            step(0, () -> mc.options.setCameraType(CameraType.THIRD_PERSON_FRONT));
             step(1500, () -> shot(mc, label + "_6_third"));
         }
         step(1500, () -> {
             LOG.info("GUNSHOTS DONE");
             mc.stop();
         });
+    }
+
+    /** Screenshots at the given times (ms after the action started), then wait out the action's length. */
+    private static void phase(Minecraft mc, String label, String what, String times, long length, String[] names) {
+        long last = 0;
+        String[] ts = times.split(";|,");
+        for (int i = 0; i < ts.length; i++) {
+            long t = Long.parseLong(ts[i].trim());
+            String name = label + (i < names.length ? names[i] : "_" + what + "_" + (char) ('a' + i));
+            step(t - last, () -> shot(mc, name));
+            last = t;
+        }
+        step(Math.max(0, length - last), () -> { });
     }
 
     /** Stand on the quay looking out to sea: a bright, plain background for the gun. */

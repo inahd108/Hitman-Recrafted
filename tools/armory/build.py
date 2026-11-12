@@ -97,7 +97,7 @@ def emit_pistol(gun, anims, *, name, desc, sort, data, sounds, allow, recipe, si
     m = gun.build()
     m.layout()
     tex = m.paint(gun.shader)
-    hide = ('righthand_pos', 'lefthand_pos', 'mag_extended_1', 'mag_extended_2', 'mag_extended_3')
+    hide = ('righthand_pos', 'lefthand_pos', 'mag_extended_1', 'mag_extended_2', 'mag_extended_3', 'loader_and_round')
     write_json(f'assets/{NS}/geo_models/gun/{gid}_geo.json', m.to_bedrock())
     save_png(f'assets/{NS}/textures/gun/uv/{gid}.png', tex)
     side = dict(eye=(-40, 3.2, side_cz), target=(0, 3.2, side_cz))
@@ -112,6 +112,7 @@ def emit_pistol(gun, anims, *, name, desc, sort, data, sounds, allow, recipe, si
     display.update({'model': f'{NS}:gun/{gid}_geo', 'texture': f'{NS}:gun/uv/{gid}', 'hud': f'{NS}:gun/hud/{gid}',
                     'slot': f'{NS}:gun/slot/{gid}', 'animation': f'{NS}:{gid}', 'sounds': sounds})
     display.update(display_extra or {})
+    display = {k: v for k, v in display.items() if v is not None}
     write_json(f'assets/{NS}/display/guns/{gid}_display.json', display)
     write_json(f'data/{NS}/data/guns/{gid}_data.json', data)
     if allow:
@@ -231,6 +232,45 @@ def build_passero():
     )
 
 
+
+
+def build_vento():
+    import vento
+    import vento_anim
+    R = 'tacz:rhino357/rhino_'
+    emit_pistol(
+        vento, vento_anim.animations(),
+        name='Vento .357', desc='Heavy six-shot revolver. A long double-action pull and a very loud answer.', sort=4,
+        data=pistol_data(
+            ammo='tacz:357mag', rpm=220, ammo_amount=6, bolt='open_bolt', weight=1.6,
+            draw_time=0.55, put_away_time=0.4, aim_time=0.16,
+            bullet={'damage': 12.5, 'speed': 210, 'knockback': 0.08,
+                    'extra_damage': {'armor_ignore': 0.3, 'head_shot_multiplier': 2.0,
+                                     'damage_adjust': [{'distance': 25, 'damage': 12.5},
+                                                       {'distance': 40, 'damage': 9.5},
+                                                       {'distance': 'infinite', 'damage': 6.5}]}},
+            reload={'feed': {'empty': 2.1, 'tactical': 2.1}, 'cooldown': {'empty': 3.9, 'tactical': 3.25}},
+            charging={'semi': {'type': 'auto', 'increase_per_tick': 0.1, 'decrease_per_tick': 0.1,
+                               'decrease_on_fire': 0.3, 'max_charge': 0.3, 'fire_threshold': 0.3,
+                               'charge_during_cooldown': False}},
+            recoil={'pitch': [{'time': 0, 'value': [2.4, 2.4]}, {'time': 0.25, 'value': [0.2, 0.2]},
+                              {'time': 0.4, 'value': [0, 0]}],
+                    'yaw': [{'time': 0, 'value': [-0.7, -0.7]}, {'time': 0.06, 'value': [0.4, 0.4]},
+                            {'time': 0.3, 'value': [0, 0]}]},
+            inaccuracy={'stand': 1.5, 'move': 1.9, 'sneak': 1.0, 'lie': 0.8, 'aim': 0.08},
+            fire_sound={'fire_multiplier': 1.35, 'silence_multiplier': 1.0},
+        ),
+        sounds={'draw': R + 'draw', 'put_away': R + 'put_away', 'shoot': R + 'shoot', 'shoot_3p': R + 'shoot_3p',
+                'silence': 'tacz:deagle/deagle_silence', 'silence_3p': 'tacz:deagle/deagle_silence_3p'},
+        allow=[],
+        recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 16},
+                {'item': {'item': 'minecraft:dark_oak_planks'}, 'count': 2},
+                {'item': {'tag': 'forge:nuggets/gold'}, 'count': 2}],
+        side_cz=-1.0, hud_ortho=7.0, slot_ortho=12.5,
+        display_extra={'state_machine': 'tacz:taurus500_state_machine', 'shell': None,
+                       'muzzle_flash': {'type': 'renew', 'texture': 'tacz:flash/common_muzzle_flash', 'scale': 0.85,
+                                        'smoke_scale': 1.3, 'initial_speed_scale': 1.2, 'smoke_particle_count': 20}},
+    )
 
 
 def build_argento():
@@ -401,6 +441,7 @@ def main():
     build_argento()
     build_passero()
     build_bastone()
+    build_vento()
     write_json(f'assets/{NS}/lang/en_us.json', LANG)
     os.makedirs(DIST, exist_ok=True)
     zpath = os.path.join(DIST, f'{PACK_NAME}.zip')

@@ -27,6 +27,10 @@ legacyForge {
                 systemProperty 'recrafted.gunshots', project.findProperty('gunshots')
                 if (project.hasProperty('gunshotsAt')) systemProperty 'recrafted.gunshots.at', project.findProperty('gunshotsAt')
                 if (project.hasProperty('gunshotsGui')) systemProperty 'recrafted.gunshots.gui', 'true'
+                ['reload', 'reloadLen', 'inspect', 'inspectLen'].each { k ->
+                    def prop = 'gunshots' + k.capitalize()
+                    if (project.hasProperty(prop)) systemProperty "recrafted.gunshots.${k}", project.findProperty(prop)
+                }
                 programArguments.addAll('--quickPlaySingleplayer', project.findProperty('world') ?: 'corvara_test',
                         '--width', '1280', '--height', '720')
             }

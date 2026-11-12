@@ -467,8 +467,16 @@ def model_triangles(model, pose=None, hide=()):
     """List of (3 world points, 3 uv pixel coords, normal) for every face."""
     W = world_matrices(model, pose)
     tris = []
+
+    def hidden(name):
+        while name:
+            if name in hide:
+                return True
+            name = model.parts[name].parent
+        return False
+
     for name in model.order:
-        if name in hide:
+        if hidden(name):
             continue
         p = model.parts[name]
         M = W[name]

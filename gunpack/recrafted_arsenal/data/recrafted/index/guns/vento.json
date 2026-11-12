@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.vento.name",
+  "display": "recrafted:vento_display",
+  "data": "recrafted:vento_data",
+  "tooltip": "recrafted.gun.vento.desc",
+  "type": "pistol",
+  "sort": 4
+}

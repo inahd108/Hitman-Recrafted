@@ -279,3 +279,26 @@ def polymer(p, normal, seed=0, stipple=False):
     else:
         k = 0.92 + 0.12 * vnoise(p, 12, seed)
     return base[None] * k[:, None]
+
+
+def deep_blue(p, normal, seed=0):
+    """High-polish blued steel: blue-black with a cold sheen."""
+    base = np.array([38, 44, 62], dtype=float)
+    n = fbm(p, [10, 10, 2.0], 2, seed)
+    return base[None] * (0.9 + 0.16 * n)[:, None]
+
+
+def nickel(p, normal, seed=0):
+    """Bright nickel: a touch warmer than stainless, very smooth."""
+    base = np.array([214, 212, 204], dtype=float)
+    n = fbm(p, [16, 16, 1.5], 2, seed)
+    return base[None] * (0.94 + 0.06 * n)[:, None]
+
+
+def rosewood(p, normal, seed=0):
+    """Red-brown rosewood with dark streaks."""
+    base = np.array([118, 52, 34], dtype=float)
+    warp = fbm(p, 1.0, 2, seed + 9)
+    streak = np.sin(p[:, 1] * 11.0 + warp * 7.0) * 0.5 + 0.5
+    k = 0.8 + 0.25 * streak * fbm(p * np.array([1, 3.5, 1]), [5, 1.4, 5], 2, seed)
+    return base[None] * k[:, None]
