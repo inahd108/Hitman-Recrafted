@@ -44,8 +44,8 @@ def build_slide(m):
     chamfer_bar(s, 'z', (-SX + 0.05, SLIDE_Y0 + 0.05, SLIDE_Z0), (SX - 0.05, SLIDE_Y1 - 0.4, SLIDE_Z0 + 0.5), 'slide',
                 c=0.16, corners=(1, 1, 0, 0))
     seg_yz(s, (SLIDE_Y1 - 0.42, SLIDE_Z0 + 0.12), (SLIDE_Y1 - 0.02, SLIDE_Z0 + 0.62), 0.2, -SX + 0.14, SX - 0.14, 'slide')
-    # slanted serrations, rear and front, both sides
-    for zs, ze in ((1.35, 2.75), (-5.9, -5.0)):
+    # slanted serrations at the rear, both sides (the front of the slide is kept clean)
+    for zs, ze in ((1.35, 2.75),):
         z = zs
         while z + 0.06 <= ze:
             for sgn in (1, -1):
@@ -190,7 +190,7 @@ def shader(p, n, face, c, uv, wh):
         if n[0] > 0:
             t = M.text_mask(y, z, 'REIGER 9', -4.4, 5.18, 7.0 / K, reverse=True)
         else:
-            t = M.text_mask(y, z, 'AMSTERDAM', -2.2, 5.18, 6.0 / K)
+            t = M.text_mask(y, z, 'AMSTERDAM', -2.15, 5.18, 7.0 / K)
         col = np.where(t[:, None], col * 1.9, col)
     if d in ('upper', 'lower') and face == 'south':
         col = col * M.grooves(y, 0.1, 0.3, 0.78)[:, None]
