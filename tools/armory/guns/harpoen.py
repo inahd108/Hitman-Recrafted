@@ -196,7 +196,7 @@ def build_bolt_item():
     root = m.part('root', None, [0, 0, 0])
     s = m.part('spear', 'root', [0, 0.25, 0])
     # lying on its side along z, centred on the origin
-    spear(s, (0.0, 0.25 - SPEAR_Y, (TAIL_Z + TIP_Z) / -2 + 0.0))
+    spear(s, (0.0, 0.25 - SPEAR_Y, -(TAIL_Z + TIP_Z) / 2))
     m.part('positioning', None, [-3.025, -8.95, -11.225])
     m.part('ground', 'positioning', [0, 0, 0])
     m.part('fixed', 'positioning', [0, 0.25, 0])
@@ -206,9 +206,13 @@ def build_bolt_item():
 
 def build_bolt_entity():
     """The spear in flight: points down -z like TACZ's rocket, trailing behind the bullet position."""
-    m = Model('spear_bolt_entity', tex_size=256, texels_per_unit=K)
+    m = Model('spear_bolt_entity', tex_size=256, texels_per_unit=20)
     s = m.part('spear', None, [0, 0, 0])
-    spear(s, (0.0, -SPEAR_Y, -TIP_Z - 1.0))
+    spear(s, (0.0, -SPEAR_Y, -TIP_Z - 1.5))
+    for c in s.cubes:                    # in flight it is drawn at full scale: shrink it to the in-hand size
+        c.lo, c.hi = [v * 0.6 for v in c.lo], [v * 0.6 for v in c.hi]
+        if c.pivot is not None:
+            c.pivot = [v * 0.6 for v in c.pivot]
     return m
 
 
@@ -238,17 +242,17 @@ def shader(p, n, face, c, uv, wh):
         col = np.where(ticks[:, None], col * 0.3, col)
         return M.finish(M.rgba(col))
     col = BASE[mat](p, n) if mat in BASE else np.tile([[255, 0, 255]], (N, 1)).astype(float)
-    if d == 'air' and side and n[0] > 0:
-        t = M.text_mask(y, z, 'HARPOEN', -15.0, AIR_Y + 0.24, 7.0 / K, reverse=True)
-        col = np.where(t[:, None], np.array([[218, 222, 226]]), col)
-        wave = (np.abs(y - (AIR_Y - 0.3) - 0.08 * np.sin(z * 4.0)) < 0.035) & (z > -15.0) & (z < -11.0)
-        col = np.where(wave[:, None], np.array([[218, 222, 226]]), col)
+    if d == 'rail' and side and n[0] > 0:
+        t = M.text_mask(y, z, 'HARPOEN', -15.6, RAIL_Y1 - 0.02, 7.0 / K, reverse=True)
+        col = np.where(t[:, None], col * 0.45, col)
+    if d == 'air' and not (abs(n[2]) > 0.5):
+        # a pale wave line running down both sides of the chamber
+        wave = (np.abs(y - AIR_Y - 0.12 * np.sin(z * 1.6)) < 0.05) & (z > -15.8) & (z < -9.2)
+        col = np.where(wave[:, None], np.array([[196, 210, 222]]), col)
     if d == 'sleeve' and not (abs(n[2]) > 0.5):
         col = col * M.checker(z, y + x, 0.22, 0.2, 0.7)[:, None]
     if d == 'rail' and face == 'up':
         col = col * np.where(np.abs(x) < 0.15, 0.55, 1.0)[:, None]
-    if d == 'rail' and side:
-        col = col * M.grooves(y, 0.2, 0.15, 0.82)[:, None]
     if d == 'shaft':
         col = col * (1.0 + 0.08 * np.sin(z * 0.9))[:, None]
     if d == 'tail' and face in ('up', 'down'):

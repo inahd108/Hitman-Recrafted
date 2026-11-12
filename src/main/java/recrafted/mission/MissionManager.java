@@ -330,6 +330,12 @@ public final class MissionManager {
         p.sendSystemMessage(Component.literal(String.format("Time %d:%02d   Rating %s", secs / 60, secs % 60, rating)));
         p.sendSystemMessage(Component.literal(String.format("Non-target kills %d · Knockouts %d · Bodies found %d · Times spotted %d · Bodies hidden %d · Accidents %d",
                 st.nonTargetKills, st.knockouts, st.bodiesFound, st.spotted, st.bodiesHidden, st.accidents)).withStyle(ChatFormatting.GRAY));
+        for (Mission.Objective o : m.objectives) {
+            if (!o.optional()) continue;
+            boolean got = st.done.contains(o.id());
+            p.sendSystemMessage(Component.literal((got ? "✔ Bonus: " : "✘ Bonus: ") + o.text())
+                    .withStyle(got ? ChatFormatting.GREEN : ChatFormatting.DARK_GRAY));
+        }
         sendHud(level, p);
     }
 

@@ -77,6 +77,7 @@
   "Ostendorp takes her champagne in the private viewing room. Kooistra keeps a bottle of jenever in his cabin.",
   "The saleroom chandelier hangs on a rope from the press balcony. Ostendorp stands under it for every lot.",
   "The Gulden Hamer's ledger is kept in the strongbox in the basement vault.",
+  "Ways out: the train, the IJ ferry, a water taxi on the Gildegracht, a courier's cargo bike at the top of Zilversteeg, or the Zwaluw herself, if you are aboard when the work is done.",
   "A bidder's paddle from the reception desk gets you into the saleroom without questions.",
   "There is turpentine in the forger's studio. Stoves don't like it.",
   "The bridge keeper and the lock keeper lock their panels. Their keys are in the booth and the lock house.",
@@ -15410,7 +15411,7 @@
    "role": "courier",
    "pos": [
     193.5,
-    64,
+    65,
     124.5
    ],
    "yaw": 0,
@@ -15420,7 +15421,7 @@
      {
       "pos": [
        193.5,
-       64,
+       65,
        124.5
       ],
       "wait": 0,
@@ -17348,7 +17349,7 @@
    "role": "courier",
    "pos": [
     193.5,
-    64,
+    65,
     124.5
    ],
    "yaw": 0,
@@ -17358,7 +17359,7 @@
      {
       "pos": [
        193.5,
-       64,
+       65,
        124.5
       ],
       "wait": 0,

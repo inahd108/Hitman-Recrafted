@@ -307,6 +307,12 @@ public class CanalBoat extends Entity {
 
     @Override
     public InteractionResult interact(Player p, InteractionHand hand) {
+        if (hasPassenger(p) && name.equals("zwaluw")) {          // leave the city aboard Kooistra's boat
+            if (!level().isClientSide && p instanceof net.minecraft.server.level.ServerPlayer sp) {
+                recrafted.mission.MissionManager.tryExit((ServerLevel) level(), sp);
+            }
+            return InteractionResult.sidedSuccess(level().isClientSide);
+        }
         if (p.isSecondaryUseActive() || hasPassenger(p)) return InteractionResult.PASS;
         if (!level().isClientSide) {
             if (!canAddPassenger(p)) return InteractionResult.FAIL;

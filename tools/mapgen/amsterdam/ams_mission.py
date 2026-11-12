@@ -1,5 +1,5 @@
 """Mission data for Oil & Water: briefing, targets, objectives, exits. The cast comes in a later step."""
-from ams_layout import STREET
+from ams_layout import STREET, WATER, INNER, MID_N, ZILVERSTEEG
 
 BRIEFING = [
     "Amsterdam. Nine hundred thousand people, almost as many bicycles, and a hundred kilometres of canals that have "
@@ -23,6 +23,8 @@ INTEL = [
     "Ostendorp takes her champagne in the private viewing room. Kooistra keeps a bottle of jenever in his cabin.",
     "The saleroom chandelier hangs on a rope from the press balcony. Ostendorp stands under it for every lot.",
     "The Gulden Hamer's ledger is kept in the strongbox in the basement vault.",
+    "Ways out: the train, the IJ ferry, a water taxi on the Gildegracht, a courier's cargo bike at the top of "
+    "Zilversteeg, or the Zwaluw herself, if you are aboard when the work is done.",
     "A bidder's paddle from the reception desk gets you into the saleroom without questions.",
     "There is turpentine in the forger's studio. Stoves don't like it.",
     "The bridge keeper and the lock keeper lock their panels. Their keys are in the booth and the lock house.",
@@ -56,12 +58,34 @@ CLOCK = dict(start=19 * 60 + 30, secondsPerMinute=10, period=60, events=[
 
 
 def exits(ctx):
-    """Exit points the player walks into: the train, the ferry deck."""
+    """Exit points: the train, the ferry deck, a courier's cargo bike in Zilversteeg and a water taxi on the
+    Gildegracht. (The Zwaluw is an exit too: right-click her while aboard.)"""
     w, A = ctx['w'], ctx['anchors']
     for key in ('exit.train', 'exit.ferry'):
         if key in A:
             x, y, z = A[key]
             w.set(x, y - 1, z, 'recrafted:exit_point')
+    # the cargo bike at the north end of Zilversteeg
+    p = _floor(w, ZILVERSTEEG[0] + 1, STREET + 1, MID_N[0] + 2, 3)
+    if p:
+        x, y, z = p
+        w.set(x, y, z, 'recrafted:bicycle[facing=north,paint=green]')
+        w.set(x, y, z - 1, 'barrel[facing=up]')
+        w.set(x + 1, y, z, 'recrafted:exit_point')
+        A['exit.bike'] = (x + 1, y, z)
+    # a water taxi tied up below the Gildegracht's north quay, with a gangplank
+    tx0, tz0 = 226, INNER[0]
+    w.fill(tx0, WATER - 1, tz0, tx0 + 6, WATER, tz0 + 2, 'yellow_terracotta')
+    w.fill(tx0 + 1, WATER, tz0 + 1, tx0 + 5, WATER, tz0 + 1, 'air')
+    w.fill(tx0 + 1, WATER, tz0 + 1, tx0 + 5, WATER, tz0 + 1, 'spruce_slab[type=top]')
+    w.fill(tx0, WATER + 1, tz0, tx0 + 6, WATER + 1, tz0, 'white_concrete')
+    w.fill(tx0, WATER + 1, tz0 + 2, tx0 + 6, WATER + 1, tz0 + 2, 'white_concrete')
+    w.set(tx0 + 6, WATER + 1, tz0 + 1, 'white_concrete')
+    w.set(tx0 + 4, WATER + 1, tz0 + 1, 'recrafted:exit_point')
+    w.set(tx0 + 2, WATER + 1, tz0 + 1, 'lantern')
+    w.set(tx0 + 1, WATER + 1, tz0, 'air')
+    w.set(tx0 + 1, STREET, tz0 - 1, 'spruce_slab[type=top]')
+    A['exit.taxi'] = (tx0 + 4, WATER + 1, tz0 + 1)
 
 
 def _floor(w, x, y, z, r=3):
