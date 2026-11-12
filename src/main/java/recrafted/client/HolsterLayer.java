@@ -23,7 +23,7 @@ public class HolsterLayer extends RenderLayer<NpcEntity, NpcModel> {
     public void render(PoseStack pose, MultiBufferSource buf, int light, NpcEntity e, float limb, float limbAmount,
                        float partial, float age, float headYaw, float headPitch) {
         ItemStack gun = e.getSidearm();
-        if (gun.isEmpty() || e.isDown()) return;
+        if (gun.isEmpty() || e.isDown() || recrafted.compat.Guns.isGun(e.getMainHandItem())) return;
         pose.pushPose();
         getParentModel().body.translateAndRotate(pose);
         // the vanilla held-item transform for a hanging right hand, moved onto the hip: the gun hangs muzzle-down

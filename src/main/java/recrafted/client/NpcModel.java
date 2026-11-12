@@ -1,5 +1,7 @@
 package recrafted.client;
 
+import recrafted.compat.Guns;
+
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.util.Mth;
@@ -38,6 +40,17 @@ public class NpcModel extends PlayerModel<NpcEntity> {
             rightLeg.xRot = 0; leftLeg.xRot = 0;
             rightLeg.zRot = 0.12f; leftLeg.zRot = -0.12f;
             head.xRot = 0.1f; head.yRot = 0.5f;
+            sync();
+            return;
+        }
+        if (e.inCombat() && Guns.isGun(e.getMainHandItem())) {
+            // two-handed pistol grip, arms following the head (as a bow is held)
+            rightArm.yRot = -0.1f + head.yRot;
+            leftArm.yRot = 0.1f + head.yRot + 0.4f;
+            rightArm.xRot = -Mth.HALF_PI + head.xRot;
+            leftArm.xRot = -Mth.HALF_PI + head.xRot;
+            rightArm.zRot = 0;
+            leftArm.zRot = 0;
             sync();
             return;
         }

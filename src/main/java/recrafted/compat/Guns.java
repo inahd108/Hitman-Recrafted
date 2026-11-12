@@ -64,6 +64,36 @@ public final class Guns {
         return isGun(gun) ? safely(() -> TaczBridge.spareAmmo(gun), ItemStack.EMPTY) : ItemStack.EMPTY;
     }
 
+    /** How an NPC fires a given gun: shots per burst, ticks between shots, extra ticks between bursts. */
+    public record Cadence(int burst, int interval, int pause) {}
+
+    public static Cadence cadence(ItemStack gun) {
+        int cap = capacity(gun);
+        if (cap <= 6) return new Cadence(1, 18, 4);          // revolver: deliberate single shots
+        if (cap <= 9) return new Cadence(1, 13, 6);          // single-stack pistol
+        return new Cadence(3, 6, 22);                         // service pistol: short strings
+    }
+
+    /** Magazine size of this gun (6 if unknown). */
+    public static int capacity(ItemStack gun) {
+        return isGun(gun) ? safely(() -> TaczBridge.capacity(gun), 6) : 6;
+    }
+
+    /** Tops the gun's magazine back up (an NPC reloading). */
+    public static void refill(ItemStack gun) {
+        if (isGun(gun)) safely(() -> { TaczBridge.refill(gun); return null; }, null);
+    }
+
+    /** An NPC has just put this gun in its main hand. */
+    public static void npcDraw(net.minecraft.world.entity.LivingEntity npc) {
+        safely(() -> { TaczBridge.npcDraw(npc); return null; }, null);
+    }
+
+    /** An NPC pulls the trigger, aiming along pitch/yaw. Returns TACZ's result name ("SUCCESS", "COOL_DOWN", ...). */
+    public static String npcShoot(net.minecraft.world.entity.LivingEntity npc, float pitch, float yaw) {
+        return safely(() -> TaczBridge.npcShoot(npc, pitch, yaw), "NO_TACZ");
+    }
+
     /** Fires TACZ's gunfire event as if this player had shot this gun (dev tests). */
     public static void simulateShot(net.minecraft.server.level.ServerPlayer p, ItemStack gun) {
         safely(() -> { TaczBridge.simulateShot(p, gun); return null; }, null);

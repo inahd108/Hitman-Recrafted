@@ -3,6 +3,7 @@ package recrafted.compat;
 import com.tacz.guns.api.GunProperties;
 import com.tacz.guns.api.TimelessAPI;
 import com.tacz.guns.api.entity.IGunOperator;
+import com.tacz.guns.api.event.common.EntityHurtByGunEvent;
 import com.tacz.guns.api.event.common.GunFireEvent;
 import com.tacz.guns.api.item.IGun;
 import com.tacz.guns.api.item.builder.AmmoItemBuilder;
@@ -14,13 +15,16 @@ import com.tacz.guns.resource.modifier.AttachmentCacheProperty;
 import com.tacz.guns.resource.pojo.data.gun.Bolt;
 import com.tacz.guns.resource.pojo.data.gun.FireSound;
 import com.tacz.guns.resource.pojo.data.gun.GunData;
+import com.tacz.guns.util.time.GunTime;
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.LogicalSide;
 import recrafted.mission.Awareness;
+import recrafted.npc.NpcEntity;
 
 import java.util.Optional;
 
@@ -48,8 +52,49 @@ final class TaczBridge {
                 .orElse(ItemStack.EMPTY);
     }
 
+    /** Share of a gun's damage an NPC's bullet does to the player (guards are many; you are one). */
+    private static final float NPC_DAMAGE = 0.25f;
+
     static void register() {
         MinecraftForge.EVENT_BUS.addListener(TaczBridge::onFire);
+        MinecraftForge.EVENT_BUS.addListener(TaczBridge::onHurt);
+    }
+
+    static int capacity(ItemStack gun) {
+        IGun iGun = IGun.getIGunOrNull(gun);
+        if (iGun == null) return 6;
+        return TimelessAPI.getCommonGunIndex(iGun.getGunId(gun)).map(i -> i.getGunData().getAmmoAmount()).orElse(6);
+    }
+
+    static void refill(ItemStack gun) {
+        IGun iGun = IGun.getIGunOrNull(gun);
+        if (iGun == null) return;
+        TimelessAPI.getCommonGunIndex(iGun.getGunId(gun)).ifPresent(i -> {
+            iGun.setCurrentAmmoCount(gun, i.getGunData().getAmmoAmount());
+            iGun.setBulletInBarrel(gun, i.getGunData().getBolt() != Bolt.OPEN_BOLT);
+        });
+    }
+
+    static void npcDraw(LivingEntity npc) {
+        IGunOperator op = IGunOperator.fromLivingEntity(npc);
+        op.initialData();
+        op.draw(npc::getMainHandItem);
+    }
+
+    static String npcShoot(LivingEntity npc, float pitch, float yaw) {
+        IGunOperator op = IGunOperator.fromLivingEntity(npc);
+        long t = GunTime.nowMillis() - op.getDataHolder().baseTimestamp;
+        return op.shoot(() -> pitch, () -> yaw, t).name();     // the 3-arg form skips the player-side trigger-charge check
+    }
+
+    /** NPC bullets: lighter on the player, and guards never hit each other or bystanders. */
+    private static void onHurt(EntityHurtByGunEvent.Pre e) {
+        if (!(e.getAttacker() instanceof NpcEntity)) return;
+        if (e.getHurtEntity() instanceof NpcEntity) {
+            e.setCanceled(true);
+            return;
+        }
+        e.setBaseAmount(e.getBaseAmount() * NPC_DAMAGE);
     }
 
     static void simulateShot(ServerPlayer p, ItemStack gun) {

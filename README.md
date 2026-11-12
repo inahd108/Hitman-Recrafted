@@ -62,6 +62,12 @@ Press **X** to throw what you are holding: props, and guns too.
   A gun in your hand is illegal unless you wear a guard uniform. A shot compromises you to anyone who sees it,
   and the nearest people in earshot (guards first) come to look; suppressed guns are heard from much closer.
   A thrown gun knocks out whoever it hits, then lies where it lands for you to pick up again.
+- **Armed guards shoot back.** Once a guard is in a fight they draw their sidearm, take a two-handed aim and,
+  after a moment to react, open fire: single shots from a revolver, short strings from a Bastone, a pause to
+  reload when empty, a pistol-whip if you get close. Inside about 15 blocks they hold position and shoot;
+  further out they close in. They miss more at range and against a running target, their bullets do a quarter
+  of the gun's damage to you, and they never hit each other or bystanders. Guards without a gun (or once
+  they've dropped it) still come at you with a baton.
 - **Security doors** open to the matching keycard, quietly to a lockpick, loudly to a crowbar. Right-click
   either the door itself or the card reader beside it.
   Staff with clearance walk through on their own.
@@ -133,7 +139,6 @@ Other commands: `/contract visit` (go to the island without starting), `/contrac
   ignored by the NPCs, which is what you want while editing routes.
 - NPCs walk through each other rather than shoving. That is deliberate: it keeps narrow alleys, piers and
   doorways from jamming.
-- Guards carry guns (with TACZ installed) but still fight with batons: they don't shoot back yet.
 - Without TACZ, or without the gun pack, guards are simply unarmed; nothing else changes.
 
 ## Building
@@ -180,7 +185,6 @@ The headless self-test currently reports, for two minutes of simulated town life
 
 ## Roadmap
 
-- Guards who draw and fire their sidearms when the fight starts.
 - More guns for the Recrafted Arsenal (sawn-off, PDW, rifles, the briefcase sniper).
 - More accident kills, more exits, a second mission.
 

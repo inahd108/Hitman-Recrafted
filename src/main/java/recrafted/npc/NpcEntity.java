@@ -115,6 +115,7 @@ public class NpcEntity extends PathfinderMob {
     @Nullable private Vec3 lastKnown;
     private long lastSeenTick;
     private int attackCooldown;
+    private final Gunfight gunfight = new Gunfight();
     private int stateTicks;
     private int poisonTicks;
     public boolean discovered;
@@ -340,10 +341,13 @@ public class NpcEntity extends PathfinderMob {
                 case TYPE -> getRole() == NpcRole.SCIENTIST || getRole() == NpcRole.VARGA ? ItemStack.EMPTY : new ItemStack(Items.PAPER);
                 default -> ItemStack.EMPTY;
             };
-        } else if (getState() == State.ALERT && getRole().guard) {
-            want = new ItemStack(ModRegistry.prop(PropType.BATON));
+        } else if ((getState() == State.ALERT || getState() == State.SEARCH) && getRole().guard) {
+            want = getSidearm().isEmpty() ? new ItemStack(ModRegistry.prop(PropType.BATON)) : getSidearm();
         }
-        if (!ItemStack.isSameItem(want, getMainHandItem())) setItemSlot(EquipmentSlot.MAINHAND, want);
+        if (ItemStack.isSameItem(want, getMainHandItem())) return;
+        if (Guns.isGun(getMainHandItem())) entityData.set(SIDEARM, getMainHandItem().copy());   // holstered, rounds and all
+        setItemSlot(EquipmentSlot.MAINHAND, want.copy());
+        if (Guns.isGun(want)) gunfight.drew(this);
     }
 
     // ---- routine ---------------------------------------------------------------------
@@ -764,12 +768,20 @@ public class NpcEntity extends PathfinderMob {
             beginSearch(lastKnown != null ? lastKnown : position(), 20 * 20);
             return;
         }
-        if (tickCount % 10 == 0 || getNavigation().isDone()) {
+        boolean armed = Guns.isGun(getMainHandItem());
+        double dist = Math.sqrt(distanceToSqr(t));
+        if (armed && sees && dist <= Gunfight.RANGE) {
+            // hold position and shoot
+            getNavigation().stop();
+            setSprinting(false);
+        } else if (tickCount % 10 == 0 || getNavigation().isDone()) {
             if (sees) getNavigation().moveTo(t, RUN);
             else if (lastKnown != null) getNavigation().moveTo(lastKnown.x, lastKnown.y, lastKnown.z, RUN);
         }
         if (sees) getLookControl().setLookAt(t, 30, 30);
-        if (sees && distanceToSqr(t) < 2.4 * 2.4 && attackCooldown <= 0) {
+        if (armed) {
+            gunfight.tick(this, t, sees, dist);
+        } else if (sees && distanceToSqr(t) < 2.4 * 2.4 && attackCooldown <= 0) {
             swing(InteractionHand.MAIN_HAND);
             doHurtTarget(t);
             attackCooldown = 18;
@@ -891,6 +903,7 @@ public class NpcEntity extends PathfinderMob {
         setAnim(NpcPose.STAND);
         entityData.set(SUSPICION, 0f);
         entityData.set(SPEECH, "");
+        if (Guns.isGun(getMainHandItem())) entityData.set(SIDEARM, getMainHandItem().copy());
         setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
         dropSidearm();
         setHealth(getMaxHealth());

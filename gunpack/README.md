@@ -15,7 +15,7 @@ More weapons are on the way (see the main README's roadmap).
 
 **In the mission:** with the Recrafted mod, guards carry these guns holstered (Vento: estate guards and
 bodyguards; Bastone: harbour police, Halcyon security, lab guards; Argento: Capitano Sordi) and drop them, with
-a spare reload, when knocked out or killed. Press **X** to throw a gun. See the main README for details.
+a spare reload, when knocked out or killed. In a fight they draw and shoot. Press **X** to throw a gun. See the main README for details.
 
 ## Install
 

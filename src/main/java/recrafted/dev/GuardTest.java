@@ -25,6 +25,7 @@ import recrafted.compat.Guns;
 import recrafted.entity.PropEntity;
 import recrafted.mission.MissionManager;
 import recrafted.mission.Throwing;
+import recrafted.npc.Gunfight;
 import recrafted.npc.NpcEntity;
 import recrafted.npc.NpcRole;
 
@@ -33,8 +34,8 @@ import java.util.List;
 
 /**
  * Armed-guard check, enabled with -Drecrafted.guardtest=true (gradle -Pguardtest). Spawns armed guards
- * on the quay, knocks one out, picks up the dropped gun, throws it at a second guard and fires a shot near
- * two civilians. Logs GUARDTEST ok/FAIL per check, saves screenshots, then closes the game.
+ * on the quay, knocks one out, picks up the dropped gun, throws it at a second guard, fires a shot near
+ * two civilians, then lets an armed guard draw and shoot at the player. Logs GUARDTEST ok/FAIL per check, saves screenshots, then closes the game.
  */
 @Mod.EventBusSubscriber(modid = Recrafted.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class GuardTest {
@@ -48,7 +49,8 @@ public final class GuardTest {
     private static long nextAt;
     private static boolean prepared;
     private static int failures;
-    private static NpcEntity guardA, guardB, watcher, deaf;
+    private static NpcEntity guardA, guardB, watcher, deaf, gunman;
+    private static float healthBefore;
 
     private GuardTest() {}
 
@@ -124,7 +126,7 @@ public final class GuardTest {
             check("civilians are unarmed", Guns.sidearmFor(NpcRole.CIVILIAN).isEmpty(), "");
         }));
         step(200, () -> look(server, X, Y, Z, 0f, 12f));
-        step(3000, () -> shot(mc, "01_holstered"));
+        step(3000, () -> { mc.getToasts().clear(); shot(mc, "01_holstered"); });
         // close-ups of the estate guard's holster: from its right side, then from the front
         step(200, () -> look(server, X + 1.2, Y, Z + 1.5, 0f, 38f));
         step(1500, () -> shot(mc, "01b_holster_side"));
@@ -199,6 +201,54 @@ public final class GuardTest {
         }));
         step(200, () -> look(server, X, Y, Z, 0f, 4f));
         step(1500, () -> shot(mc, "05_gunshot"));
+        // ---- a guard draws and fires -------------------------------------------------------------
+        step(300, () -> onServer(server, (level, sp) -> {
+            cleanUp(level);
+            sp.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+            gunman = spawn(level, NpcRole.ESTATE_GUARD, "Test Gunman", X + 8.5, Z + 2.0, 90f);
+        }));
+        step(600, () -> onServer(server, (level, sp) -> {
+            // posed: alert, gun drawn, aiming at where the player stands; frozen so the pose holds for photos
+            gunman.onCompromised(sp);
+            gunman.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, gunman.getSidearm().copy());
+            gunman.setYHeadRot(90f);
+            gunman.setXRot(4f);
+            check("alert guard holds its gun", Guns.isGun(gunman.getMainHandItem()), gunman.getMainHandItem());
+        }));
+        step(200, () -> { mc.getToasts().clear(); look(server, X + 3.5, Y, Z + 2.0, -90f, 3f); });
+        step(1500, () -> shot(mc, "06_aiming_front"));
+        step(200, () -> look(server, X + 8.5, Y, Z - 1.6, 0f, 8f));
+        step(1500, () -> shot(mc, "07_aiming_side"));
+        step(200, () -> look(server, X + 5.2, Y, Z - 1.2, -45f, 8f));
+        step(1500, () -> shot(mc, "07b_aiming_three_quarter"));
+        // live fire: unfreeze and let it shoot at the player from about 8 blocks
+        step(300, () -> onServer(server, (level, sp) -> {
+            Gunfight.RESULTS.clear();
+            sp.setHealth(sp.getMaxHealth());
+            healthBefore = sp.getHealth();
+            gunman.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, ItemStack.EMPTY);   // draw for real
+            gunman.frozen = false;
+            gunman.onCompromised(sp);
+        }));
+        step(100, () -> { mc.getToasts().clear(); look(server, X + 2.5, Y, Z + 2.0, -90f, 4f); });
+        step(100, () -> mc.options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_BACK));
+        step(1800, () -> shot(mc, "08_firing_a"));
+        step(350, () -> shot(mc, "08_firing_b"));
+        step(350, () -> shot(mc, "08_firing_c"));
+        step(350, () -> shot(mc, "08_firing_d"));
+        step(100, () -> mc.options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON));
+        step(900, () -> shot(mc, "09_firing_fp_a"));
+        step(300, () -> shot(mc, "09_firing_fp_b"));
+        step(2500, () -> onServer(server, (level, sp) -> {
+            LOG.info("GUARDTEST balance: {} after the fight (from {}), results {}", sp.getHealth(), healthBefore, Gunfight.RESULTS);
+            int ok = Gunfight.RESULTS.getOrDefault("SUCCESS", 0);
+            check("guard fired real TACZ shots", ok >= 2, Gunfight.RESULTS);
+            check("the player was hit", sp.getHealth() < healthBefore || sp.getCombatTracker().getCombatDuration() > 0
+                    || sp.getLastDamageSource() != null, "health " + sp.getHealth() + " last " + sp.getLastDamageSource());
+            check("guard holds position while firing", gunman.getNavigation().isDone(), gunman.position());
+            gunman.frozen = true;
+            sp.setHealth(sp.getMaxHealth());
+        }));
         step(500, () -> onServer(server, (level, sp) -> cleanUp(level)));
         step(1000, () -> {
             LOG.info("GUARDTEST DONE failures={}", failures);
