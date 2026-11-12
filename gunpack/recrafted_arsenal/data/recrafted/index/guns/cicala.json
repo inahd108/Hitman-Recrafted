@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.cicala.name",
+  "display": "recrafted:cicala_display",
+  "data": "recrafted:cicala_data",
+  "tooltip": "recrafted.gun.cicala.desc",
+  "type": "sniper",
+  "sort": 8
+}

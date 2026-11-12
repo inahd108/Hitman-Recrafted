@@ -44,6 +44,14 @@ final class TaczBridge {
                 .setAmmoInBarrel(data.getBolt() != Bolt.OPEN_BOLT).setFireMode(FireMode.SEMI).build();
     }
 
+    static ItemStack withScope(ItemStack gun, ResourceLocation scope) {
+        if (gun.isEmpty()) return gun;
+        ItemStack s = com.tacz.guns.api.item.builder.AttachmentItemBuilder.create().setId(scope).build();
+        IGun iGun = IGun.getIGunOrNull(gun);
+        if (iGun != null && !s.isEmpty()) iGun.installAttachment(gun, s);
+        return gun;
+    }
+
     static ItemStack spareAmmo(ItemStack gun) {
         IGun iGun = IGun.getIGunOrNull(gun);
         if (iGun == null) return ItemStack.EMPTY;

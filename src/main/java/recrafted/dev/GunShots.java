@@ -87,10 +87,12 @@ public final class GunShots {
         Minecraft mc = Minecraft.getInstance();
         for (String raw : SPEC.split(",")) {
             if (raw.isBlank()) continue;
-            String[] parts = raw.trim().split("\\+");
+            String[] scoped = raw.trim().split("@");
+            String scope = scoped.length > 1 ? scoped[1] : null;
+            String[] parts = scoped[0].split("\\+");
             String gun = parts[0];
             String attachment = parts.length > 1 ? parts[1] : null;
-            String label = gun + (attachment != null ? "_supp" : "");
+            String label = gun + (attachment != null ? "_supp" : "") + (scope != null ? "_scoped" : "");
             step(500, () -> {
                 IntegratedServer server = mc.getSingleplayerServer();
                 server.execute(() -> {
@@ -102,6 +104,9 @@ public final class GunShots {
                                 + ",GunFireMode:\"SEMI\"");
                         if (attachment != null) {
                             nbt.append(",AttachmentMUZZLE:{id:\"tacz:attachment\",Count:1b,tag:{AttachmentId:\"").append(attachment).append("\"}}");
+                        }
+                        if (scope != null) {
+                            nbt.append(",AttachmentSCOPE:{id:\"tacz:attachment\",Count:1b,tag:{AttachmentId:\"").append(scope).append("\"}}");
                         }
                         nbt.append("}}");
                         CompoundTag tag = TagParser.parseTag(nbt.toString());

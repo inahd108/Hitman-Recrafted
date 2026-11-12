@@ -62,6 +62,18 @@ public final class Guns {
         return safely(() -> TaczBridge.loadedGun(id), ItemStack.EMPTY);
     }
 
+    public static final ResourceLocation CICALA = new ResourceLocation(Recrafted.MODID, "cicala");
+
+    /** A loaded Cicala with its 8x scope fitted (what a fresh briefcase holds), or empty. */
+    public static ItemStack freshCicala() {
+        return safely(() -> TaczBridge.withScope(TaczBridge.loadedGun(CICALA), new ResourceLocation("tacz", "scope_standard_8x")),
+                ItemStack.EMPTY);
+    }
+
+    public static boolean isCicala(ItemStack stack) {
+        return isGun(stack) && stack.hasTag() && CICALA.toString().equals(stack.getTag().getString("GunId"));
+    }
+
     /** One reload's worth of the right ammunition for this gun, or empty. */
     public static ItemStack spareAmmo(ItemStack gun) {
         return isGun(gun) ? safely(() -> TaczBridge.spareAmmo(gun), ItemStack.EMPTY) : ItemStack.EMPTY;

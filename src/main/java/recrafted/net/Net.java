@@ -52,6 +52,8 @@ public final class Net {
                 .encoder(NpcEditC2S::write).decoder(NpcEditC2S::new).consumerMainThread(NpcEditC2S::handle).add();
         CHANNEL.messageBuilder(ThrowC2S.class, id++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(ThrowC2S::write).decoder(ThrowC2S::new).consumerMainThread(ThrowC2S::handle).add();
+        CHANNEL.messageBuilder(PackC2S.class, id++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(PackC2S::write).decoder(PackC2S::new).consumerMainThread(PackC2S::handle).add();
     }
 
     public static boolean canEdit(ServerPlayer p) {
@@ -209,6 +211,17 @@ public final class Net {
             ServerPlayer p = ctx.get().getSender();
             ctx.get().setPacketHandled(true);
             if (p != null) recrafted.mission.Throwing.throwHeld(p);
+        }
+    }
+
+    /** The Pack key: fold the Cicala in the main hand back into its briefcase. */
+    public record PackC2S() {
+        public PackC2S(FriendlyByteBuf b) { this(); }
+        void write(FriendlyByteBuf b) { }
+        void handle(Supplier<NetworkEvent.Context> ctx) {
+            ServerPlayer p = ctx.get().getSender();
+            ctx.get().setPacketHandled(true);
+            if (p != null) recrafted.item.CicalaCaseItem.packHeld(p);
         }
     }
 }

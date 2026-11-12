@@ -260,6 +260,36 @@ public final class GuardTest {
             gunman.frozen = true;
             sp.setHealth(sp.getMaxHealth());
         }));
+        // ---- the Cicala briefcase ------------------------------------------------------------------------
+        step(300, () -> onServer(server, (level, sp) -> {
+            sp.getInventory().clearContent();
+            ItemStack caseStack = new ItemStack(ModRegistry.CICALA_CASE.get());
+            sp.setItemInHand(InteractionHand.MAIN_HAND, caseStack);
+            ItemStack rifle = caseStack.getItem().finishUsingItem(caseStack, level, sp);
+            check("a fresh case assembles into a loaded Cicala", Guns.isCicala(rifle) && rifle.getTag().getInt("GunCurrentAmmoCount") == 5,
+                    rifle.getTag());
+            check("the rifle comes with its 8x scope fitted", rifle.getTag().contains("AttachmentSCOPE")
+                    && rifle.getTag().getCompound("AttachmentSCOPE").getCompound("tag").getString("AttachmentId").equals("tacz:scope_standard_8x"),
+                    rifle.getTag().get("AttachmentSCOPE"));
+            int spare = sp.getInventory().items.stream().filter(st -> st.hasTag() && "tacz:308".equals(st.getTag().getString("AmmoId")))
+                    .mapToInt(ItemStack::getCount).sum();
+            check("and two spare magazines of .308", spare == 10, spare);
+            rifle.getTag().putInt("GunCurrentAmmoCount", 3);
+            sp.setItemInHand(InteractionHand.MAIN_HAND, rifle);
+            check("Pack puts it back in the case", recrafted.item.CicalaCaseItem.packHeld(sp)
+                    && sp.getMainHandItem().getItem() == ModRegistry.CICALA_CASE.get(), sp.getMainHandItem());
+            ItemStack again = sp.getMainHandItem().getItem().finishUsingItem(sp.getMainHandItem(), level, sp);
+            check("re-assembling gives the same rifle back (3 rounds, scoped)", Guns.isCicala(again)
+                    && again.getTag().getInt("GunCurrentAmmoCount") == 3 && again.getTag().contains("AttachmentSCOPE"), again.getTag());
+            check("no extra ammo the second time", sp.getInventory().items.stream().filter(st -> st.hasTag()
+                    && "tacz:308".equals(st.getTag().getString("AmmoId"))).mapToInt(ItemStack::getCount).sum() == 10, "");
+            sp.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ModRegistry.CICALA_CASE.get()));
+        }));
+        step(200, () -> { mc.getToasts().clear(); look(server, X, Y, Z, 0f, 12f); });
+        step(1500, () -> shot(mc, "11_case_in_hand"));
+        step(100, () -> mc.options.setCameraType(net.minecraft.client.CameraType.THIRD_PERSON_FRONT));
+        step(1500, () -> shot(mc, "11b_case_third_person"));
+        step(100, () -> mc.options.setCameraType(net.minecraft.client.CameraType.FIRST_PERSON));
         // ---- a lab guard with the PDW fires in bursts -------------------------------------------------
         step(300, () -> onServer(server, (level, sp) -> {
             cleanUp(level);

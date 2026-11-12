@@ -71,6 +71,8 @@ public final class ModRegistry {
     public static final Map<PropType, RegistryObject<Item>> PROPS = new EnumMap<>(PropType.class);
     public static final Map<NpcRole, RegistryObject<Item>> OUTFITS = new LinkedHashMap<>();
     public static final RegistryObject<Item> ROUTE_PLANNER = ITEMS.register("route_planner", () -> new RoutePlannerItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> CICALA_CASE = ITEMS.register("cicala_case",
+            () -> new recrafted.item.CicalaCaseItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> CASTING_CARD = ITEMS.register("casting_card", () -> new CastingCardItem(new Item.Properties().stacksTo(1)));
 
     static {

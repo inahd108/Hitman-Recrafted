@@ -430,6 +430,49 @@ def build_bulwark():
     )
 
 
+def build_cicala():
+    import cicala
+    import cicala_anim
+    R = 'tacz:m700/m700_'
+    display = dict(SMG_DISPLAY)
+    display.update({'state_machine': 'tacz:manual_action_state_machine', 'iron_zoom': 1.5, 'zoom_model_fov': 45,
+                    'muzzle_flash': {'type': 'renew', 'texture': 'tacz:flash/common_muzzle_flash', 'scale': 0.2,
+                                     'smoke_scale': 0.8, 'initial_speed_scale': 0.8},
+                    'shell': None})
+    emit_pistol(
+        cicala, cicala_anim.animations(),
+        name='Cicala', desc='Takedown sniper rifle with an integral suppressor. Travels in a briefcase.', sort=8,
+        gun_type='sniper', base_display=display, side_cy=6.0,
+        data={
+            'allow_ammo_unload': True, 'ammo': 'tacz:308', 'rpm': 60,
+            'bullet': {'life': 2.0, 'bullet_amount': 1, 'damage': 24, 'tracer_count_interval': 0,
+                       'extra_damage': {'armor_ignore': 0.6, 'head_shot_multiplier': 2.5,
+                                        'damage_adjust': [{'distance': 60, 'damage': 24}, {'distance': 120, 'damage': 20},
+                                                          {'distance': 'infinite', 'damage': 16}]},
+                       'speed': 520, 'gravity': 0.1, 'knockback': 0.1, 'friction': 0.01, 'ignite': False, 'pierce': 2},
+            'ammo_amount': 5, 'extended_mag_ammo_amount': [7, 9, 12], 'bolt': 'manual_action', 'bolt_action_time': 0.85,
+            'reload': {'type': 'magazine', 'feed': {'empty': 2.0, 'tactical': 1.5},
+                       'cooldown': {'empty': 3.55, 'tactical': 2.3}},
+            'draw_time': 0.7, 'put_away_time': 0.5, 'aim_time': 0.32, 'sprint_time': 0.2, 'weight': 3.6,
+            'movement_speed': {'base': -0.05, 'aim': -0.25, 'reload': -0.05}, 'crawl_recoil_multiplier': 0.5,
+            'fire_mode': ['semi'],
+            'allow_attachment_types': ['scope', 'extended_mag'],
+            'recoil': {'pitch': [{'time': 0, 'value': [2.2, 2.6]}, {'time': 0.25, 'value': [0.3, 0.3]},
+                                 {'time': 0.4, 'value': [0, 0]}],
+                       'yaw': [{'time': 0, 'value': [-0.6, 0.6]}, {'time': 0.2, 'value': [0, 0]}]},
+            'inaccuracy': {'stand': 6.0, 'move': 7.0, 'sneak': 5.0, 'lie': 3.0, 'aim': 0.02},
+            'fire_sound': {'fire_multiplier': 0.35, 'silence_multiplier': 1.0},
+        },
+        sounds={'draw': R + 'draw', 'put_away': R + 'put_away', 'shoot': R + 'silence', 'shoot_3p': R + 'silence_3p',
+                'silence': R + 'silence', 'silence_3p': R + 'silence_3p'},
+        allow=['#tacz:scope', '#tacz:sniper_extended_mag'],
+        recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 24},
+                {'item': {'tag': 'forge:ingots/gold'}, 'count': 2},
+                {'item': {'item': 'minecraft:glass_pane'}, 'count': 2}],
+        side_cz=-0.4, hud_ortho=14.0, slot_ortho=42.0,
+    )
+
+
 def build_argento():
     gid = argento.ID
     m = argento.build()
@@ -602,6 +645,7 @@ def main():
     build_lupara()
     build_halcyon()
     build_bulwark()
+    build_cicala()
     write_json(f'assets/{NS}/lang/en_us.json', LANG)
     os.makedirs(DIST, exist_ok=True)
     zpath = os.path.join(DIST, f'{PACK_NAME}.zip')

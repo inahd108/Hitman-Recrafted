@@ -36,6 +36,10 @@ All screenshots are taken in-game by the automated tour (`./gradlew runClient -P
 `/contract intel` lists what your handler knows. `/contract status` shows objectives.
 Hold **V** (Focus) to outline targets (red), guards (blue) and anyone who can see through your outfit (white).
 Press **X** to throw what you are holding: props, and guns too.
+The **Cicala Case** is a briefcase, legal to carry anywhere. Hold use on it for a couple of seconds to assemble
+the sniper rifle inside (anyone watching gets suspicious); with the rifle in hand press **B** to pack it away again.
+The case keeps the rifle's rounds and scope. A new case also holds two spare magazines. Craft one from leather,
+iron and a gold ingot (needs TACZ and the gun pack).
 
 ### How the town reacts
 

@@ -1,0 +1,27 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 24
+    },
+    {
+      "item": {
+        "tag": "forge:ingots/gold"
+      },
+      "count": 2
+    },
+    {
+      "item": {
+        "item": "minecraft:glass_pane"
+      },
+      "count": 2
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "recrafted:cicala"
+  },
+  "type": "tacz:gun_smith_table_crafting"
+}

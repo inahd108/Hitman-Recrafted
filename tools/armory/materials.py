@@ -373,3 +373,9 @@ def bronze(p, normal, seed=0):
     """Bronze-nitride finish for the muzzle brake and bolt carrier."""
     base = np.array([150, 112, 64], dtype=float)
     return base[None] * (0.9 + 0.1 * fbm(p, [16, 16, 16], 2, seed))[:, None]
+
+
+def gunmetal(p, normal, seed=0):
+    """Cerakoted gunmetal grey, matte with a soft mottle."""
+    base = np.array([98, 102, 108], dtype=float)
+    return base[None] * (0.92 + 0.1 * fbm(p, [6, 6, 6], 2, seed))[:, None]

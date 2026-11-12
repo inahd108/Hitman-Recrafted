@@ -33,6 +33,7 @@ import java.util.Locale;
 public final class ClientSetup {
     public static final KeyMapping FOCUS = new KeyMapping("key.recrafted.focus", InputConstants.KEY_V, "key.categories.recrafted");
     public static final KeyMapping THROW = new KeyMapping("key.recrafted.throw", InputConstants.KEY_X, "key.categories.recrafted");
+    public static final KeyMapping PACK = new KeyMapping("key.recrafted.pack", InputConstants.KEY_B, "key.categories.recrafted");
 
     private ClientSetup() {}
 
@@ -54,6 +55,7 @@ public final class ClientSetup {
         public static void keys(RegisterKeyMappingsEvent e) {
             e.register(FOCUS);
             e.register(THROW);
+            e.register(PACK);
         }
     }
 
@@ -71,6 +73,11 @@ public final class ClientSetup {
                 return;
             }
             ClientState.focus = FOCUS.isDown();
+            while (PACK.consumeClick()) {
+                if (mc.screen == null && recrafted.compat.Guns.isCicala(mc.player.getMainHandItem())) {
+                    recrafted.net.Net.CHANNEL.sendToServer(new recrafted.net.Net.PackC2S());
+                }
+            }
             while (THROW.consumeClick()) {
                 if (mc.screen == null && recrafted.mission.Throwing.canThrow(mc.player.getMainHandItem())) {
                     recrafted.net.Net.CHANNEL.sendToServer(new recrafted.net.Net.ThrowC2S());

@@ -1,0 +1,84 @@
+{
+  "state_machine": "tacz:manual_action_state_machine",
+  "ads_preset": "tacz:renew",
+  "use_default_animation": "rifle",
+  "third_person_animation": "default",
+  "transform": {
+    "scale": {
+      "thirdperson": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "ground": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "fixed": [
+        1.2,
+        1.2,
+        1.2
+      ]
+    }
+  },
+  "muzzle_flash": {
+    "type": "renew",
+    "texture": "tacz:flash/common_muzzle_flash",
+    "scale": 0.2,
+    "smoke_scale": 0.8,
+    "initial_speed_scale": 0.8
+  },
+  "iron_zoom": 1.5,
+  "model_fov": 60,
+  "zoom_model_fov": 45,
+  "offhand_show": {
+    "pos": [
+      -1,
+      20,
+      4
+    ],
+    "rotate": [
+      0,
+      0,
+      45
+    ],
+    "scale": [
+      0.5,
+      0.5,
+      0.5
+    ]
+  },
+  "hotbar_show": {
+    "0": {
+      "pos": [
+        -1,
+        16,
+        -2
+      ],
+      "rotate": [
+        0,
+        0,
+        20
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  },
+  "model": "recrafted:gun/cicala_geo",
+  "texture": "recrafted:gun/uv/cicala",
+  "hud": "recrafted:gun/hud/cicala",
+  "slot": "recrafted:gun/slot/cicala",
+  "animation": "recrafted:cicala",
+  "sounds": {
+    "draw": "tacz:m700/m700_draw",
+    "put_away": "tacz:m700/m700_put_away",
+    "shoot": "tacz:m700/m700_silence",
+    "shoot_3p": "tacz:m700/m700_silence_3p",
+    "silence": "tacz:m700/m700_silence",
+    "silence_3p": "tacz:m700/m700_silence_3p"
+  }
+}
