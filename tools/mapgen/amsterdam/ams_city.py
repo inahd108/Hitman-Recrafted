@@ -2,6 +2,7 @@
 and the backdrop rows that close the map's edges."""
 from ams_layout import *  # noqa: F401,F403
 from ams_houses import Style, canal_house, row_x, row_z, TRIM
+import ams_interiors
 
 
 def gardens(ctx, x0, z0, x1, z1, split_x=None):
@@ -45,8 +46,12 @@ def middle_block(ctx):
     houses += row_z(ctx, MID_GARDENS[0], MID_GARDENS[1], zs[0] - 11, zs[0] - 1, 'east', 'lane', floors=(2, 4),
                     shop=None)
     houses += row_z(ctx, MID_GARDENS[0], MID_GARDENS[1], zs[1] + 1, zs[1] + 11, 'west', 'lane', floors=(2, 4))
-    for h in houses[-6:]:
-        pass
+    # the brown café: the alley shop nearest the middle of the east side
+    east_side = [h for h in houses if h['frame'].front == 'west']
+    if east_side:
+        cafe = min(east_side, key=lambda h: abs((h['frame'].z0 + h['frame'].z1) / 2 - (MID_GARDENS[0] + MID_GARDENS[1]) / 2))
+        cafe['name'] = 'cafe'
+        ams_interiors.cafe(ctx, cafe)
     gardens(ctx, a, MID_GARDENS[0], zs[0] - 12, MID_GARDENS[1])
     gardens(ctx, zs[1] + 12, MID_GARDENS[0], b, MID_GARDENS[1])
     # awnings on the alley shops
@@ -77,7 +82,7 @@ def gulden_hamer(ctx):
     w, rng = ctx['w'], ctx['rng']
     x0, x1 = GULDEN_HAMER
     z0, z1 = SOUTH_HOUSES[0], SOUTH_HOUSES[0] + 29
-    st = Style(rng, 'grand', brick='dark', trim='white', gable='cornice', door='dark_oak', lit=.95, roof='slate')
+    st = Style(rng, 'grand', brick='dark', trim='white', gable='cornice', door='dark_oak', lit=.95, roof='slate', interior=False)
     info = canal_house(ctx, x0, z0, x1, z1, 'north', 4, st, name='gulden_hamer')
     fr, W = info['frame'], info['W']
     # stone ground floor and quoins
@@ -127,6 +132,7 @@ def gulden_hamer(ctx):
     coach = canal_house(ctx, x0 + 6, gz1 + 1, x1 - 6, BACK_STREET[0] - 1, 'south', 2, st2, name='coach_house')
     ctx['anchors'].update({'hamer.door': info['door'], 'hamer.garden': (cx, STREET + 1, (gz0 + gz1) // 2 + 2),
                            'hamer.coach': coach['door']})
+    ams_interiors.gulden_hamer(ctx)
     return [info, coach]
 
 
@@ -139,6 +145,7 @@ def forger(ctx):
     back = canal_house(ctx, x0, SOUTH_HOUSES[1] + 9, x1, SOUTH_HOUSES[1] + 20, 'north', 4,
                        Style(rng, 'lane', brick='red', trim='stone', gable='spout', lit=.5), name='forger_back')
     ctx['anchors'].update({'forger.door': info['door'], 'forger.top': (x0 + 3, info['top'] + 1, SOUTH_HOUSES[0] + 4)})
+    ams_interiors.studio(ctx, info)
     return [info, back]
 
 

@@ -140,8 +140,8 @@ HULLS = ['black_concrete', 'green_terracotta', 'blue_terracotta', 'dark_oak_plan
 CABINS = ['spruce_planks', 'white_terracotta', 'dark_oak_planks', 'birch_planks', 'light_gray_terracotta']
 
 
-def houseboat(ctx, x0, z0, length, beam, rng, name=None, hull=None, cabin=None):
-    """Moored along x. z0 is the side against the quay."""
+def houseboat(ctx, x0, z0, length, beam, rng, name=None, hull=None, cabin=None, quay='south'):
+    """Moored along x; quay = which side the gangplank goes to."""
     w = ctx['w']
     x1, z1 = x0 + length - 1, z0 + beam - 1
     hull = hull or rng.choice(HULLS)
@@ -168,9 +168,12 @@ def houseboat(ctx, x0, z0, length, beam, rng, name=None, hull=None, cabin=None):
                 ['potted_fern', 'potted_azalea_bush', 'potted_red_tulip', 'potted_oak_sapling', 'potted_flowering_azalea_bush']))
     # gangplank to the quay
     gx = cx0 + 1
-    w.set(gx, WATER + 1, z0 - 1, 'spruce_slab')
-    ctx.setdefault('boats', []).append(dict(name=name, x0=x0, z0=z0, x1=x1, z1=z1))
-    return (gx, WATER + 2, z0 + 1)
+    gz = z1 + 1 if quay == 'south' else z0 - 1
+    w.set(gx, WATER + 1, gz, 'spruce_slab')
+    deck = (gx, WATER + 2, z1 if quay == 'south' else z0)
+    ctx.setdefault('boats', []).append(dict(name=name, x0=x0, z0=z0, x1=x1, z1=z1, deck=deck,
+                                            cabin=(cx0 + 2, WATER + 2, (z0 + z1) // 2), door=(cx0 - 1, WATER + 2, (z0 + z1) // 2)))
+    return deck
 
 
 def flower_barge(ctx, x0, z0, length, rng):

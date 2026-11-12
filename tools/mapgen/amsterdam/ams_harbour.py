@@ -69,13 +69,11 @@ def smuggler_dock(ctx):
         w.fill(x0 + 2, WATER + 1, z, x1 - 2, WATER + 6, z, 'air')          # boat arches
         w.fill(x0 + 2, WATER + 6, z, x1 - 2, WATER + 6, z, 'dark_oak_slab[type=top]')
     w.fill(x0, top + 1, z0, x1, top + 1, z1, 'deepslate_tiles')
-    # jetty inside along the west wall
-    w.fill(x0 + 2, WATER + 1, z0 + 2, x0 + 3, WATER + 1, z1 - 2, 'spruce_slab')
+    # jetty inside along the west wall, running out under both arches to the quays
+    w.fill(x0 + 2, WATER + 1, z0 - 1, x0 + 3, WATER + 1, z1 + 1, 'spruce_slab')
     for z in range(z0 + 4, z1 - 2, 6):
         w.set(x0 + 4, WATER + 1, z, 'spruce_fence')
         w.set(x0 + 3, WATER + 4, z, 'light[level=10]')
-    w.set(x0 + 1, WATER + 2, (z0 + z1) // 2, 'air')
-    w.set(x0 + 1, WATER + 3, (z0 + z1) // 2, 'air')
     ctx['anchors']['dock.jetty'] = (x0 + 2, WATER + 2, (z0 + z1) // 2)
     ctx['anchors']['dock.berth'] = ((x0 + x1) // 2 + 1, WATER + 1, (z0 + z1) // 2)
 

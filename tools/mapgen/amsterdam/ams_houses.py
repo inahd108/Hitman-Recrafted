@@ -192,7 +192,8 @@ def interior(fr, info, st, rng):
             for yy in range(ly + 2 + i, ly + 4 + i):
                 if yy < floors[k + 1] + 1:
                     fr.set(1, yy, v, 'air')
-            fr.set(1, floors[k + 1], v, 'air')                                 # stairwell in the floor above
+            if i < h - 1:
+                fr.set(1, floors[k + 1], v, 'air')                             # stairwell; the top step is the floor
         y = ly + 1                                                               # feet level
         kind = 'front' if k == 0 else ('bed' if k % 2 == 1 else 'living')
         rooms.append(_furnish(fr, W, D, y, floors[k + 1], kind, st, rng, h))

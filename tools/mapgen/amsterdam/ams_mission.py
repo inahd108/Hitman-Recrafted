@@ -43,6 +43,8 @@ def exits(ctx):
 
 def build(ctx):
     exits(ctx)
+    import ams_cast
+    npcs, zones = ams_cast.build(ctx)
     sp = ctx['anchors'].get('station.platform', (20, STREET + 2, 50))
     return {
         'id': 'amsterdam',
@@ -54,7 +56,7 @@ def build(ctx):
         'targets': TARGETS,
         'objectives': OBJECTIVES,
         'intel': INTEL,
-        'zones': [],
+        'zones': zones,
         'props': [],
-        'npcs': [],
+        'npcs': npcs,
     }

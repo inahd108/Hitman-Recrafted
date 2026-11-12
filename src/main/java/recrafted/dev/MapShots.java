@@ -75,6 +75,13 @@ public final class MapShots {
         mc.options.cloudStatus().set(CloudStatus.FANCY);
         mc.options.ambientOcclusion().set(true);
         mc.levelRenderer.allChanged();
+        if (Boolean.getBoolean("recrafted.mapshots.start")) {
+            step(500, () -> server.execute(() -> {
+                ServerPlayer sp = server.getPlayerList().getPlayers().get(0);
+                recrafted.mission.MissionManager.start(sp, DIM);
+            }));
+            step(4000, () -> { });
+        }
         String[] times = System.getProperty("recrafted.mapshots.times", "-1").split(",");
         long settle = Long.getLong("recrafted.mapshots.settle", 15000L);
         boolean first = true;
