@@ -148,6 +148,8 @@ def item_sprites():
     card('keycard_lab', rgb('27b7c9'))
     card('keycard_estate', rgb('b8862b'))
     card('keycard_harbour', rgb('2f5fb3'))
+    s = new('ledger'); s.rect(3, 2, 12, 14, rgb('5a2a1e')); s.rect(4, 3, 12, 13, rgb('7b3a28')); s.rect(3, 2, 4, 14, rgb('3d1c14'))
+    s.rect(12, 3, 13, 13, rgb('efe6cf')); s.rect(6, 5, 10, 7, GOLD); s.rect(7, 6, 9, 6, rgb('5a2a1e')); s.rect(6, 10, 10, 10, GOLD)
     s = new('route_planner'); s.rect(3, 3, 12, 14, rgb('8a5a2b')); s.rect(4, 4, 11, 13, rgb('f2efe4')); s.rect(6, 2, 9, 3, STEEL)
     for (x, y) in ((5, 11), (6, 10), (7, 9), (8, 9), (9, 8), (10, 6)):
         s.px(x, y, rgb('2a7de1'))
@@ -670,6 +672,7 @@ PROP_NAMES = {
     'rat_poison': 'Rat Poison', 'lethal_poison': 'Lethal Poison Vial', 'sedative': 'Sedative Syringe',
     'syringe': 'Lethal Syringe', 'lockpick': 'Lockpick', 'keycard_lab': 'Lab Keycard', 'keycard_estate': 'Estate Keycard',
     'keycard_harbour': 'Harbour Keycard',
+    'ledger': 'Gulden Hamer Ledger',
 }
 ROLE_TITLES = {
     'fisherman': 'Fisherman', 'waiter': 'Waiter', 'cook': 'Cook', 'cleaner': 'Cleaner', 'gardener': 'Gardener',
@@ -700,6 +703,9 @@ def main():
     lang = {
         'itemGroup.recrafted': 'Recrafted: Contracts',
         'key.recrafted.focus': 'Focus (highlight targets and guards)',
+        'key.recrafted.throw': 'Throw held item (props and guns)',
+        'key.recrafted.pack': 'Pack the Cicala into its case',
+        'item.recrafted.cicala_case': 'Cicala Case',
         'key.categories.recrafted': 'Recrafted: Contracts',
         'entity.recrafted.npc': 'Townsperson',
         'entity.recrafted.prop': 'Prop',

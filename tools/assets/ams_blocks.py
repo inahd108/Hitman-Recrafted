@@ -26,6 +26,8 @@ LANG = {
     'block.recrafted.gable_scroll_stone': 'Sandstone Gable Scroll',
     'block.recrafted.hoist_beam': 'Hoisting Beam',
     'block.recrafted.shutter': 'Warehouse Shutter',
+    'block.recrafted.winch': 'Winch',
+    'block.recrafted.wage_book': 'Wage Book',
 }
 
 PAINTS = {'black': (28, 28, 30), 'navy': (34, 48, 84), 'red': (128, 32, 30), 'green': (36, 78, 52), 'cream': (214, 204, 176)}
@@ -339,6 +341,43 @@ def main():
         v.update(horiz_states(NS + f'shutter_{paint}', f',paint={paint}'))
     write('blockstates/shutter.json', {'variants': v})
     write('models/item/shutter.json', {'parent': NS + 'shutter_green'})
+
+    # winch: a wooden drum between two cheeks with a crank, rope wound round the drum
+    write('models/block/winch.json', {
+        'textures': {'w': 'minecraft:block/spruce_planks', 'l': 'minecraft:block/stripped_spruce_log',
+                     'r': 'minecraft:block/chain', 'i': 'minecraft:block/anvil', 'particle': 'minecraft:block/spruce_planks'},
+        'elements': [
+            el([1, 0, 2], [16, 1.5, 14], tex='#w'),                                         # base
+            el([2, 1.5, 6], [4, 12, 10], tex='#w'), el([12, 1.5, 6], [14, 12, 10], tex='#w'),   # cheeks
+            el([4, 6, 5.5], [12, 11, 10.5], tex='#l'),                                       # drum
+            el([5, 6.2, 5.3], [11, 10.8, 10.7], tex='#r'),                                   # rope on the drum
+            el([14, 8, 7.5], [15, 9, 8.5], tex='#i'),                                        # axle stub
+            el([15, 4, 7.5], [16, 9, 8.5], tex='#i'),                                        # crank arm
+            el([15, 4, 6], [16, 5, 10], tex='#w'),                                           # handle
+            el([6, 1.5, 3], [10, 3, 5], tex='#i')]})                                         # pawl
+    write('blockstates/winch.json', {'variants': {'': {'model': NS + 'winch'}}})
+    write('models/item/winch.json', {'parent': NS + 'winch'})
+
+    # wage book: an open cloth-bound book on a small writing slope
+    save_tex(flat((236, 228, 206), .03, rnd), 'wage_book_page')
+    im = Image.new('RGB', (16, 16), (236, 228, 206))
+    for y in range(3, 15, 2):
+        for x in range(2, 15):
+            if x != 8 and rnd.random() < .7:
+                im.putpixel((x, y), (96, 92, 84) if x % 5 else (150, 40, 34))
+    save_tex(im, 'wage_book_text')
+    write('models/block/wage_book.json', {
+        'textures': {'d': 'minecraft:block/dark_oak_planks', 'p': NS + 'wage_book_text', 'c': 'minecraft:block/red_wool',
+                     'particle': 'minecraft:block/dark_oak_planks'},
+        'elements': [
+            el([2, 0, 2], [14, 8, 14], tex='#d'),                                            # cabinet
+            el([1, 8, 1], [15, 9, 15], tex='#d'),                                            # top
+            el([2.5, 9, 3], [13.5, 9.6, 13], tex='#c'),                                      # cover
+            {'from': [3, 9.6, 3.5], 'to': [13, 10, 12.5], 'faces': {
+                'up': {'texture': '#p', 'uv': [0, 0, 16, 16]}, 'north': {'texture': '#p'}, 'south': {'texture': '#p'},
+                'east': {'texture': '#p'}, 'west': {'texture': '#p'}}}]})
+    write('blockstates/wage_book.json', {'variants': {'': {'model': NS + 'wage_book'}}})
+    write('models/item/wage_book.json', {'parent': NS + 'wage_book'})
 
     # language
     lang_path = os.path.join(ASSETS, 'lang/en_us.json')

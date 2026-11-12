@@ -89,6 +89,13 @@ public final class ModRegistry {
     public static final RegistryObject<Block> SHUTTER = block("shutter", () -> new recrafted.block.ams.ShutterBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(-1f, 3600000f).sound(SoundType.WOOD).noOcclusion()));
 
+    public static final RegistryObject<Block> WINCH = block("winch", () -> new ActionBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(-1f, 3600000f).sound(SoundType.WOOD).noOcclusion(),
+            ActionBlock.Action.WINCH));
+    public static final RegistryObject<Block> WAGE_BOOK = block("wage_book", () -> new ActionBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(-1f, 3600000f).sound(SoundType.WOOD).noOcclusion(),
+            ActionBlock.Action.CLUE));
+
     public static final RegistryObject<Block> MEAL = block("meal", () -> new ConsumableBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.QUARTZ).strength(-1f, 3600000f).noOcclusion().sound(SoundType.STONE),
             Block.box(3, 0, 3, 13, 3, 13)));

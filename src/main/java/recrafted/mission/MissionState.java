@@ -25,6 +25,8 @@ public class MissionState extends SavedData {
     public final Set<Integer> pendingNpcs = new HashSet<>();
     public final Set<Integer> pendingProps = new HashSet<>();
     public final Set<String> done = new HashSet<>();
+    /** Hidden targets the player has identified (contract ids). */
+    public final Set<String> identified = new HashSet<>();
     /** Cast entries removed in the editor; skipped by the next export. */
     public final Set<Integer> deletedCast = new HashSet<>();
     public final Map<BlockPos, BlockState> changed = new LinkedHashMap<>();
@@ -48,6 +50,8 @@ public class MissionState extends SavedData {
         for (int i : t.getIntArray("deletedCast")) s.deletedCast.add(i);
         ListTag d = t.getList("done", Tag.TAG_STRING);
         for (int i = 0; i < d.size(); i++) s.done.add(d.getString(i));
+        ListTag idl = t.getList("identified", Tag.TAG_STRING);
+        for (int i = 0; i < idl.size(); i++) s.identified.add(idl.getString(i));
         ListTag c = t.getList("changed", Tag.TAG_COMPOUND);
         for (int i = 0; i < c.size(); i++) {
             CompoundTag e = c.getCompound(i);
@@ -76,6 +80,9 @@ public class MissionState extends SavedData {
         ListTag d = new ListTag();
         for (String s : done) d.add(StringTag.valueOf(s));
         t.put("done", d);
+        ListTag idl = new ListTag();
+        for (String s : identified) idl.add(StringTag.valueOf(s));
+        t.put("identified", idl);
         ListTag c = new ListTag();
         for (Map.Entry<BlockPos, BlockState> e : changed.entrySet()) {
             CompoundTag x = new CompoundTag();

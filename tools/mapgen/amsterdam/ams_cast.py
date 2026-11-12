@@ -44,18 +44,22 @@ def build(ctx):
         wp('hamer.podium', 90, 'talk', 'n', say='Lot nine. A merchant\'s daughter, sixteen-sixty. Do I hear four hundred?'),
         wp('hamer.saleroom'), wp('hamer.corridor.w'), wp('hamer.vault.stairs'), wp('hamer.vault', 20, 'look', 's'),
         wp('hamer.vault.stairs'), wp('hamer.corridor.w'), wp('hamer.stairs.foot'), wp('hamer.landing'),
-        wp('hamer.viewing', 40, 'talk', 'e', say='Between us: the provenance is impeccable.'),
+        wp('hamer.viewing', 40, 'drink', 'e', say='Between us: the provenance is impeccable.'),
         wp('hamer.landing'), wp('hamer.office'),
     ], target=True, id='ostendorp')
     for i, off in enumerate(((1, 0, 1), (-1, 0, 1))):
         add(f'Bodyguard {"Ruud" if i == 0 else "Bas"}', 'bodyguard', [wp('hamer.office', 5, 'guard', off=off)],
             follow='ostendorp', enforcer=(i == 0), skin=1)
 
-    add('Apprentice', 'apprentice', [
+    meester = add('Apprentice', 'apprentice', [
         wp('studio.easel0', 60, 'work', 'n', say='Left. Always left.'),
-        wp('studio.stove', 20, 'drink', 'e'), wp('studio.window', 25, 'look', 'n'), wp('studio'),
+        wp('studio.window', 25, 'drink', 'n'), wp('studio'),
         wp('studio.easel1', 50, 'work', 'n'),
-    ], target=True, id='meester', hidden_name=True)
+        wp('forger.door'), wp('forger.quay', 30, 'smoke', 'n', say='Turpentine. It gets into your head after a while.'),
+        wp('forger.door'), wp('studio'),
+    ], id='meester', hidden_name=True)
+    meester['hidden'] = True
+    meester['lefty'] = True
     for i, (e, said) in enumerate((('studio.easel1', 'He never signs them. Says the paint signs itself.'),
                                    ('studio.easel2', None), ('studio.easel3', 'Pass the lead white.'))):
         add('Apprentice', 'apprentice', [wp(e, 70, 'work', 'n', say=said), wp('studio', 15, 'talk'),

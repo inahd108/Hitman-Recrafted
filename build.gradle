@@ -76,6 +76,7 @@ legacyForge {
             if (project.hasProperty('selftest')) {
                 systemProperty 'recrafted.selftest', 'true'
                 systemProperty 'recrafted.selftest.ticks', project.findProperty('selftestTicks') ?: '2400'
+                systemProperty 'recrafted.selftest.mission', project.findProperty('selftestMission') ?: 'corvara'
             }
         }
         configureEach {

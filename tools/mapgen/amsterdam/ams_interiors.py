@@ -14,7 +14,8 @@ def chair(w, x, y, z, facing, wood='dark_oak'):
 
 def table(w, x, y, z, wood='dark_oak', top='white_carpet'):
     w.set(x, y, z, f'{wood}_fence')
-    w.set(x, y + 1, z, top if top.endswith('carpet') else f'{wood}_pressure_plate')
+    if top:
+        w.set(x, y + 1, z, top if top.endswith('carpet') else f'{wood}_pressure_plate')
 
 
 def lamp(w, x, y_ceiling, z, drop=1):
@@ -159,18 +160,21 @@ def gulden_hamer(ctx):
     for x in (xm - 4, xm + 4):                                               # easels for the lots
         w.set(x, feet0 + 1, iz1, 'dark_oak_fence')
         w.set(x, feet0 + 2, iz1, 'white_wool')
-    # the chandelier over the podium: the auctioneer stands under it
+    # the chandelier over the podium: the auctioneer stands right under it. Its rope runs to a winch
+    # on the press balcony; let it go and it comes down on whoever is at the lectern.
     for y in range(f2 - 1, f2 - 4, -1):
-        w.set(xm, y, iz1 - 3, 'chain')
-    for dx, dz in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)):
-        w.set(xm + dx, f2 - 4, iz1 - 3 + dz, 'lantern[hanging=true]' if (dx, dz) != (0, 0) else 'gold_block')
-    A['hamer.chandelier'] = (xm, f2 - 4, iz1 - 3)
+        w.set(xm, y, iz1, 'chain')
+    for dx, dz in ((0, 0), (1, 0), (-1, 0), (0, -1)):
+        w.set(xm + dx, f2 - 4, iz1 + dz, 'lantern[hanging=true]' if (dx, dz) != (0, 0) else 'gold_block')
+    A['hamer.chandelier'] = (xm, f2 - 4, iz1)
     # press balcony along the saleroom's front wall at first-floor level
     for x in range(ix0, ix1 + 1):
         w.set(x, f1, zs0, 'dark_oak_planks')
         w.set(x, f1, zs0 + 1, 'dark_oak_planks')
         w.set(x, feet1, zs0 + 1, 'dark_oak_fence')
     A['hamer.balcony'] = (xm - 6, feet1, zs0)
+    w.set(xm + 3, feet1, zs0, 'recrafted:winch')
+    A['hamer.winch'] = (xm + 3, feet1, zs0)
     for x in range(ix0 + 4, ix1 - 3, 6):
         w.set(x, f2 - 1, (zs0 + iz1) // 2, 'lantern[hanging=true]')
     # garden door in the back wall, west corner
@@ -205,6 +209,8 @@ def gulden_hamer(ctx):
     w.set(ix1 - 1, feet1 + 1, iz0 + 4, 'white_wool')
     w.fill(xe + 1, feet1, iz0 + 1, ix1, feet1, zs0 - 2, 'blue_carpet')
     lamp(w, xe + 4, f2, iz0 + 4)
+    table(w, xe + 5, feet1, iz0 + 4, 'dark_oak', top='')
+    w.set(xe + 5, feet1 + 1, iz0 + 4, 'recrafted:drink[poison=none]')     # her champagne
     A['hamer.viewing'] = (xe + 3, feet1, iz0 + 4)
     A['hamer.viewing.easel'] = (ix1 - 2, feet1, iz0 + 4)
     # gallery between them: easels with paintings on show
@@ -262,6 +268,13 @@ def cafe(ctx, info):
     A['cafe.kitchen'] = fr.pos(R - 1, y, D - 3)
     A['cafe.stairs'] = fr.pos(2, y, D - 3)
     A['cafe.backroom'] = fr.pos(W // 2, info['levels'][1] + 1, D // 2) if len(info['levels']) > 1 else A['cafe.bar']
+    bx, by, bz = A['cafe.backroom']
+    for dx in (1, -1, 2, -2):                                    # the wage book on the manager's cabinet
+        here = w.name(w.get(bx + dx, by, bz))
+        if (here.endswith('air') or here.endswith('carpet')) and w.is_air(bx + dx, by + 1, bz):
+            w.set(bx + dx, by, bz, 'recrafted:wage_book')
+            A['cafe.wage_book'] = (bx + dx, by, bz)
+            break
 
 
 # ---- the forger's attic studio --------------------------------------------------------------------
@@ -284,4 +297,18 @@ def studio(ctx, info):
     A['studio.stove'] = fr.pos(W - 2, y, D - 4)
     A['studio'] = fr.pos(W // 2, y, D // 2)
     A['studio.window'] = fr.pos(W // 2, y, 2)
+    fr.set(W // 2 + 1, y, 2, 'spruce_fence')
+    fr.set(W // 2 + 1, y + 1, 2, 'recrafted:drink[poison=none]')            # his cup of tea, by the window
+    fr.set(W - 2, y, 2, 'recrafted:winch')
+    A['studio.winch'] = fr.pos(W - 2, y, 2)
+    # a crate of "lead white" on the hoist rope, hanging over the quay in front of the door
+    u = (W - 1) // 2
+    hx, hy, hz = fr.pos(u, info['top'] + 2, -1)
+    w.set(hx, hy, hz, 'chain')
+    w.set(hx, hy - 1, hz, 'barrel[facing=up]')
+    y0 = hy - 2
+    while y0 > STREET and w.is_air(hx, y0, hz):
+        y0 -= 1
+    A['forger.crate'] = (hx, hy - 1, hz)
+    A['forger.quay'] = (hx, y0 + 1, hz)
     A['studio.hoist'] = fr.pos((W - 1) // 2, info['top'] + 1, 2)

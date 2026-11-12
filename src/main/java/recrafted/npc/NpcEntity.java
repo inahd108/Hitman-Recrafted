@@ -81,7 +81,7 @@ public class NpcEntity extends PathfinderMob {
     private static final EntityDataAccessor<String> SPEECH = SynchedEntityData.defineId(NpcEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<ItemStack> SIDEARM = SynchedEntityData.defineId(NpcEntity.class, EntityDataSerializers.ITEM_STACK);
 
-    private static final int F_TARGET = 1, F_ENFORCER = 2, F_STRIPPED = 4;
+    private static final int F_TARGET = 1, F_ENFORCER = 2, F_STRIPPED = 4, F_LEFTY = 8;
     private static final double WALK = 0.55, BRISK = 0.8, RUN = 1.15;
     // diagnostics for the headless self-test
     public static int statArrivals, statUnsticks;
@@ -90,6 +90,8 @@ public class NpcEntity extends PathfinderMob {
     // ---- authored data ---------------------------------------------------------
     private Route route = new Route();
     public String contractId = "";
+    /** A target whose face nobody knows: not marked until the player identifies them. */
+    public boolean hiddenTarget;
     public String followId = "";
     @Nullable public Vec3 sickSpot;
     public int missionGen = -1;
@@ -183,6 +185,9 @@ public class NpcEntity extends PathfinderMob {
     public boolean isEnforcer() { return (entityData.get(FLAGS) & F_ENFORCER) != 0; }
     public boolean isStripped() { return (entityData.get(FLAGS) & F_STRIPPED) != 0; }
     public void setTarget(boolean b) { flag(F_TARGET, b); }
+    /** Paints (works) with the left hand: the one tell De Meester can't hide. */
+    public boolean isLefty() { return (entityData.get(FLAGS) & F_LEFTY) != 0; }
+    public void setLefty(boolean b) { flag(F_LEFTY, b); }
     public void setEnforcer(boolean b) { flag(F_ENFORCER, b); }
     public float getSuspicionLevel() { return entityData.get(SUSPICION); }
     public String getSpeech() { return entityData.get(SPEECH); }
@@ -1030,6 +1035,7 @@ public class NpcEntity extends PathfinderMob {
         tag.putInt("RouteIndex", routeIndex);
         tag.putInt("RouteDir", routeDir);
         tag.putString("ContractId", contractId);
+        tag.putBoolean("HiddenTarget", hiddenTarget);
         tag.putString("FollowId", followId);
         tag.putInt("Gen", missionGen);
         tag.putInt("CastIndex", castIndex);
@@ -1055,6 +1061,7 @@ public class NpcEntity extends PathfinderMob {
         routeIndex = tag.getInt("RouteIndex");
         routeDir = tag.getInt("RouteDir") < 0 ? -1 : 1;
         contractId = tag.getString("ContractId");
+        hiddenTarget = tag.getBoolean("HiddenTarget");
         followId = tag.getString("FollowId");
         missionGen = tag.contains("Gen") ? tag.getInt("Gen") : -1;
         castIndex = tag.contains("CastIndex") ? tag.getInt("CastIndex") : -1;

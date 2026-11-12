@@ -98,8 +98,13 @@ public class NpcModel extends PlayerModel<NpcEntity> {
                 head.xRot = 0.15f;
             }
             case WORK -> {
-                rightArm.xRot = -1.05f + Mth.sin(age * 0.35f) * 0.45f;
-                leftArm.xRot = -0.75f + Mth.cos(age * 0.2f) * 0.15f;
+                if (e.isLefty()) {          // the brush in the other hand
+                    leftArm.xRot = -1.05f + Mth.sin(age * 0.35f) * 0.45f;
+                    rightArm.xRot = -0.75f + Mth.cos(age * 0.2f) * 0.15f;
+                } else {
+                    rightArm.xRot = -1.05f + Mth.sin(age * 0.35f) * 0.45f;
+                    leftArm.xRot = -0.75f + Mth.cos(age * 0.2f) * 0.15f;
+                }
                 rightArm.yRot = -0.2f; leftArm.yRot = 0.25f;
                 head.xRot = 0.3f;
             }

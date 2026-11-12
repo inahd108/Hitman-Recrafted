@@ -71,6 +71,11 @@
   "Catering at the Gulden Hamer is brought in. Nobody checks the faces of the waiters, but everybody checks their bags.",
   "The guest list is for bidders. A bidder's paddle opens every door the public may use.",
   "De Meester never signs his work. His apprentices say he is the only one who paints left-handed.",
+  "Watch the four painters at work long enough and he gives himself away. Or read the caf\u00e9's wage book: In de Gouden Ton pays his apprentices, and one name draws no wage.",
+  "Twice an evening De Meester goes down to the quay for air, right under the hoist with the lead white.",
+  "Ostendorp takes her champagne in the private viewing room. Kooistra keeps a bottle of jenever in his cabin.",
+  "The saleroom chandelier hangs on a rope from the press balcony. Ostendorp stands under it for every lot.",
+  "The Gulden Hamer's ledger is kept in the strongbox in the basement vault.",
   "Kooistra can't swim, so he never leaves the boat between stops.",
   "The bridge keeper raises the Gildegracht drawbridge for any boat that sounds its horn twice."
  ],
@@ -194,7 +199,16 @@
    "label": "Politie \u2014 staff only"
   }
  ],
- "props": [],
+ "props": [
+  {
+   "item": "recrafted:ledger",
+   "pos": [
+    67.5,
+    59,
+    232.5
+   ]
+  }
+ ],
  "npcs": [
   {
    "name": "Margriet Ostendorp",
@@ -431,7 +445,7 @@
        228.5
       ],
       "wait": 800,
-      "pose": "talk",
+      "pose": "drink",
       "yaw": -90,
       "say": "Between us: the provenance is impeccable."
      },
@@ -536,40 +550,12 @@
      },
      {
       "pos": [
-       152.5,
-       90,
-       232.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       151.5,
-       90,
-       238.5
-      ],
-      "wait": 400,
-      "pose": "drink",
-      "yaw": -90
-     },
-     {
-      "pos": [
-       152.5,
-       90,
-       231.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
        153.5,
        90,
        224.5
       ],
       "wait": 500,
-      "pose": "look",
+      "pose": "drink",
       "yaw": 180
      },
      {
@@ -590,11 +576,176 @@
       "wait": 1000,
       "pose": "work",
       "yaw": 180
+     },
+     {
+      "pos": [
+       155.5,
+       90,
+       234.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       154.5,
+       86,
+       239.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       155.5,
+       81,
+       238.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       155.5,
+       75,
+       240.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       154.5,
+       70,
+       240.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       155.5,
+       65,
+       237.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       155.5,
+       65,
+       229.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       155.5,
+       65,
+       221.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       153.5,
+       64,
+       221.5
+      ],
+      "wait": 600,
+      "pose": "smoke",
+      "yaw": 180,
+      "say": "Turpentine. It gets into your head after a while."
+     },
+     {
+      "pos": [
+       155.5,
+       65,
+       221.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       155.5,
+       65,
+       229.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       155.5,
+       65,
+       237.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       155.5,
+       69,
+       237.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       154.5,
+       74,
+       238.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       154.5,
+       78,
+       239.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       155.5,
+       83,
+       240.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       155.5,
+       89,
+       238.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       153.5,
+       90,
+       232.5
+      ],
+      "wait": 0,
+      "pose": "stand"
      }
     ]
    },
    "id": "meester",
-   "target": true
+   "hidden": true,
+   "lefty": true
   },
   {
    "name": "Apprentice",

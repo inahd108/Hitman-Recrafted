@@ -63,6 +63,8 @@ import java.util.UUID;
 public final class MissionManager {
     private static final Map<UUID, Long> HUNTED = new HashMap<>();
     private static final Map<UUID, Long> SPOT_COOLDOWN = new HashMap<>();
+    /** How long each player has been watching a hidden target at work (ticks). */
+    private static final Map<UUID, Integer> WATCHING = new HashMap<>();
     private static long serverTick;
 
     private MissionManager() {}
@@ -167,7 +169,8 @@ public final class MissionManager {
         }
         if (!wasObjective && by != null) {
             st.nonTargetKills++;
-            by.displayClientMessage(Component.literal("Non-target killed").withStyle(ChatFormatting.RED), true);
+            by.displayClientMessage(Component.literal(npc.getRole() == NpcRole.APPRENTICE
+                    ? "Non-target killed: that was not De Meester" : "Non-target killed").withStyle(ChatFormatting.RED), true);
         }
         st.setDirty();
         checkAllDone(level, st);
@@ -327,6 +330,122 @@ public final class MissionManager {
         sendHud(level, p);
     }
 
+    // ---- hidden targets, clues, rigged loads, collectables -------------------------------------
+    /** The player now knows who the hidden target is: mark them for Focus and say so. */
+    public static void identify(ServerLevel level, @Nullable ServerPlayer p, String contractId, String how) {
+        MissionState st = activeState(level);
+        if (st == null || !st.identified.add(contractId)) return;
+        st.setDirty();
+        String name = contractId;
+        for (Mission.Target t : of(level).targets) if (t.id().equals(contractId)) name = t.name();
+        for (Entity e : level.getAllEntities()) {
+            if (e instanceof NpcEntity n && n.hiddenTarget && n.contractId.equals(contractId)) n.setTarget(true);
+        }
+        announce(level, Component.literal("\u25c6 " + name + " identified").withStyle(ChatFormatting.RED),
+                Component.literal(how).withStyle(ChatFormatting.GRAY));
+    }
+
+    /** A document or overheard detail that gives a hidden target away (the café's wage book). */
+    public static void readClue(ServerLevel level, @Nullable ServerPlayer p, BlockPos pos) {
+        MissionState st = activeState(level);
+        if (st == null) {
+            if (p != null) p.displayClientMessage(Component.literal("Columns of names and guilders."), true);
+            return;
+        }
+        for (Entity e : level.getAllEntities()) {
+            if (e instanceof NpcEntity n && n.hiddenTarget) {
+                identify(level, p, n.contractId, "The wage book: one apprentice draws no wage. He pays the others.");
+                return;
+            }
+        }
+        if (p != null) p.displayClientMessage(Component.literal("Columns of names and guilders."), true);
+    }
+
+    /** Watching a hidden target at work long enough gives them away. */
+    private static void tickWatching(ServerLevel level, MissionState st) {
+        for (ServerPlayer p : level.players()) {
+            NpcEntity seen = null;
+            for (NpcEntity n : level.getEntitiesOfClass(NpcEntity.class, p.getBoundingBox().inflate(10),
+                    e -> e.hiddenTarget && !e.isDown() && e.isLefty() && e.getAnim() == recrafted.npc.NpcPose.WORK
+                            && !st.identified.contains(e.contractId))) {
+                Vec3 to = n.getEyePosition().subtract(p.getEyePosition()).normalize();
+                if (p.getViewVector(1f).dot(to) > 0.93 && p.hasLineOfSight(n)) {
+                    seen = n;
+                    break;
+                }
+            }
+            if (seen == null) {
+                WATCHING.remove(p.getUUID());
+                continue;
+            }
+            int t = WATCHING.merge(p.getUUID(), 5, Integer::sum);
+            if (t >= 100) {
+                WATCHING.remove(p.getUUID());
+                identify(level, p, seen.contractId, "He holds the brush in his left hand.");
+            }
+        }
+    }
+
+    /**
+     * A winch lets go of the nearest load hanging on a chain (a chandelier, a crate on a hoist):
+     * the chain and the load come down, and anyone under it does not get up.
+     */
+    public static void dropLoad(ServerLevel level, @Nullable ServerPlayer p, BlockPos winch) {
+        BlockPos best = null;
+        double bestD = Double.MAX_VALUE;
+        for (BlockPos q : BlockPos.betweenClosed(winch.offset(-12, -12, -12), winch.offset(12, 12, 12))) {
+            BlockState s = level.getBlockState(q);
+            if (s.isAir() || s.is(Blocks.CHAIN) || s.is(Blocks.LANTERN) || !level.getBlockState(q.above()).is(Blocks.CHAIN)) continue;
+            double d = q.distSqr(winch);
+            if (d < bestD) {
+                bestD = d;
+                best = q.immutable();
+            }
+        }
+        if (best == null) {
+            if (p != null) p.displayClientMessage(Component.literal("The rope is tied off to nothing."), true);
+            return;
+        }
+        // the chain above and anything hanging round the load
+        for (BlockPos c = best.above(); level.getBlockState(c).is(Blocks.CHAIN); c = c.above()) setTracked(level, c.immutable(), Blocks.AIR.defaultBlockState());
+        for (BlockPos q : BlockPos.betweenClosed(best.offset(-1, -1, -1), best.offset(1, 1, 1))) {
+            BlockState s = level.getBlockState(q);
+            if (q.equals(best) || s.is(Blocks.LANTERN) || s.is(Blocks.CHAIN)) setTracked(level, q.immutable(), Blocks.AIR.defaultBlockState());
+        }
+        // where it lands
+        BlockPos floor = best.below();
+        while (floor.getY() > level.getMinBuildHeight() && level.getBlockState(floor).getCollisionShape(level, floor).isEmpty()) floor = floor.below();
+        AABB under = new AABB(best.getX() - 1.2, floor.getY() + 0.4, best.getZ() - 1.2, best.getX() + 2.2, best.getY(), best.getZ() + 2.2);
+        int hit = 0;
+        for (NpcEntity n : level.getEntitiesOfClass(NpcEntity.class, under, e -> !e.isDead())) {
+            n.kill(p, true);
+            hit++;
+        }
+        for (ServerPlayer other : level.getEntitiesOfClass(ServerPlayer.class, under)) other.hurt(level.damageSources().anvil(null), 12f);
+        level.playSound(null, best.getX() + .5, floor.getY() + 1, best.getZ() + .5, SoundEvents.ANVIL_LAND, SoundSource.BLOCKS, 1.2f, 0.7f);
+        level.sendParticles(ParticleTypes.CLOUD, best.getX() + .5, floor.getY() + 1.2, best.getZ() + .5, 30, .7, .2, .7, .02);
+        Awareness.noise(level, Vec3.atCenterOf(floor.above()), 18, 8, p);
+        if (hit == 0 && p != null) p.displayClientMessage(Component.literal("It comes down on an empty floor."), true);
+    }
+
+    /** Collect objectives: done once the item is in the player's inventory. */
+    private static void tickCollect(ServerLevel level, MissionState st) {
+        Mission m = of(level);
+        for (ServerPlayer p : level.players()) {
+            for (Mission.Objective o : m.objectives) {
+                if (!o.type().equals("collect") || st.done.contains(o.id())) continue;
+                net.minecraft.world.item.Item want = ForgeRegistries.ITEMS.getValue(new ResourceLocation(Recrafted.MODID, o.target()));
+                if (want == null) continue;
+                if (p.getInventory().contains(new ItemStack(want))) {
+                    st.done.add(o.id());
+                    st.setDirty();
+                    announce(level, Component.literal("\u2714 " + o.text()).withStyle(ChatFormatting.GREEN),
+                            Component.literal(o.optional() ? "Bonus" : "Objective").withStyle(ChatFormatting.GRAY));
+                }
+            }
+        }
+    }
+
     // ---- start / stop ----------------------------------------------------------------------
     /** Resets the world state and queues the whole cast and every prop for spawning. */
     public static void begin(ServerLevel level) {
@@ -337,6 +456,8 @@ public final class MissionManager {
         st.changed.clear();
         st.gen++;
         st.done.clear();
+        st.identified.clear();
+        WATCHING.clear();
         st.deletedCast.clear();
         st.resetStats();
         st.pendingNpcs.clear();
@@ -432,8 +553,14 @@ public final class MissionManager {
         n.setCustomName(Component.literal(name));
         n.setSkin(def.has("skin") ? def.get("skin").getAsInt() : Math.floorMod(name.hashCode(), role.variants));
         n.setTarget(def.has("target") && def.get("target").getAsBoolean());
+        if (def.has("hidden") && def.get("hidden").getAsBoolean()) {
+            n.hiddenTarget = true;
+            n.setTarget(false);
+        }
+        if (def.has("lefty")) n.setLefty(def.get("lefty").getAsBoolean());
         n.setEnforcer(def.has("enforcer") && def.get("enforcer").getAsBoolean());
         if (def.has("id")) n.contractId = def.get("id").getAsString();
+        if (n.hiddenTarget && MissionState.get(level).identified.contains(n.contractId)) n.setTarget(true);
         if (def.has("follow")) n.followId = def.get("follow").getAsString();
         if (def.has("sickSpot")) {
             JsonArray s = def.getAsJsonArray("sickSpot");
@@ -457,7 +584,9 @@ public final class MissionManager {
         o.addProperty("name", n.getName().getString());
         o.addProperty("role", n.getRole().id);
         o.addProperty("skin", n.getSkin());
-        if (n.isTarget()) o.addProperty("target", true);
+        if (n.isTarget() && !n.hiddenTarget) o.addProperty("target", true);
+        if (n.hiddenTarget) o.addProperty("hidden", true);
+        if (n.isLefty()) o.addProperty("lefty", true);
         if (n.isEnforcer()) o.addProperty("enforcer", true);
         if (!n.contractId.isEmpty()) o.addProperty("id", n.contractId);
         if (!n.followId.isEmpty()) o.addProperty("follow", n.followId);
@@ -574,6 +703,8 @@ public final class MissionManager {
         MissionState st = MissionState.get(level);
         if (st.active) {
             if (level.getGameTime() % 10 == 0) spawnPending(level, st);
+            if (level.getGameTime() % 5 == 0) tickWatching(level, st);
+            if (level.getGameTime() % 20 == 0) tickCollect(level, st);
             tickPurge(level, st);
         }
         if (level.getGameTime() % 5 == 0) {

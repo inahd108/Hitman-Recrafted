@@ -15,6 +15,12 @@ INTEL = [
     "Catering at the Gulden Hamer is brought in. Nobody checks the faces of the waiters, but everybody checks their bags.",
     "The guest list is for bidders. A bidder's paddle opens every door the public may use.",
     "De Meester never signs his work. His apprentices say he is the only one who paints left-handed.",
+    "Watch the four painters at work long enough and he gives himself away. Or read the café's wage book: "
+    "In de Gouden Ton pays his apprentices, and one name draws no wage.",
+    "Twice an evening De Meester goes down to the quay for air, right under the hoist with the lead white.",
+    "Ostendorp takes her champagne in the private viewing room. Kooistra keeps a bottle of jenever in his cabin.",
+    "The saleroom chandelier hangs on a rope from the press balcony. Ostendorp stands under it for every lot.",
+    "The Gulden Hamer's ledger is kept in the strongbox in the basement vault.",
     "Kooistra can't swim, so he never leaves the boat between stops.",
     "The bridge keeper raises the Gildegracht drawbridge for any boat that sounds its horn twice.",
 ]
@@ -41,6 +47,15 @@ def exits(ctx):
             w.set(x, y - 1, z, 'recrafted:exit_point')
 
 
+def props(ctx):
+    A = ctx['anchors']
+    out = []
+    if 'hamer.vault.ledger' in A:                     # on the strongbox in the vault
+        x, y, z = A['hamer.vault.ledger']
+        out.append({'item': 'recrafted:ledger', 'pos': [x + .5, y + 1, z - 1 + .5]})
+    return out
+
+
 def build(ctx):
     exits(ctx)
     import ams_cast
@@ -57,6 +72,6 @@ def build(ctx):
         'objectives': OBJECTIVES,
         'intel': INTEL,
         'zones': zones,
-        'props': [],
+        'props': props(ctx),
         'npcs': npcs,
     }

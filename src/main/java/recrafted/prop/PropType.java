@@ -47,7 +47,9 @@ public enum PropType {
     LOCKPICK(Kind.LOCKPICK, Flag.ILLEGAL),
     KEYCARD_LAB(Kind.KEYCARD, 0),
     KEYCARD_ESTATE(Kind.KEYCARD, 0),
-    KEYCARD_HARBOUR(Kind.KEYCARD, 0);
+    KEYCARD_HARBOUR(Kind.KEYCARD, 0),
+    // Amsterdam
+    LEDGER(Kind.MISC, 0);
 
     public enum Kind { BLUNT, SHARP, WIRE, COIN, RADIO, EMETIC, LETHAL, SEDATIVE, INJECT, LOCKPICK, KEYCARD, MISC }
 
@@ -90,7 +92,7 @@ public enum PropType {
             case INJECT -> "Use on someone from behind. They don't wake up.";
             case LOCKPICK -> "Opens card readers quietly. Sometimes snaps.";
             case KEYCARD -> "Opens matching card readers.";
-            case MISC -> "Somebody left this lying around.";
+            case MISC -> this == LEDGER ? "Every lot, every buyer, every guilder. The Agency wants it." : "Somebody left this lying around.";
         };
     }
 }
