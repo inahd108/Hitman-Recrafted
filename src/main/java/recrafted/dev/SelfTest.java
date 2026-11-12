@@ -227,6 +227,17 @@ public final class SelfTest {
             ok &= check(MissionManager.metalDetector(level, armed, gate), "knife sets off the gate");
             ok &= check(!MissionManager.metalDetector(level, clean, gate), "empty pockets pass");
         }
+        // the Amsterdam guns reach their roles (when TACZ and the gun pack are installed)
+        if (recrafted.compat.Guns.loaded()) {
+            String police = "", deck = "";
+            for (Entity en : level.getAllEntities()) {
+                if (en instanceof NpcEntity n && n.getRole() == recrafted.npc.NpcRole.POLICE && police.isEmpty() && n.getSidearm().hasTag())
+                    police = n.getSidearm().getTag().getString("GunId");
+                if (en instanceof NpcEntity n && n.getRole() == recrafted.npc.NpcRole.DECKHAND && deck.isEmpty() && n.getSidearm().hasTag())
+                    deck = n.getSidearm().getTag().getString("GunId");
+            }
+            ok &= check(police.equals("recrafted:reiger") && deck.equals("recrafted:snoek"), "police carry " + police + ", deckhands " + deck);
+        }
         // the boats
         List<recrafted.boat.CanalBoat> boats = new ArrayList<>();
         for (Entity en : level.getAllEntities()) if (en instanceof recrafted.boat.CanalBoat b) boats.add(b);
