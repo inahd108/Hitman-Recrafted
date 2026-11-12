@@ -62,6 +62,7 @@ def build(ctx):
         wp('studio.easel0', 60, 'work', 'n', say='Left. Always left.'),
         wp('studio.window', 25, 'drink', 'n'), wp('studio'),
         wp('studio.easel1', 50, 'work', 'n'),
+        wp('studio.stove', 15, 'work', 'e', say='The lead white wants warming.'),
         wp('forger.door'), wp('forger.quay', 30, 'smoke', 'n', say='Turpentine. It gets into your head after a while.'),
         wp('forger.door'), wp('studio'),
     ], id='meester', hidden_name=True)

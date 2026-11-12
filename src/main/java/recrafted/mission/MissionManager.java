@@ -99,7 +99,9 @@ public final class MissionManager {
         if (!inMission(p)) return null;
         NpcRole worn = PlayerData.disguise(p);
         Vec3 at = p.position();
+        boolean bidder = hasProp(p, recrafted.prop.PropType.BIDDER_PADDLE);
         for (Mission.Zone z : of(p.level()).zones) {
+            if (bidder && z.name().equals("hamer_saleroom")) continue;
             if (z.box().contains(at) && (worn == null || !z.allow().contains(worn))) return z;
         }
         return null;
@@ -471,13 +473,83 @@ public final class MissionManager {
         return true;
     }
 
+    public static boolean hasProp(Player p, recrafted.prop.PropType t) {
+        for (ItemStack s : p.getInventory().items) if (recrafted.prop.PropItem.typeOf(s) == t) return true;
+        return recrafted.prop.PropItem.typeOf(p.getOffhandItem()) == t;
+    }
+
     /** Using a keeper's controls in plain clothes looks wrong to anyone watching. */
     private static void keeperWork(ServerLevel level, ServerPlayer p) {
         if (PlayerData.disguise(p) != NpcRole.BRIDGE_KEEPER) Awareness.suspiciousAct(level, p, 0.45f);
     }
 
+    /** The keepers' panels are locked: the bridge keeper's key, or the keeper's uniform (and her key in its pocket). */
+    private static boolean keeperUnlocked(@Nullable ServerPlayer p) {
+        if (p == null || PlayerData.disguise(p) == NpcRole.BRIDGE_KEEPER || hasProp(p, recrafted.prop.PropType.BRIDGE_KEY)) return true;
+        p.displayClientMessage(Component.literal("Locked. The keeper has the key.").withStyle(ChatFormatting.GRAY), true);
+        return false;
+    }
+
+    /** The press camera's flash: everyone looking at the player is dazzled for three seconds. */
+    public static void cameraFlash(ServerPlayer p) {
+        ServerLevel level = p.serverLevel();
+        level.playSound(null, p.blockPosition(), SoundEvents.NOTE_BLOCK_HAT.value(), SoundSource.PLAYERS, 1f, 2f);
+        level.playSound(null, p.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8f, 1.8f);
+        Vec3 eye = p.getEyePosition().add(p.getViewVector(1f).scale(0.6));
+        level.sendParticles(ParticleTypes.FLASH, eye.x, eye.y, eye.z, 1, 0, 0, 0, 0);
+        boolean press = PlayerData.disguise(p) == NpcRole.PHOTOGRAPHER;
+        for (NpcEntity n : level.getEntitiesOfClass(NpcEntity.class, p.getBoundingBox().inflate(10), e -> !e.isDown())) {
+            Vec3 to = p.getEyePosition().subtract(n.getEyePosition()).normalize();
+            if (n.getViewVector(1f).dot(to) > 0.6 && n.canSeePlayer(p)) {
+                n.blind(60);
+                if (!press) n.addSuspicion(p, 0.3f);
+            }
+        }
+    }
+
+    // ---- turpentine on a stove ---------------------------------------------------------------
+    private record Rig(BlockPos pos, @Nullable UUID by) {}
+    private static final Map<net.minecraft.resources.ResourceKey<Level>, List<Rig>> RIGGED = new HashMap<>();
+
+    public static boolean isStove(BlockState s) {
+        return s.is(Blocks.SMOKER) || s.is(Blocks.FURNACE) || s.is(Blocks.BLAST_FURNACE) || s.is(Blocks.CAMPFIRE);
+    }
+
+    /** Douses a stove with turpentine. The next person who stands right at it goes up in a flash fire (an accident). */
+    public static void rigStove(ServerLevel level, @Nullable ServerPlayer p, BlockPos pos) {
+        RIGGED.computeIfAbsent(level.dimension(), k -> new ArrayList<>()).add(new Rig(pos.immutable(), p == null ? null : p.getUUID()));
+        level.playSound(null, pos, SoundEvents.BUCKET_EMPTY, SoundSource.BLOCKS, 0.6f, 1.4f);
+        if (p != null) {
+            p.displayClientMessage(Component.literal("You douse the stove with turpentine.").withStyle(ChatFormatting.GOLD), true);
+            Awareness.suspiciousAct(level, p, 0.5f);
+        }
+    }
+
+    private static void tickRigged(ServerLevel level) {
+        List<Rig> list = RIGGED.get(level.dimension());
+        if (list == null || list.isEmpty()) return;
+        for (Rig r : new ArrayList<>(list)) {
+            if (!isStove(level.getBlockState(r.pos()))) {
+                list.remove(r);
+                continue;
+            }
+            List<NpcEntity> near = level.getEntitiesOfClass(NpcEntity.class, new AABB(r.pos()).inflate(1.3, 1, 1.3), e -> !e.isDown());
+            if (near.isEmpty()) continue;
+            list.remove(r);
+            ServerPlayer by = r.by() == null ? null : (ServerPlayer) level.getPlayerByUUID(r.by());
+            Vec3 c = Vec3.atCenterOf(r.pos());
+            level.playSound(null, r.pos(), SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.5f, 0.7f);
+            level.playSound(null, r.pos(), SoundEvents.GENERIC_BURN, SoundSource.BLOCKS, 1.2f, 0.8f);
+            level.sendParticles(ParticleTypes.FLAME, c.x, c.y + 0.5, c.z, 60, .6, .6, .6, .08);
+            level.sendParticles(ParticleTypes.LARGE_SMOKE, c.x, c.y + 1, c.z, 30, .5, .5, .5, .03);
+            for (NpcEntity n : near) n.kill(by, true);
+            Awareness.noise(level, c, 18, 6, by);
+        }
+    }
+
     /** The bridge keeper's lever: hold the Gildegracht drawbridge down (boats wait at the crane), or let it work again. */
     public static void bridgeControl(ServerLevel level, @Nullable ServerPlayer p, BlockPos pos) {
+        if (!keeperUnlocked(p)) return;
         boolean held = recrafted.boat.Waterways.toggleHold(level, "drawbridge");
         level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.8f, held ? 0.6f : 0.9f);
         if (p != null) {
@@ -492,6 +564,7 @@ public final class MissionManager {
      * against the sill and whoever can't swim goes over the side.
      */
     public static void lockControl(ServerLevel level, @Nullable ServerPlayer p, BlockPos pos) {
+        if (!keeperUnlocked(p)) return;
         level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 1f, 0.5f);
         if (p != null) keeperWork(level, p);
         recrafted.boat.CanalBoat inLock = null;
@@ -629,6 +702,7 @@ public final class MissionManager {
         st.pendingBoats.clear();
         for (int i = 0; i < m.boats.size(); i++) st.pendingBoats.add(i);
         recrafted.boat.Waterways.reset(level);
+        RIGGED.remove(level.dimension());
         st.active = true;
         st.complete = false;
         st.purgeAt = -1;
@@ -884,6 +958,7 @@ public final class MissionManager {
             if (level.getGameTime() % 5 == 0) tickWatching(level, st);
             if (level.getGameTime() % 20 == 0) tickCollect(level, st);
             if (level.getGameTime() % 20 == 5) tickClock(level, st);
+            if (level.getGameTime() % 5 == 2) tickRigged(level);
             tickPurge(level, st);
             recrafted.boat.Waterways.tick(level);
         }
@@ -922,6 +997,16 @@ public final class MissionManager {
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock e) {
         BlockState state = e.getLevel().getBlockState(e.getPos());
+        if (isStove(state) && e.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND
+                && recrafted.prop.PropItem.typeOf(e.getEntity().getMainHandItem()) == recrafted.prop.PropType.TURPENTINE) {
+            e.setCanceled(true);
+            e.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);
+            if (e.getEntity() instanceof ServerPlayer sp && e.getLevel() instanceof ServerLevel sl && inMission(sp)) {
+                rigStove(sl, sp, e.getPos());
+                if (!sp.getAbilities().instabuild) sp.getMainHandItem().shrink(1);
+            }
+            return;
+        }
         if (!DoorTimers.isSecurityDoor(state) || e.getHand() != net.minecraft.world.InteractionHand.MAIN_HAND) return;
         if (state.getValue(net.minecraft.world.level.block.DoorBlock.OPEN)) return;
         e.setCanceled(true);

@@ -209,6 +209,230 @@
     59,
     232.5
    ]
+  },
+  {
+   "item": "recrafted:palette_knife",
+   "pos": [
+    154.5,
+    90,
+    228.5
+   ]
+  },
+  {
+   "item": "recrafted:turpentine",
+   "pos": [
+    151.5,
+    90,
+    238.5
+   ]
+  },
+  {
+   "item": "recrafted:lead_white",
+   "pos": [
+    152.5,
+    90,
+    225.5
+   ]
+  },
+  {
+   "item": "recrafted:gavel",
+   "pos": [
+    77.5,
+    66,
+    250.5
+   ]
+  },
+  {
+   "item": "recrafted:gavel",
+   "pos": [
+    66.5,
+    70,
+    230.5
+   ]
+  },
+  {
+   "item": "recrafted:delft_vase",
+   "pos": [
+    75.5,
+    70,
+    229.5
+   ]
+  },
+  {
+   "item": "recrafted:delft_vase",
+   "pos": [
+    86.5,
+    70,
+    227.5
+   ]
+  },
+  {
+   "item": "recrafted:bidder_paddle",
+   "pos": [
+    70.5,
+    65,
+    229.5
+   ]
+  },
+  {
+   "item": "recrafted:press_camera",
+   "pos": [
+    71.5,
+    70,
+    239.5
+   ]
+  },
+  {
+   "item": "recrafted:jenever",
+   "pos": [
+    202.5,
+    65,
+    151.5
+   ]
+  },
+  {
+   "item": "recrafted:jenever",
+   "pos": [
+    205.5,
+    65,
+    153.5
+   ]
+  },
+  {
+   "item": "recrafted:boat_hook",
+   "pos": [
+    156.5,
+    64,
+    194.5
+   ]
+  },
+  {
+   "item": "recrafted:bridge_key",
+   "pos": [
+    294.5,
+    64,
+    220.5
+   ]
+  },
+  {
+   "item": "recrafted:bridge_key",
+   "pos": [
+    43.5,
+    65,
+    64.5
+   ]
+  },
+  {
+   "item": "recrafted:umbrella",
+   "pos": [
+    24.5,
+    65,
+    51.5
+   ]
+  },
+  {
+   "item": "recrafted:umbrella",
+   "pos": [
+    197.5,
+    65,
+    150.5
+   ]
+  },
+  {
+   "item": "recrafted:umbrella",
+   "pos": [
+    220.5,
+    64,
+    242.5
+   ]
+  },
+  {
+   "item": "recrafted:tulip_bulbs",
+   "pos": [
+    227.5,
+    64,
+    236.5
+   ]
+  },
+  {
+   "item": "recrafted:tulip_bulbs",
+   "pos": [
+    221.5,
+    64,
+    235.5
+   ]
+  },
+  {
+   "item": "recrafted:cheese_wheel",
+   "pos": [
+    229.5,
+    64,
+    241.5
+   ]
+  },
+  {
+   "item": "recrafted:cheese_wheel",
+   "pos": [
+    156.5,
+    64,
+    69.5
+   ]
+  },
+  {
+   "item": "recrafted:clog",
+   "pos": [
+    48.5,
+    64,
+    112.5
+   ]
+  },
+  {
+   "item": "recrafted:boat_hook",
+   "pos": [
+    71.5,
+    64,
+    112.5
+   ]
+  },
+  {
+   "item": "recrafted:clog",
+   "pos": [
+    114.5,
+    64,
+    112.5
+   ]
+  },
+  {
+   "item": "recrafted:boat_hook",
+   "pos": [
+    137.5,
+    64,
+    112.5
+   ]
+  },
+  {
+   "item": "recrafted:chain_lock",
+   "pos": [
+    250.5,
+    64,
+    185.5
+   ]
+  },
+  {
+   "item": "recrafted:chain_lock",
+   "pos": [
+    120.5,
+    64,
+    89.5
+   ]
+  },
+  {
+   "item": "recrafted:chain_lock",
+   "pos": [
+    330.5,
+    64,
+    217.5
+   ]
   }
  ],
  "npcs": [
@@ -679,12 +903,14 @@
      },
      {
       "pos": [
-       155.5,
+       151.5,
        90,
-       234.5
+       238.5
       ],
-      "wait": 0,
-      "pose": "stand"
+      "wait": 300,
+      "pose": "work",
+      "yaw": -90,
+      "say": "The lead white wants warming."
      },
      {
       "pos": [

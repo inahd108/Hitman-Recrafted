@@ -37,6 +37,7 @@ public final class SelfTest {
     private static final String MISSION = System.getProperty("recrafted.selftest.mission", "corvara");
     private static boolean kooAboard, phaseOne;
     private static double tourMoved;
+    @org.jetbrains.annotations.Nullable private static NpcEntity stoveVictim;
     private static final Map<Integer, Vec3> boatStart = new HashMap<>();
     private static int ticks = -1;
     private static final Map<Integer, Vec3> startPos = new HashMap<>();
@@ -114,6 +115,7 @@ public final class SelfTest {
             if (ticks == RUN_TICKS + 140) {
                 MissionState st = MissionState.get(level);
                 boolean ok = phaseOne & check(st.done.contains("kill_kooistra"), "Kooistra drowns in the canal");
+                ok &= check(stoveVictim != null && stoveVictim.isDead(), "turpentine stove flares up on the cook");
                 LOG.info(ok ? "SELFTEST PASS" : "SELFTEST FAIL");
                 server.halt(false);
             }
@@ -236,6 +238,38 @@ public final class SelfTest {
         ok &= check(tourMoved > 30, String.format("tour boats under way (%.0f blocks)", tourMoved));
         ok &= check(kooAboard, "Kooistra boarded the Zwaluw");
         ok &= check(recrafted.boat.Waterways.isOpen(level, "drawbridge"), "drawbridge opens for a boat");
+        // props: placed, the bidder paddle opens the saleroom, the bridge key opens the lever
+        int propCount = 0;
+        for (Entity en : level.getAllEntities()) if (en instanceof PropEntity) propCount++;
+        ok &= check(propCount >= m.props.size() - 2, propCount + " props lying about (" + m.props.size() + " placed)");
+        net.minecraft.server.level.ServerPlayer bidder = net.minecraftforge.common.util.FakePlayerFactory.get(level,
+                new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "selftest_bidder"));
+        bidder.moveTo(75.5, 65, 245.5, 0, 0);
+        boolean outside = MissionManager.violatedZone(bidder) != null;
+        bidder.getInventory().add(new net.minecraft.world.item.ItemStack(ModRegistry.prop(recrafted.prop.PropType.BIDDER_PADDLE)));
+        ok &= check(outside && MissionManager.violatedZone(bidder) == null, "bidder paddle lets you into the saleroom");
+        BlockPos lever = find(level, ModRegistry.BRIDGE_CONTROL.get(), new BlockPos(285, 60, 214), new BlockPos(300, 70, 222));
+        ok &= check(lever != null, "drawbridge lever at " + lever);
+        if (lever != null) {
+            boolean before = recrafted.boat.Waterways.isHeld(level, "drawbridge");
+            MissionManager.bridgeControl(level, bidder, lever);
+            boolean lockedOut = recrafted.boat.Waterways.isHeld(level, "drawbridge") == before;
+            bidder.getInventory().add(new net.minecraft.world.item.ItemStack(ModRegistry.prop(recrafted.prop.PropType.BRIDGE_KEY)));
+            MissionManager.bridgeControl(level, bidder, lever);
+            boolean held = recrafted.boat.Waterways.isHeld(level, "drawbridge") != before;
+            MissionManager.bridgeControl(level, bidder, lever);
+            ok &= check(lockedOut && held, "the lever needs the bridge keeper's key");
+        }
+        // turpentine: rig the cafe kitchen stove and send the cook to it
+        BlockPos stove = find(level, net.minecraft.world.level.block.Blocks.SMOKER, new BlockPos(194, 60, 140), new BlockPos(212, 70, 160));
+        ok &= check(stove != null, "cafe stove at " + stove);
+        if (stove != null) {
+            for (Entity en : level.getAllEntities()) {
+                if (en instanceof NpcEntity n && n.getName().getString().equals("Cook Dewi")) stoveVictim = n;
+            }
+            MissionManager.rigStove(level, null, stove);
+            if (stoveVictim != null) stoveVictim.teleportTo(stove.getX() + .5, stove.getY(), stove.getZ() - .5);
+        }
         // a non-swimmer in the canal: drop Kooistra off his boat into the Gildegracht
         if (koo.isPassenger()) koo.stopRiding();
         koo.teleportTo(230.5, 62.2, 204.5);

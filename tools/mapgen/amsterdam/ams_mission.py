@@ -23,6 +23,9 @@ INTEL = [
     "Ostendorp takes her champagne in the private viewing room. Kooistra keeps a bottle of jenever in his cabin.",
     "The saleroom chandelier hangs on a rope from the press balcony. Ostendorp stands under it for every lot.",
     "The Gulden Hamer's ledger is kept in the strongbox in the basement vault.",
+    "A bidder's paddle from the reception desk gets you into the saleroom without questions.",
+    "There is turpentine in the forger's studio. Stoves don't like it.",
+    "The bridge keeper and the lock keeper lock their panels. Their keys are in the booth and the lock house.",
     "Kooistra can't swim. His salon boat, the Zwaluw, takes him from his houseboat on the Gildegracht through the "
     "drawbridge, up to the smuggler's dock, out on the IJ and home again through the lock.",
     "The bridge keeper raises the Gildegracht drawbridge for any boat that sounds its horn twice. Boats wait for it "
@@ -61,12 +64,66 @@ def exits(ctx):
             w.set(x, y - 1, z, 'recrafted:exit_point')
 
 
+def _floor(w, x, y, z, r=3):
+    """The nearest spot to (x, y, z) where something can lie on the floor: an air or carpet cell over a solid one."""
+    def ok(cx, cy, cz):
+        here = w.name(w.get(cx, cy, cz)).split(':')[-1].split('[')[0]
+        below = w.name(w.get(cx, cy - 1, cz)).split(':')[-1].split('[')[0]
+        return (here == 'air' or here.endswith('carpet')) and below not in ('air', 'water') and not below.endswith(('fence', 'wall'))
+    best = None
+    for dy in (0, 1, -1):
+        for dx in range(-r, r + 1):
+            for dz in range(-r, r + 1):
+                if ok(x + dx, y + dy, z + dz):
+                    d = dx * dx + dz * dz + abs(dy) * 4
+                    if best is None or d < best[0]:
+                        best = (d, (x + dx, y + dy, z + dz))
+    return best[1] if best else None
+
+
+# prop -> anchors (with offsets) it lies at
+PROPS = [
+    ('palette_knife', [('studio.easel1', (1, 0, 0))]), ('turpentine', [('studio.stove', (-1, 0, 0))]),
+    ('lead_white', [('studio.window', (-1, 0, 1))]),
+    ('gavel', [('hamer.podium', (2, 0, 0)), ('hamer.office.desk', (1, 0, 1))]),
+    ('delft_vase', [('hamer.gallery', (0, 0, 1)), ('hamer.viewing.easel', (-1, 0, -1))]),
+    ('bidder_paddle', [('hamer.reception.desk', (0, 0, 1))]), ('press_camera', [('hamer.balcony', (2, 0, 0))]),
+    ('jenever', [('cafe.bar', (0, 0, 1)), ('cafe.table2', (1, 0, 0))]),
+    ('boat_hook', [('kooistra.landing', (-2, 0, 0))]),
+    ('bridge_key', [('drawbridge.booth', (1, 0, 0)), ('lock.keeper', (0, 0, 1))]),
+    ('umbrella', [('station.platform', (2, 0, 1)), ('cafe.door', (1, 0, -1)), ('square.centre', (-4, 0, 3))]),
+    ('tulip_bulbs', [('square.centre', (3, 0, -3)), ('square.centre', (-3, 0, -4))]),
+    ('cheese_wheel', [('square.centre', (5, 0, 2)), ('ferry.square', (1, 0, 1))]),
+]
+
+
 def props(ctx):
-    A = ctx['anchors']
+    A, w = ctx['anchors'], ctx['w']
     out = []
     if 'hamer.vault.ledger' in A:                     # on the strongbox in the vault
         x, y, z = A['hamer.vault.ledger']
         out.append({'item': 'recrafted:ledger', 'pos': [x + .5, y + 1, z - 1 + .5]})
+    missing = []
+    for item, spots in PROPS:
+        for a, (ox, oy, oz) in spots:
+            if a not in A:
+                missing.append(a)
+                continue
+            x, y, z = A[a]
+            p = _floor(w, int(x) + ox, int(y) + oy, int(z) + oz)
+            if p:
+                out.append({'item': f'recrafted:{item}', 'pos': [p[0] + .5, p[1], p[2] + .5]})
+    # clogs and boat hooks on the houseboat decks, bike locks by the racks on the quays
+    decks = [b['deck'] for b in ctx.get('boats', []) if b.get('name') is None]
+    for i, (x, y, z) in enumerate(decks[:4]):
+        out.append({'item': 'recrafted:' + ('clog' if i % 2 == 0 else 'boat_hook'), 'pos': [x + .5, y, z + .5]})
+    for x, z in ((250, 185), (120, 89), (330, 217)):
+        p = _floor(w, x, STREET + 1, z, 4)
+        if p:
+            out.append({'item': 'recrafted:chain_lock', 'pos': [p[0] + .5, p[1], p[2] + .5]})
+    if missing:
+        print('  props: missing anchors', sorted(set(missing)))
+    print(f'  props: {len(out)} placed')
     return out
 
 

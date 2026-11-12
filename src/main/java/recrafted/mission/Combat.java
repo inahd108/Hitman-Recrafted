@@ -53,6 +53,10 @@ public final class Combat {
         boolean unaware = !npc.inCombat() && (behind || !npc.canSeePlayer(player));
         player.resetAttackStrengthTicker();
 
+        if (type == PropType.BOAT_HOOK) {
+            shove(player, npc);
+            return;
+        }
         if (type != null && type.kind == PropType.Kind.WIRE) {
             if (behind && !npc.inCombat()) {
                 level.playSound(null, npc.blockPosition(), SoundEvents.LEASH_KNOT_PLACE, SoundSource.PLAYERS, 0.6f, 0.6f);
@@ -94,6 +98,23 @@ public final class Combat {
             }
         }
         Awareness.crime(level, player, npc);
+    }
+
+    /** The boat hook: a long shove. Off a quay or a deck that means the water, and some people can't swim. */
+    private static void shove(ServerPlayer player, NpcEntity npc) {
+        ServerLevel level = (ServerLevel) npc.level();
+        if (npc.isPassenger()) npc.stopRiding();
+        net.minecraft.world.phys.Vec3 dir = npc.position().subtract(player.position()).multiply(1, 0, 1).normalize();
+        npc.setDeltaMovement(dir.x * 1.15, 0.38, dir.z * 1.15);
+        npc.hurtMarked = true;
+        npc.drownedBy = player;
+        level.playSound(null, npc.blockPosition(), SoundEvents.PLAYER_ATTACK_KNOCKBACK, SoundSource.PLAYERS, 0.9f, 0.6f);
+        if (!npc.getRole().cantSwim()) {
+            npc.say("Hey!", 40);
+            npc.addSuspicion(player, 1f);
+            npc.onCompromised(player);
+        }
+        Awareness.suspiciousAct(level, player, 0.8f);
     }
 
     public static void inject(ServerPlayer player, NpcEntity npc, ItemStack held, PropType type) {

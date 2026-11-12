@@ -49,7 +49,22 @@ public enum PropType {
     KEYCARD_ESTATE(Kind.KEYCARD, 0),
     KEYCARD_HARBOUR(Kind.KEYCARD, 0),
     // Amsterdam
-    LEDGER(Kind.MISC, 0);
+    LEDGER(Kind.MISC, 0),
+    CLOG(Kind.BLUNT, Flag.THROW),
+    CHEESE_WHEEL(Kind.BLUNT, Flag.THROW),
+    DELFT_VASE(Kind.BLUNT, Flag.THROW | Flag.BREAKS),
+    JENEVER(Kind.BLUNT, Flag.THROW | Flag.BREAKS),
+    BOAT_HOOK(Kind.BLUNT, 0),
+    CHAIN_LOCK(Kind.WIRE, 0),
+    PALETTE_KNIFE(Kind.SHARP, Flag.THROW),
+    GAVEL(Kind.BLUNT, 0),
+    UMBRELLA(Kind.BLUNT, 0),
+    TURPENTINE(Kind.MISC, 0),
+    TULIP_BULBS(Kind.EMETIC, 0),
+    LEAD_WHITE(Kind.LETHAL, 0),
+    BIDDER_PADDLE(Kind.KEYCARD, 0),
+    BRIDGE_KEY(Kind.KEYCARD, 0),
+    PRESS_CAMERA(Kind.MISC, 0);
 
     public enum Kind { BLUNT, SHARP, WIRE, COIN, RADIO, EMETIC, LETHAL, SEDATIVE, INJECT, LOCKPICK, KEYCARD, MISC }
 
@@ -79,6 +94,24 @@ public enum PropType {
                 || kind == Kind.INJECT || this == BRICK || this == BOTTLE;
     }
 
+    /** An extra line for props that do something of their own. */
+    public String note() {
+        return switch (this) {
+            case BOAT_HOOK -> "Attack to shove someone off a quay or a deck. Non-swimmers don't come up.";
+            case CHAIN_LOCK -> "A bike lock. Nobody minds you carrying one.";
+            case UMBRELLA -> "Held up in the rain, it hides your face: people who know you take longer to notice.";
+            case GAVEL -> "Nobody looks twice at it inside the Gulden Hamer.";
+            case TURPENTINE -> "Use it on a stove. The next person to stand at it gets a flash fire.";
+            case BIDDER_PADDLE -> "Bidders may go into the saleroom.";
+            case BRIDGE_KEY -> "Unlocks the drawbridge lever and the sluice wheel.";
+            case PRESS_CAMERA -> "Use it: the flash blinds whoever is looking at you for a moment.";
+            case CHEESE_WHEEL -> "Heavy. Doesn't fly far.";
+            case LEAD_WHITE -> "Pigment. Very bad for you, slowly.";
+            case TULIP_BULBS -> "Look like onions. Are not onions.";
+            default -> "";
+        };
+    }
+
     public String tooltip() {
         return switch (kind) {
             case BLUNT -> "Blunt. Knocks a target out" + (throwable() ? "; can be thrown." : ".");
@@ -92,7 +125,8 @@ public enum PropType {
             case INJECT -> "Use on someone from behind. They don't wake up.";
             case LOCKPICK -> "Opens card readers quietly. Sometimes snaps.";
             case KEYCARD -> "Opens matching card readers.";
-            case MISC -> this == LEDGER ? "Every lot, every buyer, every guilder. The Agency wants it." : "Somebody left this lying around.";
+            case MISC -> this == LEDGER ? "Every lot, every buyer, every guilder. The Agency wants it."
+                    : this == TURPENTINE || this == PRESS_CAMERA ? "" : "Somebody left this lying around.";
         };
     }
 }

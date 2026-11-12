@@ -150,6 +150,28 @@ def item_sprites():
     card('keycard_harbour', rgb('2f5fb3'))
     s = new('ledger'); s.rect(3, 2, 12, 14, rgb('5a2a1e')); s.rect(4, 3, 12, 13, rgb('7b3a28')); s.rect(3, 2, 4, 14, rgb('3d1c14'))
     s.rect(12, 3, 13, 13, rgb('efe6cf')); s.rect(6, 5, 10, 7, GOLD); s.rect(7, 6, 9, 6, rgb('5a2a1e')); s.rect(6, 10, 10, 10, GOLD)
+    # ---- Amsterdam ----
+    s = new('clog'); s.rect(2, 8, 13, 12, rgb('e8c95a')); s.rect(9, 6, 13, 8, rgb('e8c95a')); s.rect(3, 9, 8, 10, rgb('8a6a2a'))
+    s.line(2, 13, 13, 13, rgb('b8962e')); s.px(13, 7, rgb('b8962e')); s.rect(10, 8, 12, 9, rgb('c0392b'))
+    s = new('cheese_wheel'); s.disc(8, 8, 6, rgb('f1c40f')); s.disc(8, 8, 4.6, rgb('f7d54a')); s.rect(8, 2, 14, 8, rgb('f9e27a'))
+    s.line(8, 8, 14, 8, rgb('c9a227')); s.line(8, 2, 8, 8, rgb('c9a227')); s.px(11, 5, rgb('d4ac0d')); s.px(4, 10, rgb('c0392b')); s.px(5, 11, rgb('c0392b'))
+    s = new('delft_vase'); s.rect(6, 2, 9, 3, WHITE); s.rect(7, 4, 8, 5, WHITE); s.disc(7.5, 9.5, 4.2, rgb('f4f6f7')); s.rect(5, 13, 10, 14, WHITE)
+    s.line(5, 8, 10, 8, rgb('1f4e9c')); s.px(7, 10, rgb('1f4e9c')); s.px(8, 11, rgb('1f4e9c')); s.px(6, 11, rgb('1f4e9c')); s.line(5, 12, 10, 12, rgb('1f4e9c')); s.px(7, 6, rgb('1f4e9c'))
+    s = new('jenever'); s.rect(5, 6, 10, 14, rgb('b9875a')); s.rect(6, 4, 9, 5, rgb('b9875a')); s.rect(7, 2, 8, 3, rgb('7a5230'))
+    s.rect(6, 8, 9, 11, rgb('efe6cf')); s.px(7, 9, rgb('1c1d21')); s.px(8, 10, rgb('1c1d21')); s.px(10, 7, rgb('d9b48a'))
+    s = new('boat_hook'); s.line(2, 14, 11, 5, WOOD, 1); s.line(11, 5, 13, 3, STEEL); s.line(13, 3, 14, 5, STEEL); s.px(12, 2, STEEL)
+    s = new('chain_lock'); s.disc(7, 8, 5, rgb('2b2e33')); s.disc(7, 8, 3.6, (0, 0, 0, 0)); [s.p.pop((x, y), None) for x in range(4, 11) for y in range(5, 12) if (x - 7) ** 2 + (y - 8) ** 2 < 10]
+    s.rect(10, 9, 13, 12, rgb('c0392b')); s.px(11, 10, STEEL); s.px(12, 10, STEEL)
+    s = new('palette_knife'); s.line(2, 13, 6, 9, WOOD, 2); s.line(7, 8, 9, 7, STEEL); s.rect(9, 4, 13, 6, rgb('d0d6db')); s.px(14, 5, rgb('d0d6db')); s.px(11, 5, rgb('2a7de1'))
+    s = new('gavel'); s.line(3, 13, 9, 7, WOOD, 1); s.line(7, 3, 12, 8, rgb('5a3b1e'), 3); s.line(8, 4, 11, 7, rgb('7a5230'), 1); s.px(6, 2, GOLD); s.px(13, 9, GOLD)
+    s = new('umbrella'); s.line(8, 4, 8, 13, rgb('2b2e33')); s.rect(3, 4, 13, 5, rgb('1c1d21')); s.rect(5, 3, 11, 3, rgb('1c1d21')); s.rect(2, 6, 3, 6, rgb('1c1d21')); s.rect(13, 6, 14, 6, rgb('1c1d21'))
+    s.px(7, 13, rgb('2b2e33')); s.px(7, 14, WOOD); s.px(6, 14, WOOD); s.px(8, 2, STEEL)
+    s = new('turpentine'); s.rect(4, 4, 11, 14, rgb('c0392b')); s.rect(5, 2, 8, 3, rgb('7f8c8d')); s.rect(5, 7, 10, 11, rgb('efe6cf')); s.px(7, 8, BLACK); s.px(8, 9, BLACK); s.px(6, 10, rgb('e67e22'))
+    s = new('tulip_bulbs'); s.disc(6, 10, 3.2, rgb('b07a3f')); s.disc(11, 9, 2.8, rgb('9c6a35')); s.px(6, 6, rgb('6aa84f')); s.px(6, 5, rgb('6aa84f')); s.px(11, 5, rgb('6aa84f')); s.px(5, 12, rgb('e8d9a8')); s.px(10, 11, rgb('e8d9a8'))
+    s = new('lead_white'); s.rect(4, 5, 11, 13, rgb('dfe6e9')); s.rect(4, 3, 11, 4, rgb('7f8c8d')); s.rect(5, 7, 10, 10, rgb('f7f7f2')); s.px(6, 8, BLACK); s.px(7, 8, BLACK); s.px(8, 9, RED); s.px(9, 8, BLACK)
+    s = new('bidder_paddle'); s.disc(8, 6, 4.5, rgb('f7f7f2')); s.line(8, 10, 8, 14, WOOD); s.rect(6, 5, 7, 7, rgb('1c1d21')); s.rect(9, 5, 10, 7, rgb('1c1d21')); s.px(8, 3, GOLD)
+    s = new('bridge_key'); s.disc(5, 6, 3, rgb('c9a227')); s.disc(5, 6, 1.4, (0, 0, 0, 0)); s.p.pop((5, 6), None); s.line(7, 8, 13, 14, rgb('c9a227')); s.px(12, 12, rgb('c9a227')); s.px(13, 11, rgb('c9a227')); s.px(11, 13, rgb('c9a227'))
+    s = new('press_camera'); s.rect(2, 6, 13, 13, rgb('2b2e33')); s.disc(8, 9.5, 2.6, rgb('5d6d7e')); s.disc(8, 9.5, 1.2, rgb('1c1d21')); s.rect(9, 3, 13, 5, rgb('ecf0f1')); s.rect(3, 4, 5, 5, rgb('2b2e33')); s.px(11, 4, YELLOW)
     s = new('route_planner'); s.rect(3, 3, 12, 14, rgb('8a5a2b')); s.rect(4, 4, 11, 13, rgb('f2efe4')); s.rect(6, 2, 9, 3, STEEL)
     for (x, y) in ((5, 11), (6, 10), (7, 9), (8, 9), (9, 8), (10, 6)):
         s.px(x, y, rgb('2a7de1'))
@@ -673,6 +695,10 @@ PROP_NAMES = {
     'syringe': 'Lethal Syringe', 'lockpick': 'Lockpick', 'keycard_lab': 'Lab Keycard', 'keycard_estate': 'Estate Keycard',
     'keycard_harbour': 'Harbour Keycard',
     'ledger': 'Gulden Hamer Ledger',
+    'clog': 'Wooden Clog', 'cheese_wheel': 'Gouda Wheel', 'delft_vase': 'Delft Vase', 'jenever': 'Stone Jenever Bottle',
+    'boat_hook': 'Boat Hook', 'chain_lock': 'Bike Chain Lock', 'palette_knife': 'Palette Knife', 'gavel': 'Auctioneer\'s Gavel',
+    'umbrella': 'Umbrella', 'turpentine': 'Turpentine', 'tulip_bulbs': 'Tulip Bulbs', 'lead_white': 'Lead White Pigment',
+    'bidder_paddle': 'Bidder Paddle', 'bridge_key': 'Bridge Keeper\'s Key', 'press_camera': 'Press Camera',
 }
 ROLE_TITLES = {
     'fisherman': 'Fisherman', 'waiter': 'Waiter', 'cook': 'Cook', 'cleaner': 'Cleaner', 'gardener': 'Gardener',

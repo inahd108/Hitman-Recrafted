@@ -31,9 +31,15 @@ public class PropItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        if (type == PropType.PRESS_CAMERA) {
+            if (!level.isClientSide && player instanceof net.minecraft.server.level.ServerPlayer sp) recrafted.mission.MissionManager.cameraFlash(sp);
+            player.getCooldowns().addCooldown(this, 100);
+            return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+        }
         if (!type.throwable()) return InteractionResultHolder.pass(stack);
         if (!level.isClientSide) {
-            recrafted.mission.Throwing.launch(player, stack.copyWithCount(1), type.kind == PropType.Kind.COIN ? 1.1f : 1.3f);
+            float power = type.kind == PropType.Kind.COIN ? 1.1f : type == PropType.CHEESE_WHEEL ? 0.8f : 1.3f;
+            recrafted.mission.Throwing.launch(player, stack.copyWithCount(1), power);
         }
         player.awardStat(Stats.ITEM_USED.get(this));
         if (!player.getAbilities().instabuild) stack.shrink(1);
@@ -43,7 +49,8 @@ public class PropItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tip, TooltipFlag flag) {
-        tip.add(Component.literal(type.tooltip()).withStyle(ChatFormatting.GRAY));
+        if (!type.tooltip().isEmpty()) tip.add(Component.literal(type.tooltip()).withStyle(ChatFormatting.GRAY));
+        if (!type.note().isEmpty()) tip.add(Component.literal(type.note()).withStyle(ChatFormatting.DARK_AQUA));
         if (type.sabotages()) tip.add(Component.literal("Sabotages fuse boxes.").withStyle(ChatFormatting.DARK_AQUA));
         if (type.forces()) tip.add(Component.literal("Forces card readers. Loudly.").withStyle(ChatFormatting.DARK_AQUA));
         if (type.illegal()) tip.add(Component.literal("Suspicious to carry in the open.").withStyle(ChatFormatting.RED));

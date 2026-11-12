@@ -98,6 +98,8 @@ public class NpcEntity extends PathfinderMob {
     /** Who put a non-swimmer in the water, for the accident. */
     @Nullable public ServerPlayer drownedBy;
     private int wetTicks;
+    /** Dazzled by a camera flash: sees nothing and stands still. */
+    private int blindTicks;
     @Nullable public Vec3 sickSpot;
     public int missionGen = -1;
     /** Index into the mission's cast list, or -1 for NPCs made in the editor. */
@@ -316,6 +318,12 @@ public class NpcEntity extends PathfinderMob {
         if (attackCooldown > 0) attackCooldown--;
         if (frozen) {
             getNavigation().stop();
+            return;
+        }
+        if (blindTicks > 0) {
+            blindTicks--;
+            getNavigation().stop();
+            setAnim(NpcPose.LOOK);
             return;
         }
         if (poisonTicks > 0 && --poisonTicks == 0) {
@@ -547,6 +555,14 @@ public class NpcEntity extends PathfinderMob {
         return false;
     }
 
+    public void blind(int ticks) {
+        if (isDown()) return;
+        blindTicks = ticks;
+        say("Argh! My eyes!", 50);
+    }
+
+    public boolean isBlind() { return blindTicks > 0; }
+
     /** In the water: non-swimmers go under after a few seconds, everyone else keeps their head up. Returns true if drowned. */
     private boolean tickWater() {
         if (!isInWater() || isPassenger() || isDown()) {
@@ -699,7 +715,7 @@ public class NpcEntity extends PathfinderMob {
                 } else {
                     if (MissionManager.isTrespassing(p)) rate += getRole().guard ? 0.09f : 0.05f;
                     if (holdsIllegal(p)) rate += getRole().guard ? 0.08f : 0.05f;
-                    if (seesThrough(p) && d < 9) rate += 0.03f;
+                    if (seesThrough(p) && d < 9) rate += PropItem.typeOf(p.getMainHandItem()) == PropType.UMBRELLA ? 0.012f : 0.03f;
                 }
                 if (rate > 0) s = Math.min(1f, s + rate * (d < 5 ? 1.5f : 1f));
                 else s = Math.max(0f, s - 0.02f);
