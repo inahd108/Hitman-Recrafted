@@ -47,6 +47,11 @@ def window(fr, rng, lit, side='front'):
     return f'{WINDOW}[axis={"z" if along_z else "x"},lit={"true" if rng.random() < lit else "false"}]'
 
 
+def scroll(st, side):
+    blk = 'recrafted:gable_scroll_stone' if st.trim == 'stone' else 'recrafted:gable_scroll'
+    return f'{blk}[facing={{F}},side={side}]'
+
+
 def pick(rng, weighted):
     return rng.choices([k for k, _ in weighted], [w for _, w in weighted])[0]
 
@@ -201,8 +206,7 @@ def _hoist(fr, u, y, st):
     fr.set(u, y, 1, 'dark_oak_door[facing={F},half=lower,hinge=left]')
     fr.set(u, y + 1, 1, 'dark_oak_door[facing={F},half=upper,hinge=left]')
     if st.hoist:
-        fr.set(u, y + 2, -1, 'dark_oak_fence')
-        fr.set(u, y + 1, -1, 'chain')
+        fr.set(u, y + 2, -1, 'recrafted:hoist_beam[facing={F}]')
 
 
 def gable_spout(fr, W, top, wall, wall_st, st, rng):
@@ -245,8 +249,8 @@ def gable_neck(fr, W, top, wall, wall_st, st, rng):
         fr.fill(0, top + 1 + k, 0, W - 1, top + 1 + k, 1, wall)
     y = top + 3
     # shoulders with scrolls
-    fr.set(nl - 1, y, 0, f'{tst}[facing={{R}}]')
-    fr.set(nr + 1, y, 0, f'{tst}[facing={{L}}]')
+    fr.set(nl - 1, y, 0, scroll(st, 'left'))
+    fr.set(nr + 1, y, 0, scroll(st, 'right'))
     if nl >= 2:
         fr.set(0, y, 0, tsl)
         fr.set(W - 1, y, 0, tsl)
@@ -280,8 +284,8 @@ def gable_bell(fr, W, top, wall, wall_st, st, rng):
         lo, hi = mid - hw, mid + hw
         fr.fill(lo, y, 0, hi, y, 1, wall)
         narrower = i + 1 < len(widths) and widths[i + 1] < hw
-        fr.set(lo, y, 0, f'{tst}[facing={{R}}]' if narrower else tb)
-        fr.set(hi, y, 0, f'{tst}[facing={{L}}]' if narrower else tb)
+        fr.set(lo, y, 0, scroll(st, 'left') if narrower else tb)
+        fr.set(hi, y, 0, scroll(st, 'right') if narrower else tb)
         y += 1
     fr.set(mid, y, 0, tb)
     fr.set(mid, y + 1, 0, f'{tst}[facing={{F}},half=top]')
@@ -310,9 +314,8 @@ def cornice(fr, W, top, st, wall, rng):
         fr.set(mid, top + 2, 1, 'dark_oak_door[facing={F},half=lower,hinge=left]')
         fr.set(mid, top + 3, 1, 'dark_oak_door[facing={F},half=upper,hinge=left]')
         if st.hoist:
-            fr.set(mid, top + 4, 0, 'dark_oak_fence')
-            fr.set(mid, top + 4, -1, 'dark_oak_fence')
-            fr.set(mid, top + 3, -1, 'chain')
+            fr.set(mid, top + 4, 0, wall)
+            fr.set(mid, top + 4, -1, 'recrafted:hoist_beam[facing={F}]')
 
 
 # ---- rows ---------------------------------------------------------------------------------

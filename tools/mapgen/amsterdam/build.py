@@ -29,7 +29,9 @@ PREVIEW = os.path.join(ROOT, 'docs/preview')
 
 render.COLORS.update({
     'recrafted:canal_window': (238, 190, 120), 'recrafted:bulb_string': (255, 220, 140), 'recrafted:bollard': (104, 42, 32),
-    'recrafted:lamp_post': (30, 52, 40), 'recrafted:canal_lamp': (255, 220, 150), 'recrafted:bicycle': (40, 40, 44)})
+    'recrafted:lamp_post': (30, 52, 40), 'recrafted:canal_lamp': (255, 220, 150), 'recrafted:bicycle': (40, 40, 44),
+    'recrafted:gable_scroll': (235, 229, 222), 'recrafted:gable_scroll_stone': (216, 203, 155),
+    'recrafted:hoist_beam': (66, 43, 20), 'recrafted:shutter': (34, 78, 52)})
 
 
 def bridges(ctx):

@@ -79,6 +79,16 @@ public final class ModRegistry {
     public static final RegistryObject<Block> BICYCLE = block("bicycle", () -> new recrafted.block.ams.BicycleBlock(
             fixture().noCollission().sound(SoundType.CHAIN)));
 
+    public static final RegistryObject<Block> GABLE_SCROLL = block("gable_scroll", () -> new recrafted.block.ams.ScrollBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.QUARTZ).strength(-1f, 3600000f).sound(SoundType.STONE).noOcclusion()));
+    public static final RegistryObject<Block> GABLE_SCROLL_STONE = block("gable_scroll_stone", () -> new recrafted.block.ams.ScrollBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.SAND).strength(-1f, 3600000f).sound(SoundType.STONE).noOcclusion()));
+    public static final RegistryObject<Block> HOIST_BEAM = block("hoist_beam", () -> new recrafted.block.ams.DecorBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(-1f, 3600000f).sound(SoundType.WOOD).noOcclusion(),
+            true, new double[]{6, 9, 0, 10, 13, 16}));
+    public static final RegistryObject<Block> SHUTTER = block("shutter", () -> new recrafted.block.ams.ShutterBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(-1f, 3600000f).sound(SoundType.WOOD).noOcclusion()));
+
     public static final RegistryObject<Block> MEAL = block("meal", () -> new ConsumableBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.QUARTZ).strength(-1f, 3600000f).noOcclusion().sound(SoundType.STONE),
             Block.box(3, 0, 3, 13, 3, 13)));

@@ -15,7 +15,7 @@ def warehouse(ctx, x0, x1, name=None, brick=None):
     fr = info['frame']
     W = info['W']
     mid = (W - 1) // 2
-    shutter = rng.choice(['warped', 'warped', 'dark_oak', 'mangrove', 'spruce'])
+    shutter = rng.choice(['green', 'green', 'red', 'black'])
     for side_v, face in ((0, '{F}'), (info['D'] - 1, '{B}')):
         out = -1 if side_v == 0 else info['D']
         for li, ly in enumerate(info['levels']):
@@ -31,7 +31,7 @@ def warehouse(ctx, x0, x1, name=None, brick=None):
                 for du in (-1, 1):
                     if 0 <= u + du < W:
                         for yy in rows:
-                            fr.set(u + du, yy, out, f'{shutter}_trapdoor[facing={face},open=true,half=bottom]')
+                            fr.set(u + du, yy, out, f'recrafted:shutter[facing={face},paint={shutter}]')
     # the quay side gets a big ground-floor cart door
     fr.set(mid, info['base'] + 1, info['D'] - 1, 'air')
     fr.set(mid, info['base'] + 2, info['D'] - 1, 'air')

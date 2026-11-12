@@ -1,0 +1,49 @@
+{
+ "variants": {
+  "facing=north,paint=green": {
+   "model": "recrafted:block/shutter_green"
+  },
+  "facing=east,paint=green": {
+   "model": "recrafted:block/shutter_green",
+   "y": 90
+  },
+  "facing=south,paint=green": {
+   "model": "recrafted:block/shutter_green",
+   "y": 180
+  },
+  "facing=west,paint=green": {
+   "model": "recrafted:block/shutter_green",
+   "y": 270
+  },
+  "facing=north,paint=red": {
+   "model": "recrafted:block/shutter_red"
+  },
+  "facing=east,paint=red": {
+   "model": "recrafted:block/shutter_red",
+   "y": 90
+  },
+  "facing=south,paint=red": {
+   "model": "recrafted:block/shutter_red",
+   "y": 180
+  },
+  "facing=west,paint=red": {
+   "model": "recrafted:block/shutter_red",
+   "y": 270
+  },
+  "facing=north,paint=black": {
+   "model": "recrafted:block/shutter_black"
+  },
+  "facing=east,paint=black": {
+   "model": "recrafted:block/shutter_black",
+   "y": 90
+  },
+  "facing=south,paint=black": {
+   "model": "recrafted:block/shutter_black",
+   "y": 180
+  },
+  "facing=west,paint=black": {
+   "model": "recrafted:block/shutter_black",
+   "y": 270
+  }
+ }
+}

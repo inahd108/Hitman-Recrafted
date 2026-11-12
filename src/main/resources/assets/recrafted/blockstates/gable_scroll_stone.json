@@ -1,0 +1,34 @@
+{
+ "variants": {
+  "facing=north,side=left": {
+   "model": "recrafted:block/gable_scroll_stone_left"
+  },
+  "facing=east,side=left": {
+   "model": "recrafted:block/gable_scroll_stone_left",
+   "y": 90
+  },
+  "facing=south,side=left": {
+   "model": "recrafted:block/gable_scroll_stone_left",
+   "y": 180
+  },
+  "facing=west,side=left": {
+   "model": "recrafted:block/gable_scroll_stone_left",
+   "y": 270
+  },
+  "facing=north,side=right": {
+   "model": "recrafted:block/gable_scroll_stone_right"
+  },
+  "facing=east,side=right": {
+   "model": "recrafted:block/gable_scroll_stone_right",
+   "y": 90
+  },
+  "facing=south,side=right": {
+   "model": "recrafted:block/gable_scroll_stone_right",
+   "y": 180
+  },
+  "facing=west,side=right": {
+   "model": "recrafted:block/gable_scroll_stone_right",
+   "y": 270
+  }
+ }
+}

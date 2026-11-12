@@ -22,6 +22,10 @@ LANG = {
     'block.recrafted.lamp_post': 'Lamp Post',
     'block.recrafted.canal_lamp': 'Canal Lantern',
     'block.recrafted.bicycle': 'Bicycle',
+    'block.recrafted.gable_scroll': 'Gable Scroll',
+    'block.recrafted.gable_scroll_stone': 'Sandstone Gable Scroll',
+    'block.recrafted.hoist_beam': 'Hoisting Beam',
+    'block.recrafted.shutter': 'Warehouse Shutter',
 }
 
 PAINTS = {'black': (28, 28, 30), 'navy': (34, 48, 84), 'red': (128, 32, 30), 'green': (36, 78, 52), 'cream': (214, 204, 176)}
@@ -278,6 +282,63 @@ def main():
         v.update(horiz_states(NS + f'bicycle_{paint}', f',paint={paint}'))
     write('blockstates/bicycle.json', {'variants': v})
     write('models/item/bicycle.json', {'parent': NS + 'bicycle_black'})
+
+    # gable scrolls: a quarter round rising towards the neck, with a curl at the outer foot
+    for blk, tex in (('gable_scroll', 'minecraft:block/quartz_block_bottom'), ('gable_scroll_stone', 'minecraft:block/sandstone_top')):
+        for side in ('left', 'right'):
+            els = []
+            for y0 in range(0, 16, 2):
+                yc = y0 + 1
+                wdt = max(2.0, (256 - yc * yc) ** .5)
+                if side == 'left':                       # seen from the street the neck is on the viewer's right = -x
+                    els.append(el([0, y0, 0], [round(wdt, 2), y0 + 2, 16], uv=[0, 16 - y0 - 2, round(wdt, 2), 16 - y0]))
+                else:
+                    els.append(el([round(16 - wdt, 2), y0, 0], [16, y0 + 2, 16], uv=[round(16 - wdt, 2), 16 - y0 - 2, 16, 16 - y0]))
+            kx = (12, 16) if side == 'left' else (0, 4)
+            els.append(el([kx[0], 0, -1], [kx[1], 4, 1]))                                       # the curl
+            els.append(el([kx[0] + 1, 4, -.5], [kx[1] - 1, 5, .5]))
+            write(f'models/block/{blk}_{side}.json', {'textures': {'t': tex, 'particle': tex}, 'elements': els})
+        v = {}
+        for side in ('left', 'right'):
+            v.update(horiz_states(NS + f'{blk}_{side}', f',side={side}'))
+        write(f'blockstates/{blk}.json', {'variants': v})
+        write(f'models/item/{blk}.json', {'parent': NS + f'{blk}_left'})
+
+    # hoisting beam with pulley, rope and hook, pointing out of the wall (facing north: wall to the south)
+    write('models/block/hoist_beam.json', {
+        'textures': {'w': 'minecraft:block/dark_oak_log', 'e': 'minecraft:block/dark_oak_log_top',
+                     'i': 'minecraft:block/anvil', 'r': 'minecraft:block/chain', 'particle': 'minecraft:block/dark_oak_log'},
+        'elements': [
+            {'from': [6, 9, -2], 'to': [10, 13, 16], 'faces': {
+                'north': {'texture': '#e'}, 'south': {'texture': '#e'}, 'east': {'texture': '#w'},
+                'west': {'texture': '#w'}, 'up': {'texture': '#w'}, 'down': {'texture': '#w'}}},
+            el([5, 6.5, -1], [11, 9, 1.5], tex='#i'),                                        # pulley block
+            el([7.6, 0, -.2], [8.4, 6.5, .6], tex='#i'),                                     # rope
+            el([6.5, -1.5, -1], [9.5, 0, 1.5], tex='#i'),                                    # hook
+            el([6, 13, 14], [10, 14, 16], tex='#w')]})
+    write('blockstates/hoist_beam.json', {'variants': horiz_states(NS + 'hoist_beam')})
+    write('models/item/hoist_beam.json', {'parent': NS + 'hoist_beam'})
+
+    # warehouse shutters: diagonal two-colour planks, flat against the wall
+    for paint, (a, b) in {'green': ((34, 78, 52), (226, 222, 206)), 'red': ((132, 34, 30), (226, 222, 206)),
+                          'black': ((26, 26, 28), (150, 40, 34))}.items():
+        im = Image.new('RGB', (16, 16))
+        px = im.load()
+        for x in range(16):
+            for y in range(16):
+                band = ((x + y) // 4) % 2 if y < 8 else ((x - y) // 4) % 2      # hourglass chevrons
+                c = a if band else b
+                if x in (0, 15) or y in (0, 15) or y == 8:
+                    c = shade(a, .75)
+                px[x, y] = shade(c, 1 + rnd.uniform(-.04, .04))
+        save_tex(im, f'shutter_{paint}')
+        write(f'models/block/shutter_{paint}.json', {'textures': {'t': NS + f'shutter_{paint}', 'particle': NS + f'shutter_{paint}'},
+                                                      'elements': [el([0, 0, 14], [16, 16, 16])]})
+    v = {}
+    for paint in ('green', 'red', 'black'):
+        v.update(horiz_states(NS + f'shutter_{paint}', f',paint={paint}'))
+    write('blockstates/shutter.json', {'variants': v})
+    write('models/item/shutter.json', {'parent': NS + 'shutter_green'})
 
     # language
     lang_path = os.path.join(ASSETS, 'lang/en_us.json')
