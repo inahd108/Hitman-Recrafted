@@ -14,6 +14,8 @@ BRIEFING = [
 INTEL = [
     "Catering at the Gulden Hamer is brought in. Nobody checks the faces of the waiters, but everybody checks their bags.",
     "The guest list is for bidders. A bidder's paddle opens every door the public may use.",
+    "There is a metal detector inside the Gulden Hamer's front doors. Guns and anything sharp set it off, "
+    "unless you wear a guard's uniform. Staff and caterers come in through the garden door.",
     "De Meester never signs his work. His apprentices say he is the only one who paints left-handed.",
     "Watch the four painters at work long enough and he gives himself away. Or read the café's wage book: "
     "In de Gouden Ton pays his apprentices, and one name draws no wage.",

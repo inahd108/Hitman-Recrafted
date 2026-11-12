@@ -11,7 +11,8 @@ import numpy as np
 
 SOFT = {'air', 'grass', 'tall_grass', 'fern', 'poppy', 'dandelion', 'azure_bluet', 'oxeye_daisy', 'cornflower',
         'white_tulip', 'pink_tulip', 'orange_tulip', 'red_tulip', 'allium', 'dead_bush', 'wither_rose',
-        'brown_mushroom', 'rail', 'vine', 'ladder', 'rose_bush', 'peony', 'lilac', 'snow'}
+        'brown_mushroom', 'rail', 'vine', 'ladder', 'rose_bush', 'peony', 'lilac', 'snow',
+        'metal_detector', 'bicycle', 'bulb_string', 'light'}
 
 
 def classify(w):

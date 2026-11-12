@@ -39,6 +39,7 @@ public final class MapShots {
     private static int index = -1;
     private static long nextAt;
     private static boolean prepared;
+    private static final boolean GUI = Boolean.getBoolean("recrafted.mapshots.gui");
 
     private MapShots() {}
 
@@ -68,7 +69,7 @@ public final class MapShots {
     }
 
     private static void prepare(Minecraft mc, IntegratedServer server) {
-        mc.options.hideGui = true;
+        mc.options.hideGui = !GUI;
         mc.options.fov().set(Integer.getInteger("recrafted.mapshots.fov", 60));
         mc.options.renderDistance().set(Integer.getInteger("recrafted.mapshots.distance", 16));
         mc.options.graphicsMode().set(GraphicsStatus.FANCY);
@@ -134,7 +135,7 @@ public final class MapShots {
             nextAt = now + 4000;
             return;
         }
-        mc.options.hideGui = true;
+        mc.options.hideGui = !GUI;
         if (now < nextAt || index >= STEPS.size() - 1) return;
         index++;
         try {

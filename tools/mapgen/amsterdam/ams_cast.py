@@ -83,11 +83,11 @@ def build(ctx):
             follow='kooistra', enforcer=(i == 0), skin=i)
 
     # ============================ THE GULDEN HAMER ===================================================
-    for i, (a, pose, face) in enumerate((('hamer.door', 'guard', 'n'), ('hamer.door', 'guard', 'n'), ('hamer.hall', 'guard', 'n'),
+    for i, (a, pose, face) in enumerate((('hamer.door', 'guard', 'n'), ('hamer.door', 'guard', 'n'), ('hamer.gate', 'guard', 'n'),
                                          ('hamer.saleroom.door', 'guard', 's'), ('hamer.podium', 'guard', 'n'),
                                          ('hamer.garden', 'guard', 's'), ('hamer.coach', 'guard', 'n'),
                                          ('hamer.vault', 'guard', 'n'), ('hamer.landing', 'guard', 'n'))):
-        off = (2 if i == 1 else -2 if i == 0 else 0, 0, -1 if a == 'hamer.door' else 0)
+        off = (2 if i == 1 else -2 if i == 0 else 2 if a == 'hamer.gate' else 0, 0, -1 if a == 'hamer.door' else 1 if a == 'hamer.gate' else 0)
         idle(f'Security {["Anouk", "Daan", "Femke", "Joris", "Lotte", "Milan", "Noor", "Pim", "Sanne"][i]}', 'auction_security',
              a, pose, face, off=off if a != 'hamer.podium' else (3, 0, -2), enforcer=(i in (0, 7)), skin=i % 2)
     add('Security Thijs', 'auction_security', [wp('hamer.corridor.w', 20, 'guard'), wp('hamer.corridor.e', 20, 'guard'),

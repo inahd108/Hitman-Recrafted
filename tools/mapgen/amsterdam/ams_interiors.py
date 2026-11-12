@@ -75,6 +75,13 @@ def gulden_hamer(ctx):
         w.set(xw + 2, feet0, z, 'dark_oak_planks')
         w.set(xw + 2, feet0 + 1, z, 'dark_oak_slab')
     w.set(xw + 2, feet0 + 1, zf + 5, 'lectern[facing=east]')
+    # security line inside the doors: a brass railing across the vestibule with the metal detector in it
+    for x in range(xw + 1, xe):
+        if x != xm:
+            w.set(x, feet0, zf + 3, 'dark_oak_fence')
+    w.set(xm, feet0, zf + 3, 'recrafted:metal_detector[facing=north,alarm=false]')
+    w.set(xm, feet0 + 1, zf + 3, 'air')
+    A['hamer.gate'] = (xm, feet0, zf + 4)
     A['hamer.reception'] = (xw + 3, feet0, zf + 6)
     A['hamer.reception.desk'] = (xw + 1, feet0, zf + 6)
     A['hamer.hall'] = (xm, feet0, zf + 5)

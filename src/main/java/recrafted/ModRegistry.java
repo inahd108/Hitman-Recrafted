@@ -91,6 +91,9 @@ public final class ModRegistry {
 
     public static final RegistryObject<Block> CHANDELIER = block("chandelier", () -> new recrafted.block.ams.PostBlock(
             fixture().lightLevel(s -> 14).sound(SoundType.CHAIN), 1, 2, 1, 15, 16, 15));
+    public static final RegistryObject<Block> METAL_DETECTOR = block("metal_detector", () -> new recrafted.block.ams.MetalDetectorBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(-1f, 3600000f).sound(SoundType.METAL).noOcclusion()
+                    .noCollission().lightLevel(s -> 4)));
     public static final RegistryObject<Block> WINCH = block("winch", () -> new ActionBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(-1f, 3600000f).sound(SoundType.WOOD).noOcclusion(),
             ActionBlock.Action.WINCH));

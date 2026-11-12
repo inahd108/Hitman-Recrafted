@@ -28,6 +28,7 @@ LANG = {
     'block.recrafted.hoist_beam': 'Hoisting Beam',
     'block.recrafted.shutter': 'Warehouse Shutter',
     'block.recrafted.winch': 'Winch',
+    'block.recrafted.metal_detector': 'Metal Detector Gate',
     'block.recrafted.chandelier': 'Brass Chandelier',
     'block.recrafted.wage_book': 'Wage Book',
 }
@@ -401,6 +402,28 @@ def main():
                                                         'particle': G}, 'elements': els})
     write('blockstates/chandelier.json', {'variants': {'': {'model': NS + 'chandelier'}}})
     write('models/item/chandelier.json', {'parent': NS + 'chandelier'})
+
+    # metal detector arch: two grey posts and a crossbar two blocks up, with a status lamp (green / red)
+    for alarm, lamp in (('false', 'minecraft:block/lime_concrete'), ('true', 'minecraft:block/red_concrete')):
+        write(f'models/block/metal_detector_{"alarm" if alarm == "true" else "idle"}.json', {
+            'textures': {'t': 'minecraft:block/light_gray_concrete', 'b': 'minecraft:block/gray_concrete',
+                         'l': lamp, 'particle': 'minecraft:block/light_gray_concrete'},
+            'elements': [
+                el([0, 0, 5.5], [2.5, 1, 10.5], tex='#b'), el([13.5, 0, 5.5], [16, 1, 10.5], tex='#b'),     # feet
+                el([0, 1, 6], [2, 28, 10]), el([14, 1, 6], [16, 28, 10]),                               # posts
+                el([0, 28, 6], [16, 31, 10]),                                                          # crossbar
+                el([6.5, 28.5, 5.2], [9.5, 30.5, 6], tex='#l', shade_=False),                          # lamp, both faces
+                el([6.5, 28.5, 10], [9.5, 30.5, 10.8], tex='#l', shade_=False),
+                el([0.4, 8, 5.6], [1.6, 20, 6], tex='#b'), el([14.4, 8, 5.6], [15.6, 20, 6], tex='#b')]})   # sensor strips
+    v = {}
+    for d, y in (('north', 0), ('east', 90), ('south', 180), ('west', 270)):
+        for alarm in ('false', 'true'):
+            m = {'model': NS + f'metal_detector_{"alarm" if alarm == "true" else "idle"}'}
+            if y:
+                m['y'] = y
+            v[f'alarm={alarm},facing={d}'] = m
+    write('blockstates/metal_detector.json', {'variants': v})
+    write('models/item/metal_detector.json', {'parent': NS + 'metal_detector_idle'})
 
     # language
     lang_path = os.path.join(ASSETS, 'lang/en_us.json')

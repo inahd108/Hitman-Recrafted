@@ -187,6 +187,19 @@ public final class SelfTest {
             MissionManager.dropLoad(level, null, sw);
         }
         ok &= check(st.done.contains("kill_meester"), "hoist crate kills De Meester");
+        // the metal detector at the front door: a knife sets it off, empty pockets don't
+        BlockPos gate = find(level, ModRegistry.METAL_DETECTOR.get(), new BlockPos(60, 60, 222), new BlockPos(92, 70, 230));
+        ok &= check(gate != null, "metal detector at " + gate);
+        if (gate != null) {
+            net.minecraft.server.level.ServerPlayer armed = net.minecraftforge.common.util.FakePlayerFactory.get(level,
+                    new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "selftest_armed"));
+            net.minecraft.server.level.ServerPlayer clean = net.minecraftforge.common.util.FakePlayerFactory.get(level,
+                    new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "selftest_clean"));
+            for (var fp : List.of(armed, clean)) fp.moveTo(gate.getX() + .5, gate.getY(), gate.getZ() + .5, 180, 0);
+            armed.getInventory().add(new net.minecraft.world.item.ItemStack(ModRegistry.prop(recrafted.prop.PropType.KITCHEN_KNIFE)));
+            ok &= check(MissionManager.metalDetector(level, armed, gate), "knife sets off the gate");
+            ok &= check(!MissionManager.metalDetector(level, clean, gate), "empty pockets pass");
+        }
         koo.kill(null, true);
         ok &= check(st.done.contains("kill_kooistra"), "Kooistra objective");
         ok &= check(!st.done.contains("ledger"), "ledger bonus still open");

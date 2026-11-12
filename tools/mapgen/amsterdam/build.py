@@ -35,7 +35,7 @@ render.COLORS.update({
     'recrafted:lamp_post': (30, 52, 40), 'recrafted:canal_lamp': (255, 220, 150), 'recrafted:bicycle': (40, 40, 44),
     'recrafted:gable_scroll': (235, 229, 222), 'recrafted:gable_scroll_stone': (216, 203, 155),
     'recrafted:hoist_beam': (66, 43, 20), 'recrafted:chandelier': (212, 175, 55), 'recrafted:winch': (110, 80, 50),
-    'recrafted:wage_book': (150, 40, 34), 'recrafted:shutter': (34, 78, 52)})
+    'recrafted:wage_book': (150, 40, 34), 'recrafted:metal_detector': (170, 172, 176), 'recrafted:shutter': (34, 78, 52)})
 
 
 def bridges(ctx):

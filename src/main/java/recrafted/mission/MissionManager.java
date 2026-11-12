@@ -63,6 +63,7 @@ import java.util.UUID;
 public final class MissionManager {
     private static final Map<UUID, Long> HUNTED = new HashMap<>();
     private static final Map<UUID, Long> SPOT_COOLDOWN = new HashMap<>();
+    private static final Map<UUID, Long> DETECTOR_COOLDOWN = new HashMap<>();
     /** How long each player has been watching a hidden target at work (ticks). */
     private static final Map<UUID, Integer> WATCHING = new HashMap<>();
     private static long serverTick;
@@ -426,6 +427,48 @@ public final class MissionManager {
         level.sendParticles(ParticleTypes.CLOUD, best.getX() + .5, floor.getY() + 1.2, best.getZ() + .5, 30, .7, .2, .7, .02);
         Awareness.noise(level, Vec3.atCenterOf(floor.above()), 18, 8, p);
         if (hit == 0 && p != null) p.displayClientMessage(Component.literal("It comes down on an empty floor."), true);
+    }
+
+    /**
+     * The player walks through a metal detector. Guns and illegal props set it off unless the player is dressed
+     * as a guard; the guards who can see the gate get very suspicious, twice in a row and they move in.
+     * Returns true when the alarm sounds.
+     */
+    public static boolean metalDetector(ServerLevel level, ServerPlayer p, BlockPos pos) {
+        if (activeState(level) == null || p.isSpectator()) return false;
+        long now = level.getGameTime();
+        Long last = DETECTOR_COOLDOWN.get(p.getUUID());
+        if (last != null && now - last < 30) return false;
+        DETECTOR_COOLDOWN.put(p.getUUID(), now);
+        int found = 0;
+        List<ItemStack> all = new ArrayList<>(p.getInventory().items);
+        all.addAll(p.getInventory().offhand);
+        for (ItemStack s : all) {
+            if (s.isEmpty()) continue;
+            recrafted.prop.PropType t = recrafted.prop.PropItem.typeOf(s);
+            if ((t != null && t.illegal()) || Guns.isGun(s) || s.is(ModRegistry.CICALA_CASE.get())) found++;
+        }
+        NpcRole worn = PlayerData.disguise(p);
+        if (found == 0 || (worn != null && worn.guard)) {
+            level.playSound(null, pos, SoundEvents.NOTE_BLOCK_CHIME.value(), SoundSource.BLOCKS, 0.4f, 1.6f);
+            return false;
+        }
+        for (int i = 0; i < 3; i++) {
+            final int k = i;
+            level.getServer().tell(new net.minecraft.server.TickTask(level.getServer().getTickCount() + k * 5,
+                    () -> level.playSound(null, pos, SoundEvents.NOTE_BLOCK_BIT.value(), SoundSource.BLOCKS, 1.2f, 1.9f)));
+        }
+        Awareness.suspiciousAct(level, p, 0.7f);
+        NpcEntity nearest = null;
+        for (NpcEntity n : level.getEntitiesOfClass(NpcEntity.class, new AABB(pos).inflate(12), e -> !e.isDown() && e.getRole().guard)) {
+            if (nearest == null || n.distanceToSqr(p) < nearest.distanceToSqr(p)) nearest = n;
+        }
+        if (nearest != null && nearest.suspicionOf(p) < 1f) {
+            nearest.say(found > 1 ? "Sir, step back through the gate. Empty your pockets." : "Sir? Once more through the gate, please.", 70);
+            nearest.investigate(p.position(), 60);
+        }
+        p.displayClientMessage(Component.literal("The metal detector goes off").withStyle(ChatFormatting.RED), true);
+        return true;
     }
 
     /** Collect objectives: done once the item is in the player's inventory. */
