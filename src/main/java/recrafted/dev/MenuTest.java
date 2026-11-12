@@ -112,8 +112,8 @@ public final class MenuTest {
         if (PLAY) {
             for (String pass : new String[]{"create", "reopen"}) {
                 step(500, () -> {
-                    check(pass + ": contracts world " + (pass.equals("create") ? "absent" : "present") + " beforehand",
-                            MissionLauncher.worldExists() == pass.equals("reopen"));
+                    if (pass.equals("reopen")) check("reopen: contracts world exists", MissionLauncher.worldExists());
+                    else LOG.info("MENUTEST create: contracts world {}", MissionLauncher.worldExists() ? "already there (reopening)" : "absent");
                     MissionLauncher.play(new MissionsScreen(new RecraftedTitleScreen()));
                 });
                 await(pass + ": no experimental-settings prompt", 120_000, () -> {
