@@ -446,6 +446,75 @@ public final class MissionManager {
         }
     }
 
+    // ---- the mission clock ---------------------------------------------------------------------
+    public static int minutesSinceStart(ServerLevel level, MissionState st, Mission m) {
+        if (m.clock == null) return 0;
+        return (int) ((level.getGameTime() - st.startTick) / (20L * m.clock.secondsPerMinute()));
+    }
+
+    public static String clockText(Mission m, int minutes) {
+        int t = (m.clock.start() + minutes) % (24 * 60);
+        return String.format("%02d:%02d", t / 60, t % 60);
+    }
+
+    /** Bells on the quarter hours, scheduled announcements, and NPCs switching to their next scheduled route. */
+    private static void tickClock(ServerLevel level, MissionState st) {
+        Mission m = of(level);
+        if (m.clock == null) return;
+        int now = minutesSinceStart(level, st, m);
+        int period = m.clock.period();
+        while (st.clockMinute < now) {
+            st.clockMinute++;
+            st.setDirty();
+            int min = st.clockMinute;
+            int abs = m.clock.start() + min;
+            if (min > 0 && abs % 15 == 0) {
+                int strokes = abs % 60 == 0 ? Math.min(12, Math.max(1, (abs / 60) % 12 == 0 ? 12 : (abs / 60) % 12)) : abs % 60 / 15;
+                bells(level, strokes, abs % 60 == 0);
+            }
+            int rel = period > 0 ? min % period : min;
+            for (Mission.ClockEvent ev : m.clock.events()) {
+                if (ev.at() == rel && (period > 0 || min == ev.at())) {
+                    for (ServerPlayer p : level.players()) {
+                        p.displayClientMessage(Component.literal(clockText(m, min) + "  " + ev.text()).withStyle(ChatFormatting.GOLD), false);
+                        if (!ev.sub().isEmpty()) p.displayClientMessage(Component.literal(ev.sub()).withStyle(ChatFormatting.GRAY), true);
+                    }
+                }
+            }
+        }
+        int rel = period > 0 ? now % period : now;
+        for (Entity e : level.getAllEntities()) {
+            if (!(e instanceof NpcEntity n) || n.missionGen != st.gen || n.castIndex < 0 || n.castIndex >= m.npcs.size() || n.isDown()) continue;
+            JsonObject def = m.npcs.get(n.castIndex);
+            if (!def.has("schedule")) continue;
+            JsonArray sch = def.getAsJsonArray("schedule");
+            int stage = -1;
+            for (int i = 0; i < sch.size(); i++) if (sch.get(i).getAsJsonObject().get("at").getAsInt() <= rel) stage = i;
+            if (stage == n.scheduleStage) continue;
+            n.scheduleStage = stage;
+            JsonObject route = stage < 0 ? def.getAsJsonObject("route") : sch.get(stage).getAsJsonObject().getAsJsonObject("route");
+            n.switchRoute(Route.fromJson(route));
+        }
+    }
+
+    /** The church carillon: a short run of chimes on the quarters, then the hour struck. */
+    private static void bells(ServerLevel level, int strokes, boolean hour) {
+        Mission m = of(level);
+        for (ServerPlayer p : level.players()) {
+            for (int i = 0; i < (hour ? 4 : strokes); i++) {
+                final int k = i;
+                level.getServer().tell(new net.minecraft.server.TickTask(level.getServer().getTickCount() + 1 + k * 12,
+                        () -> p.playNotifySound(SoundEvents.NOTE_BLOCK_BELL.value(), SoundSource.AMBIENT, 0.45f, new float[]{1.06f, 0.94f, 0.84f, 0.71f}[k % 4])));
+            }
+            if (hour) {
+                for (int i = 0; i < strokes; i++) {
+                    level.getServer().tell(new net.minecraft.server.TickTask(level.getServer().getTickCount() + 60 + i * 30,
+                            () -> p.playNotifySound(SoundEvents.BELL_BLOCK, SoundSource.AMBIENT, 0.6f, 0.6f)));
+                }
+            }
+        }
+    }
+
     // ---- start / stop ----------------------------------------------------------------------
     /** Resets the world state and queues the whole cast and every prop for spawning. */
     public static void begin(ServerLevel level) {
@@ -468,6 +537,7 @@ public final class MissionManager {
         st.complete = false;
         st.purgeAt = -1;
         st.startTick = level.getGameTime();
+        st.clockMinute = -1;
         st.setDirty();
         List<Entity> stale = new ArrayList<>();
         for (Entity e : level.getAllEntities()) {
@@ -689,7 +759,8 @@ public final class MissionManager {
                 done.add(st.done.contains(o.id()));
             }
         }
-        Net.CHANNEL.send(PacketDistributor.PLAYER.with(() -> p), new Net.HudS2C(st.active || st.complete, m.title, status, max,
+        String title = m.clock != null && st.active ? m.title + "   " + clockText(m, minutesSinceStart(level, st, m)) : m.title;
+        Net.CHANNEL.send(PacketDistributor.PLAYER.with(() -> p), new Net.HudS2C(st.active || st.complete, title, status, max,
                 z == null ? "" : z.label(), worn == null ? "Suit" : worn.title, isDragging(level, p), texts, done));
     }
 
@@ -705,6 +776,7 @@ public final class MissionManager {
             if (level.getGameTime() % 10 == 0) spawnPending(level, st);
             if (level.getGameTime() % 5 == 0) tickWatching(level, st);
             if (level.getGameTime() % 20 == 0) tickCollect(level, st);
+            if (level.getGameTime() % 20 == 5) tickClock(level, st);
             tickPurge(level, st);
         }
         if (level.getGameTime() % 5 == 0) {

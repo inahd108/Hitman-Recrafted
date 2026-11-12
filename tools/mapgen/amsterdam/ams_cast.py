@@ -35,18 +35,25 @@ def build(ctx):
     ib = [mid(b) for b in INNER_BRIDGES] + [mid(DRAWBRIDGE)]
 
     # ============================ TARGETS ============================================================
+    # the clock runs from 19:30 and the sale repeats every hour: viewing (:30-:45), sale (:45-:15), interval (:15-:30)
+    SALE, INTERVAL = 15, 45
     add('Margriet Ostendorp', 'ostendorp', [
-        wp('hamer.office.desk', 40, 'type', 's', seat=False, say='Lot nine opens at four hundred. Not a cent less.'),
+        wp('hamer.office.desk', 30, 'type', 's', seat=False, say='Lot nine opens at four hundred. Not a cent less.'),
         wp('hamer.office'), wp('hamer.gallery', 15, 'look', 'w'), wp('hamer.landing'), wp('hamer.stairs.foot'),
         wp('hamer.hall', 30, 'talk', 'n', say='Welcome, welcome. The catalogue is on the table.'),
-        wp('hamer.reception', 10, 'talk', 'w'),
-        wp('hamer.saleroom.door'), wp('hamer.saleroom'),
-        wp('hamer.podium', 90, 'talk', 'n', say='Lot nine. A merchant\'s daughter, sixteen-sixty. Do I hear four hundred?'),
-        wp('hamer.saleroom'), wp('hamer.corridor.w'), wp('hamer.vault.stairs'), wp('hamer.vault', 20, 'look', 's'),
-        wp('hamer.vault.stairs'), wp('hamer.corridor.w'), wp('hamer.stairs.foot'), wp('hamer.landing'),
+        wp('hamer.reception', 10, 'talk', 'w'), wp('hamer.stairs.foot'), wp('hamer.landing'),
         wp('hamer.viewing', 40, 'drink', 'e', say='Between us: the provenance is impeccable.'),
         wp('hamer.landing'), wp('hamer.office'),
-    ], target=True, id='ostendorp')
+    ], target=True, id='ostendorp', schedule=[
+        (SALE, [wp('hamer.podium', 100, 'talk', 'n', say='Lot nine. A merchant\'s daughter, sixteen-sixty. Do I hear four hundred?'),
+                wp('hamer.podium', 80, 'talk', 'w', off=(-1, 0, 0), say='Four hundred, the gentleman by the window. Four-fifty?'),
+                wp('hamer.podium', 80, 'talk', 'n', say='Sold. Lot ten, a winter landscape with skaters.')]),
+        (INTERVAL, [wp('hamer.saleroom'), wp('hamer.corridor.w'), wp('hamer.vault.stairs'),
+                    wp('hamer.vault', 25, 'look', 's', say='Write it in the book. Every lot, every buyer.'),
+                    wp('hamer.vault.stairs'), wp('hamer.corridor.w'), wp('hamer.stairs.foot'), wp('hamer.landing'),
+                    wp('hamer.viewing', 50, 'drink', 'e', say='Champagne, while they find their chequebooks.'),
+                    wp('hamer.landing'), wp('hamer.office'), wp('hamer.office.desk', 60, 'type', 's')]),
+    ])
     for i, off in enumerate(((1, 0, 1), (-1, 0, 1))):
         add(f'Bodyguard {"Ruud" if i == 0 else "Bas"}', 'bodyguard', [wp('hamer.office', 5, 'guard', off=off)],
             follow='ostendorp', enforcer=(i == 0), skin=1)
@@ -103,7 +110,14 @@ def build(ctx):
         else:
             route = [wp('hamer.garden', 40, 'drink', 'n', off=(i - 12, 0, 0)), wp('hamer.garden.door'), wp('hamer.corridor.w'),
                      wp('hamer.hall', 40, 'talk', 'w', off=(0, 0, i - 11))]
-        add(n, 'collector', route, skin=i % 3)
+        if i < 10:
+            seat = wp(f'hamer.row{i % 6}.w' if i < 6 else f'hamer.row{i - 6}.e', 200, 'sit', 's', seat=True,
+                      off=(i % 3, 0, 0) if i < 6 else (-(i % 3), 0, 0))
+            mingle = [wp('hamer.hall', 40, 'drink', 'e', off=(i % 4 - 2, 0, 1)), wp('hamer.stairs.foot'), wp('hamer.landing'),
+                      wp('hamer.gallery', 30, 'look', 'w'), wp('hamer.landing'), wp('hamer.stairs.foot')]
+            add(n, 'collector', mingle, skin=i % 3, schedule=[(SALE, [seat]), (INTERVAL, list(reversed(mingle)))])
+        else:
+            add(n, 'collector', route, skin=i % 3)
     for i, a in enumerate(('hamer.balcony', 'hamer.balcony', 'hamer.hall', 'hamer.door')):
         idle(f'Photographer {["Eva", "Luuk", "Iris", "Mees"][i]}', 'photographer', a, 'phone' if i % 2 else 'look', 's',
              off=(i * 3, 0, 0) if i < 2 else (2, 0, -1), skin=i % 2)
@@ -223,8 +237,9 @@ def build(ctx):
              allow=['police'], label='Politie — staff only'),
     ]
     import walkcheck
-    added = walkcheck.split_long_legs(ctx['w'], c.npcs)
-    problems = walkcheck.check_routes(ctx['w'], c.npcs)
+    scheduled = [dict(name=f"{n['name']} @{s['at']}", route=s['route']) for n in c.npcs for s in n.get('schedule', [])]
+    added = walkcheck.split_long_legs(ctx['w'], c.npcs + scheduled)
+    problems = walkcheck.check_routes(ctx['w'], c.npcs + scheduled)
     print(f'  cast: {len(c.npcs)} npcs, {getattr(c, "moved", 0)} snapped, {added} stops added, '
           f'{len(c.warn)} warnings, {len(problems)} unreachable legs')
     for wmsg in c.warn[:20]:

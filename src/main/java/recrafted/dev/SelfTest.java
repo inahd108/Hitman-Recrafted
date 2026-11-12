@@ -83,6 +83,11 @@ public final class SelfTest {
                     ticks, npcs.size(), props, st.pendingNpcs.size(), st.pendingProps.size(), moved, fell,
                     NpcEntity.statArrivals, NpcEntity.statUnsticks);
         }
+        Mission cur = Mission.byId(MISSION);
+        if (ticks == RUN_TICKS - 100 && cur.clock != null) {
+            // jump the clock to the sixteenth minute: the sale has started
+            MissionState.get(level).startTick = level.getGameTime() - 16L * 20 * cur.clock.secondsPerMinute();
+        }
         if (ticks == RUN_TICKS && !MISSION.equals("corvara")) {
             boolean ok = amsterdam(level);
             LOG.info(ok ? "SELFTEST PASS" : "SELFTEST FAIL");
@@ -148,6 +153,8 @@ public final class SelfTest {
         ok &= check(meester != null && ost != null && koo != null, "three targets present");
         if (meester == null || ost == null || koo == null) return false;
         ok &= check(meester.hiddenTarget && !meester.isTarget() && meester.isLefty(), "De Meester hidden and left-handed");
+        ok &= check(st.clockMinute >= 16, "clock at " + MissionManager.clockText(m, st.clockMinute));
+        ok &= check(ost.scheduleStage == 0 && ost.getRoute().points.get(0).z > 248, "Ostendorp on her sale route (stage " + ost.scheduleStage + ")");
         BlockPos book = find(level, ModRegistry.WAGE_BOOK.get(), new BlockPos(180, 60, 130), new BlockPos(215, 90, 175));
         ok &= check(book != null, "wage book at " + book);
         if (book != null) MissionManager.readClue(level, null, book);

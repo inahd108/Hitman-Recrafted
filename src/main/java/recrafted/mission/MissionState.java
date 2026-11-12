@@ -22,6 +22,8 @@ public class MissionState extends SavedData {
     public boolean complete;
     public int gen;
     public long startTick;
+    /** Last mission-clock minute whose bells and events have been played. */
+    public int clockMinute = -1;
     public final Set<Integer> pendingNpcs = new HashSet<>();
     public final Set<Integer> pendingProps = new HashSet<>();
     public final Set<String> done = new HashSet<>();
@@ -45,6 +47,7 @@ public class MissionState extends SavedData {
         s.complete = t.getBoolean("complete");
         s.gen = t.getInt("gen");
         s.startTick = t.getLong("start");
+        s.clockMinute = t.contains("clockMinute") ? t.getInt("clockMinute") : -1;
         for (int i : t.getIntArray("pendingNpcs")) s.pendingNpcs.add(i);
         for (int i : t.getIntArray("pendingProps")) s.pendingProps.add(i);
         for (int i : t.getIntArray("deletedCast")) s.deletedCast.add(i);
@@ -74,6 +77,7 @@ public class MissionState extends SavedData {
         t.putBoolean("complete", complete);
         t.putInt("gen", gen);
         t.putLong("start", startTick);
+        t.putInt("clockMinute", clockMinute);
         t.putIntArray("pendingNpcs", pendingNpcs.stream().mapToInt(Integer::intValue).toArray());
         t.putIntArray("pendingProps", pendingProps.stream().mapToInt(Integer::intValue).toArray());
         t.putIntArray("deletedCast", deletedCast.stream().mapToInt(Integer::intValue).toArray());

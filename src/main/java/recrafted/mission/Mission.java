@@ -41,10 +41,18 @@ public final class Mission {
     public record Objective(String id, String type, String target, String text, boolean optional) {}
     public record Target(String id, String name, String desc) {}
     public record PropSpawn(ResourceLocation item, Vec3 pos) {}
+    /** A line announced when the mission clock reaches a minute (relative to the start, repeating every period). */
+    public record ClockEvent(int at, String text, String sub) {}
+    /**
+     * The mission clock: it starts at {@code start} (minutes after midnight) and runs one minute every
+     * {@code secondsPerMinute} real seconds. Schedules and events repeat every {@code period} minutes (0 = never).
+     */
+    public record Clock(int start, int secondsPerMinute, int period, List<ClockEvent> events) {}
 
     public String id, title, location;
     public ResourceKey<Level> dimension;
     public Vec3 spawn;
+    @Nullable public Clock clock;
     public float spawnYaw;
     public final List<String> briefing = new ArrayList<>();
     public final List<String> intel = new ArrayList<>();
@@ -133,6 +141,16 @@ public final class Mission {
                 m.props.add(new PropSpawn(new ResourceLocation(p.get("item").getAsString()), vec(p.getAsJsonArray("pos"))));
             }
             for (JsonElement e : o.getAsJsonArray("npcs")) m.npcs.add(e.getAsJsonObject());
+            if (o.has("clock")) {
+                JsonObject c = o.getAsJsonObject("clock");
+                List<ClockEvent> ev = new ArrayList<>();
+                if (c.has("events")) for (JsonElement e : c.getAsJsonArray("events")) {
+                    JsonObject t = e.getAsJsonObject();
+                    ev.add(new ClockEvent(t.get("at").getAsInt(), t.get("text").getAsString(), t.has("sub") ? t.get("sub").getAsString() : ""));
+                }
+                m.clock = new Clock(c.get("start").getAsInt(), c.get("secondsPerMinute").getAsInt(),
+                        c.has("period") ? c.get("period").getAsInt() : 0, ev);
+            }
         } catch (Exception e) {
             throw new IllegalStateException("Could not load mission " + id, e);
         }

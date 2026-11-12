@@ -38,6 +38,15 @@ OBJECTIVES = [
 ]
 
 
+# 19:30 start, one clock minute per 10 s; the sale repeats every hour (minutes are relative to the hour's cycle)
+CLOCK = dict(start=19 * 60 + 30, secondsPerMinute=10, period=60, events=[
+    dict(at=13, text='The bell rings in the Gulden Hamer: bidders to the saleroom.', sub='The sale starts at a quarter to.'),
+    dict(at=15, text='The sale begins. Ostendorp takes the podium.', sub='She stays at the lectern until a quarter past.'),
+    dict(at=43, text='Last lots of the session.'),
+    dict(at=45, text='The sale breaks for the interval.', sub='Ostendorp goes down to the vault, then upstairs for champagne.'),
+])
+
+
 def exits(ctx):
     """Exit points the player walks into: the train, the ferry deck."""
     w, A = ctx['w'], ctx['anchors']
@@ -74,4 +83,5 @@ def build(ctx):
         'zones': zones,
         'props': props(ctx),
         'npcs': npcs,
+        'clock': CLOCK,
     }

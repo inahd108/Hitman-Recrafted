@@ -228,7 +228,7 @@
        70,
        229.5
       ],
-      "wait": 800,
+      "wait": 600,
       "pose": "type",
       "yaw": 0,
       "say": "Lot nine opens at four hundred. Not a cent less."
@@ -303,135 +303,6 @@
      {
       "pos": [
        75.5,
-       65,
-       240.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       75.5,
-       66,
-       250.5
-      ],
-      "wait": 1800,
-      "pose": "talk",
-      "yaw": 180,
-      "say": "Lot nine. A merchant's daughter, sixteen-sixty. Do I hear four hundred?"
-     },
-     {
-      "pos": [
-       75.5,
-       65,
-       240.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       70.5,
-       65,
-       237.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       63.5,
-       65,
-       237.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       62.5,
-       65,
-       230.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       61.5,
-       65,
-       224.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       62.5,
-       60,
-       230.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       65.5,
-       58,
-       234.5
-      ],
-      "wait": 400,
-      "pose": "look",
-      "yaw": 0
-     },
-     {
-      "pos": [
-       61.5,
-       59,
-       231.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       61.5,
-       65,
-       224.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       63.5,
-       65,
-       230.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       63.5,
-       65,
-       237.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       75.5,
-       65,
-       237.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       75.5,
        70,
        231.5
       ],
@@ -470,7 +341,234 @@
     ]
    },
    "id": "ostendorp",
-   "target": true
+   "target": true,
+   "schedule": [
+    {
+     "at": 15,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         75.5,
+         66,
+         250.5
+        ],
+        "wait": 2000,
+        "pose": "talk",
+        "yaw": 180,
+        "say": "Lot nine. A merchant's daughter, sixteen-sixty. Do I hear four hundred?"
+       },
+       {
+        "pos": [
+         74.5,
+         66,
+         250.5
+        ],
+        "wait": 1600,
+        "pose": "talk",
+        "yaw": 90,
+        "say": "Four hundred, the gentleman by the window. Four-fifty?"
+       },
+       {
+        "pos": [
+         75.5,
+         66,
+         250.5
+        ],
+        "wait": 1600,
+        "pose": "talk",
+        "yaw": 180,
+        "say": "Sold. Lot ten, a winter landscape with skaters."
+       }
+      ]
+     }
+    },
+    {
+     "at": 45,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         75.5,
+         65,
+         240.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         70.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         63.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         62.5,
+         65,
+         230.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         61.5,
+         65,
+         224.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         62.5,
+         60,
+         230.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         65.5,
+         58,
+         234.5
+        ],
+        "wait": 500,
+        "pose": "look",
+        "yaw": 0,
+        "say": "Write it in the book. Every lot, every buyer."
+       },
+       {
+        "pos": [
+         61.5,
+         59,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         61.5,
+         65,
+         224.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         63.5,
+         65,
+         230.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         63.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         84.5,
+         70,
+         228.5
+        ],
+        "wait": 1000,
+        "pose": "drink",
+        "yaw": -90,
+        "say": "Champagne, while they find their chequebooks."
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         65.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         65.5,
+         70,
+         229.5
+        ],
+        "wait": 1200,
+        "pose": "type",
+        "yaw": 0
+       },
+       {
+        "pos": [
+         71.5,
+         70,
+         230.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         69,
+         233.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       }
+      ]
+     }
+    }
+   ]
   },
   {
    "name": "Bodyguard Ruud",
@@ -3215,40 +3313,21 @@
    "name": "Mr. Haverkamp",
    "role": "collector",
    "pos": [
-    64.5,
-    66,
-    241.5
+    73.5,
+    65,
+    228.5
    ],
-   "yaw": 0,
+   "yaw": -90,
    "route": {
     "mode": "loop",
     "points": [
-     {
-      "pos": [
-       64.5,
-       66,
-       241.5
-      ],
-      "wait": 1200,
-      "pose": "sit",
-      "yaw": 0
-     },
-     {
-      "pos": [
-       75.5,
-       65,
-       240.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
      {
       "pos": [
        73.5,
        65,
        228.5
       ],
-      "wait": 600,
+      "wait": 800,
       "pose": "drink",
       "yaw": -90
      },
@@ -3256,53 +3335,155 @@
       "pos": [
        75.5,
        65,
-       240.5
+       237.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       231.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       228.5
+      ],
+      "wait": 600,
+      "pose": "look",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       231.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       65,
+       237.5
       ],
       "wait": 0,
       "pose": "stand"
      }
     ]
    },
-   "skin": 0
+   "skin": 0,
+   "schedule": [
+    {
+     "at": 15,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         64.5,
+         66,
+         241.5
+        ],
+        "wait": 4000,
+        "pose": "sit",
+        "yaw": 0
+       }
+      ]
+     }
+    },
+    {
+     "at": 45,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         228.5
+        ],
+        "wait": 600,
+        "pose": "look",
+        "yaw": 90
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         73.5,
+         65,
+         228.5
+        ],
+        "wait": 800,
+        "pose": "drink",
+        "yaw": -90
+       }
+      ]
+     }
+    }
+   ]
   },
   {
    "name": "Mrs. Visser-Teng",
    "role": "collector",
    "pos": [
-    65.5,
-    66,
-    242.5
+    74.5,
+    65,
+    228.5
    ],
-   "yaw": 0,
+   "yaw": -90,
    "route": {
     "mode": "loop",
     "points": [
-     {
-      "pos": [
-       65.5,
-       66,
-       242.5
-      ],
-      "wait": 1200,
-      "pose": "sit",
-      "yaw": 0
-     },
-     {
-      "pos": [
-       75.5,
-       65,
-       240.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
      {
       "pos": [
        74.5,
        65,
        228.5
       ],
-      "wait": 600,
+      "wait": 800,
       "pose": "drink",
       "yaw": -90
      },
@@ -3310,53 +3491,155 @@
       "pos": [
        75.5,
        65,
-       240.5
+       237.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       231.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       228.5
+      ],
+      "wait": 600,
+      "pose": "look",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       231.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       65,
+       237.5
       ],
       "wait": 0,
       "pose": "stand"
      }
     ]
    },
-   "skin": 1
+   "skin": 1,
+   "schedule": [
+    {
+     "at": 15,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         65.5,
+         66,
+         242.5
+        ],
+        "wait": 4000,
+        "pose": "sit",
+        "yaw": 0
+       }
+      ]
+     }
+    },
+    {
+     "at": 45,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         228.5
+        ],
+        "wait": 600,
+        "pose": "look",
+        "yaw": 90
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         74.5,
+         65,
+         228.5
+        ],
+        "wait": 800,
+        "pose": "drink",
+        "yaw": -90
+       }
+      ]
+     }
+    }
+   ]
   },
   {
    "name": "Count Orlov",
    "role": "collector",
    "pos": [
-    66.5,
-    66,
-    243.5
+    75.5,
+    65,
+    228.5
    ],
-   "yaw": 0,
+   "yaw": -90,
    "route": {
     "mode": "loop",
     "points": [
-     {
-      "pos": [
-       66.5,
-       66,
-       243.5
-      ],
-      "wait": 1200,
-      "pose": "sit",
-      "yaw": 0
-     },
-     {
-      "pos": [
-       75.5,
-       65,
-       240.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
      {
       "pos": [
        75.5,
        65,
        228.5
       ],
-      "wait": 600,
+      "wait": 800,
       "pose": "drink",
       "yaw": -90
      },
@@ -3364,42 +3647,35 @@
       "pos": [
        75.5,
        65,
-       240.5
+       237.5
       ],
       "wait": 0,
       "pose": "stand"
-     }
-    ]
-   },
-   "skin": 2
-  },
-  {
-   "name": "Ms. Delacroix",
-   "role": "collector",
-   "pos": [
-    64.5,
-    66,
-    244.5
-   ],
-   "yaw": 0,
-   "route": {
-    "mode": "loop",
-    "points": [
-     {
-      "pos": [
-       64.5,
-       66,
-       244.5
-      ],
-      "wait": 1200,
-      "pose": "sit",
-      "yaw": 0
      },
      {
       "pos": [
-       72.5,
-       66,
-       244.5
+       75.5,
+       70,
+       231.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       228.5
+      ],
+      "wait": 600,
+      "pose": "look",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       231.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -3408,18 +3684,118 @@
       "pos": [
        75.5,
        65,
-       240.5
+       237.5
       ],
       "wait": 0,
       "pose": "stand"
-     },
+     }
+    ]
+   },
+   "skin": 2,
+   "schedule": [
+    {
+     "at": 15,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         66.5,
+         66,
+         243.5
+        ],
+        "wait": 4000,
+        "pose": "sit",
+        "yaw": 0
+       }
+      ]
+     }
+    },
+    {
+     "at": 45,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         228.5
+        ],
+        "wait": 600,
+        "pose": "look",
+        "yaw": 90
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         228.5
+        ],
+        "wait": 800,
+        "pose": "drink",
+        "yaw": -90
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "name": "Ms. Delacroix",
+   "role": "collector",
+   "pos": [
+    76.5,
+    65,
+    228.5
+   ],
+   "yaw": -90,
+   "route": {
+    "mode": "loop",
+    "points": [
      {
       "pos": [
        76.5,
        65,
        228.5
       ],
-      "wait": 600,
+      "wait": 800,
       "pose": "drink",
       "yaw": -90
      },
@@ -3427,71 +3803,155 @@
       "pos": [
        75.5,
        65,
-       240.5
+       237.5
       ],
       "wait": 0,
       "pose": "stand"
      },
      {
       "pos": [
-       71.5,
-       66,
-       244.5
+       75.5,
+       70,
+       231.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       228.5
+      ],
+      "wait": 600,
+      "pose": "look",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       231.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       65,
+       237.5
       ],
       "wait": 0,
       "pose": "stand"
      }
     ]
    },
-   "skin": 0
+   "skin": 0,
+   "schedule": [
+    {
+     "at": 15,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         64.5,
+         66,
+         244.5
+        ],
+        "wait": 4000,
+        "pose": "sit",
+        "yaw": 0
+       }
+      ]
+     }
+    },
+    {
+     "at": 45,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         228.5
+        ],
+        "wait": 600,
+        "pose": "look",
+        "yaw": 90
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         76.5,
+         65,
+         228.5
+        ],
+        "wait": 800,
+        "pose": "drink",
+        "yaw": -90
+       }
+      ]
+     }
+    }
+   ]
   },
   {
    "name": "Mr. Okafor",
    "role": "collector",
    "pos": [
-    65.5,
-    66,
-    245.5
+    73.5,
+    65,
+    228.5
    ],
-   "yaw": 0,
+   "yaw": -90,
    "route": {
     "mode": "loop",
     "points": [
-     {
-      "pos": [
-       65.5,
-       66,
-       245.5
-      ],
-      "wait": 1200,
-      "pose": "sit",
-      "yaw": 0
-     },
-     {
-      "pos": [
-       73.5,
-       65,
-       245.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       75.5,
-       65,
-       240.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
      {
       "pos": [
        73.5,
        65,
        228.5
       ],
-      "wait": 600,
+      "wait": 800,
       "pose": "drink",
       "yaw": -90
      },
@@ -3499,71 +3959,155 @@
       "pos": [
        75.5,
        65,
-       240.5
+       237.5
       ],
       "wait": 0,
       "pose": "stand"
      },
      {
       "pos": [
-       72.5,
-       66,
-       245.5
+       75.5,
+       70,
+       231.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       228.5
+      ],
+      "wait": 600,
+      "pose": "look",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       231.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       65,
+       237.5
       ],
       "wait": 0,
       "pose": "stand"
      }
     ]
    },
-   "skin": 1
+   "skin": 1,
+   "schedule": [
+    {
+     "at": 15,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         65.5,
+         66,
+         245.5
+        ],
+        "wait": 4000,
+        "pose": "sit",
+        "yaw": 0
+       }
+      ]
+     }
+    },
+    {
+     "at": 45,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         228.5
+        ],
+        "wait": 600,
+        "pose": "look",
+        "yaw": 90
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         73.5,
+         65,
+         228.5
+        ],
+        "wait": 800,
+        "pose": "drink",
+        "yaw": -90
+       }
+      ]
+     }
+    }
+   ]
   },
   {
    "name": "Mrs. Brandt",
    "role": "collector",
    "pos": [
-    66.5,
-    66,
-    246.5
+    74.5,
+    65,
+    228.5
    ],
-   "yaw": 0,
+   "yaw": -90,
    "route": {
     "mode": "loop",
     "points": [
-     {
-      "pos": [
-       66.5,
-       66,
-       246.5
-      ],
-      "wait": 1200,
-      "pose": "sit",
-      "yaw": 0
-     },
-     {
-      "pos": [
-       74.5,
-       65,
-       246.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       75.5,
-       65,
-       240.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
      {
       "pos": [
        74.5,
        65,
        228.5
       ],
-      "wait": 600,
+      "wait": 800,
       "pose": "drink",
       "yaw": -90
      },
@@ -3571,51 +4115,172 @@
       "pos": [
        75.5,
        65,
-       240.5
+       237.5
       ],
       "wait": 0,
       "pose": "stand"
      },
      {
       "pos": [
-       73.5,
+       75.5,
+       70,
+       231.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       228.5
+      ],
+      "wait": 600,
+      "pose": "look",
+      "yaw": 90
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       231.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
        65,
-       246.5
+       237.5
       ],
       "wait": 0,
       "pose": "stand"
      }
     ]
    },
-   "skin": 2
+   "skin": 2,
+   "schedule": [
+    {
+     "at": 15,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         66.5,
+         66,
+         246.5
+        ],
+        "wait": 4000,
+        "pose": "sit",
+        "yaw": 0
+       }
+      ]
+     }
+    },
+    {
+     "at": 45,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         228.5
+        ],
+        "wait": 600,
+        "pose": "look",
+        "yaw": 90
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         74.5,
+         65,
+         228.5
+        ],
+        "wait": 800,
+        "pose": "drink",
+        "yaw": -90
+       }
+      ]
+     }
+    }
+   ]
   },
   {
    "name": "Dr. Lindqvist",
    "role": "collector",
    "pos": [
-    86.5,
-    66,
-    241.5
+    75.5,
+    65,
+    228.5
    ],
-   "yaw": 0,
+   "yaw": -90,
    "route": {
     "mode": "loop",
     "points": [
      {
       "pos": [
-       86.5,
-       66,
-       241.5
+       75.5,
+       65,
+       228.5
       ],
-      "wait": 1400,
-      "pose": "sit",
-      "yaw": 0
+      "wait": 800,
+      "pose": "drink",
+      "yaw": -90
      },
      {
       "pos": [
        75.5,
        65,
-       240.5
+       237.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       231.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -3647,47 +4312,131 @@
       ],
       "wait": 0,
       "pose": "stand"
-     },
-     {
-      "pos": [
-       75.5,
-       65,
-       240.5
-      ],
-      "wait": 0,
-      "pose": "stand"
      }
     ]
    },
-   "skin": 0
+   "skin": 0,
+   "schedule": [
+    {
+     "at": 15,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         86.5,
+         66,
+         241.5
+        ],
+        "wait": 4000,
+        "pose": "sit",
+        "yaw": 0
+       }
+      ]
+     }
+    },
+    {
+     "at": 45,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         228.5
+        ],
+        "wait": 600,
+        "pose": "look",
+        "yaw": 90
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         228.5
+        ],
+        "wait": 800,
+        "pose": "drink",
+        "yaw": -90
+       }
+      ]
+     }
+    }
+   ]
   },
   {
    "name": "Mr. Achterberg",
    "role": "collector",
    "pos": [
-    85.5,
-    66,
-    242.5
+    76.5,
+    65,
+    228.5
    ],
-   "yaw": 0,
+   "yaw": -90,
    "route": {
     "mode": "loop",
     "points": [
      {
       "pos": [
-       85.5,
-       66,
-       242.5
+       76.5,
+       65,
+       228.5
       ],
-      "wait": 1400,
-      "pose": "sit",
-      "yaw": 0
+      "wait": 800,
+      "pose": "drink",
+      "yaw": -90
      },
      {
       "pos": [
        75.5,
        65,
-       240.5
+       237.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       231.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -3719,47 +4468,131 @@
       ],
       "wait": 0,
       "pose": "stand"
-     },
-     {
-      "pos": [
-       75.5,
-       65,
-       240.5
-      ],
-      "wait": 0,
-      "pose": "stand"
      }
     ]
    },
-   "skin": 1
+   "skin": 1,
+   "schedule": [
+    {
+     "at": 15,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         85.5,
+         66,
+         242.5
+        ],
+        "wait": 4000,
+        "pose": "sit",
+        "yaw": 0
+       }
+      ]
+     }
+    },
+    {
+     "at": 45,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         228.5
+        ],
+        "wait": 600,
+        "pose": "look",
+        "yaw": 90
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         76.5,
+         65,
+         228.5
+        ],
+        "wait": 800,
+        "pose": "drink",
+        "yaw": -90
+       }
+      ]
+     }
+    }
+   ]
   },
   {
    "name": "Ms. Moreau",
    "role": "collector",
    "pos": [
-    84.5,
-    66,
-    243.5
+    73.5,
+    65,
+    228.5
    ],
-   "yaw": 0,
+   "yaw": -90,
    "route": {
     "mode": "loop",
     "points": [
      {
       "pos": [
-       84.5,
-       66,
-       243.5
+       73.5,
+       65,
+       228.5
       ],
-      "wait": 1400,
-      "pose": "sit",
-      "yaw": 0
+      "wait": 800,
+      "pose": "drink",
+      "yaw": -90
      },
      {
       "pos": [
        75.5,
        65,
-       240.5
+       237.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       75.5,
+       70,
+       231.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -3791,47 +4624,122 @@
       ],
       "wait": 0,
       "pose": "stand"
-     },
-     {
-      "pos": [
-       75.5,
-       65,
-       240.5
-      ],
-      "wait": 0,
-      "pose": "stand"
      }
     ]
    },
-   "skin": 2
+   "skin": 2,
+   "schedule": [
+    {
+     "at": 15,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         84.5,
+         66,
+         243.5
+        ],
+        "wait": 4000,
+        "pose": "sit",
+        "yaw": 0
+       }
+      ]
+     }
+    },
+    {
+     "at": 45,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         228.5
+        ],
+        "wait": 600,
+        "pose": "look",
+        "yaw": 90
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         73.5,
+         65,
+         228.5
+        ],
+        "wait": 800,
+        "pose": "drink",
+        "yaw": -90
+       }
+      ]
+     }
+    }
+   ]
   },
   {
    "name": "Mr. Tanaka",
    "role": "collector",
    "pos": [
-    86.5,
-    66,
-    244.5
+    74.5,
+    65,
+    228.5
    ],
-   "yaw": 0,
+   "yaw": -90,
    "route": {
     "mode": "loop",
     "points": [
      {
       "pos": [
-       86.5,
-       66,
-       244.5
+       74.5,
+       65,
+       228.5
       ],
-      "wait": 1400,
-      "pose": "sit",
-      "yaw": 0
+      "wait": 800,
+      "pose": "drink",
+      "yaw": -90
      },
      {
       "pos": [
-       78.5,
-       66,
-       244.5
+       75.5,
+       65,
+       237.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -3839,8 +4747,8 @@
      {
       "pos": [
        75.5,
-       65,
-       240.5
+       70,
+       231.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -3872,28 +4780,94 @@
       ],
       "wait": 0,
       "pose": "stand"
-     },
-     {
-      "pos": [
-       75.5,
-       65,
-       240.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       83.5,
-       65,
-       240.5
-      ],
-      "wait": 0,
-      "pose": "stand"
      }
     ]
    },
-   "skin": 0
+   "skin": 0,
+   "schedule": [
+    {
+     "at": 15,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         86.5,
+         66,
+         244.5
+        ],
+        "wait": 4000,
+        "pose": "sit",
+        "yaw": 0
+       }
+      ]
+     }
+    },
+    {
+     "at": 45,
+     "route": {
+      "mode": "loop",
+      "points": [
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         228.5
+        ],
+        "wait": 600,
+        "pose": "look",
+        "yaw": 90
+       },
+       {
+        "pos": [
+         75.5,
+         70,
+         231.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         75.5,
+         65,
+         237.5
+        ],
+        "wait": 0,
+        "pose": "stand"
+       },
+       {
+        "pos": [
+         74.5,
+         65,
+         228.5
+        ],
+        "wait": 800,
+        "pose": "drink",
+        "yaw": -90
+       }
+      ]
+     }
+    }
+   ]
   },
   {
    "name": "Mrs. de Graaf",
@@ -22928,5 +23902,31 @@
    },
    "skin": 1
   }
- ]
+ ],
+ "clock": {
+  "start": 1170,
+  "secondsPerMinute": 10,
+  "period": 60,
+  "events": [
+   {
+    "at": 13,
+    "text": "The bell rings in the Gulden Hamer: bidders to the saleroom.",
+    "sub": "The sale starts at a quarter to."
+   },
+   {
+    "at": 15,
+    "text": "The sale begins. Ostendorp takes the podium.",
+    "sub": "She stays at the lectern until a quarter past."
+   },
+   {
+    "at": 43,
+    "text": "Last lots of the session."
+   },
+   {
+    "at": 45,
+    "text": "The sale breaks for the interval.",
+    "sub": "Ostendorp goes down to the vault, then upstairs for champagne."
+   }
+  ]
+ }
 }

@@ -97,6 +97,8 @@ public class NpcEntity extends PathfinderMob {
     public int missionGen = -1;
     /** Index into the mission's cast list, or -1 for NPCs made in the editor. */
     public int castIndex = -1;
+    /** Which entry of its cast schedule the NPC is following (-1 = its base route). */
+    public int scheduleStage = -1;
 
     // ---- runtime ---------------------------------------------------------------
     private int routeIndex;
@@ -212,6 +214,15 @@ public class NpcEntity extends PathfinderMob {
         routeIndex = Mth.clamp(routeIndex, 0, Math.max(0, r.points.size() - 1));
         routeDir = 1;
         waiting = false;
+    }
+
+    /** A new route from its first waypoint, walked to from wherever the NPC is now (schedules). */
+    public void switchRoute(Route r) {
+        route = r;
+        routeIndex = 0;
+        routeDir = 1;
+        waiting = false;
+        getNavigation().stop();
     }
 
     /** Puts the NPC back on its first waypoint (editor preview). */
@@ -1039,6 +1050,7 @@ public class NpcEntity extends PathfinderMob {
         tag.putString("FollowId", followId);
         tag.putInt("Gen", missionGen);
         tag.putInt("CastIndex", castIndex);
+        tag.putInt("ScheduleStage", scheduleStage);
         tag.putBoolean("Discovered", discovered);
         tag.putBoolean("Frozen", frozen);
         if (!getSidearm().isEmpty()) tag.put("Sidearm", getSidearm().save(new CompoundTag()));
@@ -1065,6 +1077,7 @@ public class NpcEntity extends PathfinderMob {
         followId = tag.getString("FollowId");
         missionGen = tag.contains("Gen") ? tag.getInt("Gen") : -1;
         castIndex = tag.contains("CastIndex") ? tag.getInt("CastIndex") : -1;
+        scheduleStage = tag.contains("ScheduleStage") ? tag.getInt("ScheduleStage") : -1;
         discovered = tag.getBoolean("Discovered");
         frozen = tag.getBoolean("Frozen");
         entityData.set(SIDEARM, tag.contains("Sidearm") ? ItemStack.of(tag.getCompound("Sidearm")) : ItemStack.EMPTY);

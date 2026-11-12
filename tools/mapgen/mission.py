@@ -73,7 +73,7 @@ class Cast:
         return best[1], best[2], best[3]
 
     def add(self, name, role, route, mode='loop', target=False, enforcer=False, skin=None, id=None,
-            follow=None, sick=None, hidden_name=True):
+            follow=None, sick=None, hidden_name=True, schedule=None):
         first = route[0]['pos']
         d = dict(name=name, role=role, pos=first, yaw=route[0].get('yaw', 0),
                  route=dict(mode=mode, points=route))
@@ -87,6 +87,8 @@ class Cast:
             d['skin'] = skin
         if follow:
             d['follow'] = follow
+        if schedule:                     # [(minute, points)]: switch to this route at that mission-clock minute
+            d['schedule'] = [dict(at=at, route=dict(mode='loop', points=pts)) for at, pts in schedule]
         if sick:
             p = self.P(sick)
             d['sickSpot'] = [int(p[0]) + .5, int(p[1]), int(p[2]) + .5]
