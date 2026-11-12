@@ -1,0 +1,19 @@
+{
+ "variants": {
+  "facing=north": {
+   "model": "recrafted:block/bulb_string"
+  },
+  "facing=east": {
+   "model": "recrafted:block/bulb_string",
+   "y": 90
+  },
+  "facing=south": {
+   "model": "recrafted:block/bulb_string",
+   "y": 180
+  },
+  "facing=west": {
+   "model": "recrafted:block/bulb_string",
+   "y": 270
+  }
+ }
+}

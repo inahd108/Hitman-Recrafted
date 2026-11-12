@@ -4,12 +4,24 @@ from ams_city import elm
 from ams_water import houseboat, flower_barge
 
 
+PAINTS = [('black', 9), ('navy', 3), ('red', 2), ('green', 2), ('cream', 2)]
+
+
 def lantern(w, x, y, z):
-    """Canal lantern on a dark post."""
-    w.set(x, y, z, 'polished_blackstone_wall')
-    w.set(x, y + 1, z, 'dark_oak_fence')
-    w.set(x, y + 2, z, 'dark_oak_fence')
-    w.set(x, y + 3, z, 'lantern')
+    """Canal lantern on a dark green post."""
+    for k in range(3):
+        w.set(x, y + k, z, 'recrafted:lamp_post')
+    w.set(x, y + 3, z, 'recrafted:canal_lamp')
+
+
+def bikes(w, rng, x, y, z, n, along='x'):
+    """A cluster of parked bikes, leaning together (along = direction of the quay)."""
+    for k in range(n):
+        paint = rng.choices([p for p, _ in PAINTS], [c for _, c in PAINTS])[0]
+        if along == 'x':
+            w.set(x + k * 2, y, z, f'recrafted:bicycle[facing={rng.choice(["north", "south"])},paint={paint}]')
+        else:
+            w.set(x, y, z + k * 2, f'recrafted:bicycle[facing={rng.choice(["east", "west"])},paint={paint}]')
 
 
 def near_bridge(ctx, x, z, pad=6):
@@ -31,11 +43,13 @@ def tree_strip(ctx, z_strip, z_side_sidewalk, x0, x1):
                 lantern(w, x, STREET + 1, z_strip)
             else:
                 elm(w, x, STREET + 1, z_strip, rng)
+            if rng.random() < .6:
+                bikes(w, rng, x + 2, STREET + 1, z_strip, rng.randint(1, 3))
         x += rng.randint(8, 11)
         k += 1
     for x in range(x0, x1 + 1, 3):
         if not near_bridge(ctx, x, z_side_sidewalk, 2) and rng.random() < .8:
-            w.set(x, STREET + 1, z_side_sidewalk, 'mangrove_fence')
+            w.set(x, STREET + 1, z_side_sidewalk, 'recrafted:bollard')
 
 
 def tree_strip_z(ctx, x_strip, x_side, z0, z1):
@@ -52,7 +66,7 @@ def tree_strip_z(ctx, x_strip, x_side, z0, z1):
         k += 1
     for z in range(z0, z1 + 1, 3):
         if rng.random() < .8:
-            w.set(x_side, STREET + 1, z, 'mangrove_fence')
+            w.set(x_side, STREET + 1, z, 'recrafted:bollard')
 
 
 def quays(ctx):
@@ -67,10 +81,13 @@ def quays(ctx):
     tree_strip_z(ctx, EAST_E_QUAY[0] + 1, EAST_E_QUAY[1] - 1, OUTER[0], INNER[1] - 2)
     # harbour front: lanterns along the water and bollards for the boats
     w = ctx['w']
+    rng_h = ctx['rng']
     for x in range(30, SX - 4, 14):
         if not (FERRY_PIER[0] - 2 <= x <= FERRY_PIER[1] + 2) and not (EAST_CANAL[0] - 3 <= x <= EAST_CANAL[1] + 3) \
                 and not (WEST_CANAL[0] - 1 <= x <= WEST_CANAL[1] + 1):
             lantern(w, x, STREET + 1, ANKERKADE[0] + 1)
+            if rng_h.random() < .5:
+                bikes(w, rng_h, x + 2, STREET + 1, ANKERKADE[1] - 5, rng_h.randint(2, 5))
             w.set(x + 5, STREET + 1, ANKERKADE[0], 'polished_blackstone_wall')
 
 

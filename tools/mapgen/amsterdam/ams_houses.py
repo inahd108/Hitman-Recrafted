@@ -15,7 +15,7 @@ BRICK = {
     'red': ('bricks', 'brick_stairs'),
     'dark': ('nether_bricks', 'nether_brick_stairs'),
     'plum': ('red_nether_bricks', 'red_nether_brick_stairs'),
-    'black': ('deepslate_bricks', 'deepslate_brick_stairs'),
+    'black': ('polished_blackstone_bricks', 'polished_blackstone_brick_stairs'),
     'tan': ('mud_bricks', 'mud_brick_stairs'),
     'white': ('smooth_quartz', 'smooth_quartz_stairs'),
 }
@@ -34,6 +34,17 @@ GABLES_BY_STREET = {
     'canal': [('bell', 30), ('neck', 26), ('step', 18), ('cornice', 16), ('spout', 10)],
     'lane': [('spout', 26), ('step', 22), ('bell', 22), ('neck', 18), ('cornice', 12)],
 }
+
+
+WINDOW = 'recrafted:canal_window'
+
+
+def window(fr, rng, lit, side='front'):
+    """Sash window block state for a facade of this frame. side: 'front' faces F/B, 'side' faces L/R."""
+    along_z = fr.front in ('north', 'south')
+    if side == 'side':
+        along_z = not along_z
+    return f'{WINDOW}[axis={"z" if along_z else "x"},lit={"true" if rng.random() < lit else "false"}]'
 
 
 def pick(rng, weighted):
@@ -98,20 +109,19 @@ def canal_house(ctx, x0, z0, x1, z1, front, floors, st, base=FLOOR0, side_window
                 fr.set(u, ly + 3, 0, 'air')
                 fr.set(u, ly + 1, 1, f'{st.door}_door[facing={{F}},half=lower,hinge=left]')
                 fr.set(u, ly + 2, 1, f'{st.door}_door[facing={{F}},half=upper,hinge=left]')
-                fr.set(u, ly + 3, 1, 'glass_pane')
+                fr.set(u, ly + 3, 1, window(fr, rng, 1.0))
                 fr.set(u, ly, -1, f'stone_brick_stairs[facing={{B}}]')
                 continue
             rows = (ly + 2, ly + 3) if li == 0 else (ly + 1, ly + 2)
+            pane = window(fr, rng, st.lit)                                   # one state per window, both rows
             for yy in rows:
                 fr.set(u, yy, 0, 'air')
-                fr.set(u, yy, 1, 'glass_pane')
+                fr.set(u, yy, 1, pane)
             if li > 0:
                 fr.set(u, rows[-1] + 1, 0, f'{tsl}[type=top]')               # white lintel
             if st.shop and li == 0:
                 fr.set(u, ly + 1, 0, 'air')
-                fr.set(u, ly + 1, 1, 'glass_pane')
-            if rng.random() < st.lit:
-                fr.set(u, rows[-1], 2, 'light[level=12]')
+                fr.set(u, ly + 1, 1, pane)
     if st.shop:
         for u in range(0, W):
             fr.set(u, base + 4, -1, f'{st.shop}_wool' if u % 2 == 0 else 'white_wool')
@@ -121,15 +131,17 @@ def canal_house(ctx, x0, z0, x1, z1, front, floors, st, base=FLOOR0, side_window
         uu = 0 if side == 'L' else W - 1
         for ly in levels:
             for v in range(3, D - 2, 3):
-                fr.set(uu, ly + 1, v, 'glass_pane')
-                fr.set(uu, ly + 2, v, 'glass_pane')
+                pane = window(fr, rng, st.lit, 'side')
+                fr.set(uu, ly + 1, v, pane)
+                fr.set(uu, ly + 2, v, pane)
 
     # ---- back wall windows ------------------------------------------------------------
     for ly in levels:
         for u in B:
             if rng.random() < .7:
-                fr.set(u, ly + 1, D - 1, 'glass_pane')
-                fr.set(u, ly + 2, D - 1, 'glass_pane')
+                pane = window(fr, rng, st.lit * .8)
+                fr.set(u, ly + 1, D - 1, pane)
+                fr.set(u, ly + 2, D - 1, pane)
 
     # ---- gable and roof ---------------------------------------------------------------
     if st.gable == 'cornice':

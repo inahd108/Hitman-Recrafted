@@ -26,7 +26,7 @@ def warehouse(ctx, x0, x1, name=None, brick=None):
                 if u == mid and li > 0:
                     # loading doors up the middle
                     for yy in rows:
-                        fr.set(u, yy, side_v, 'air' if side_v == 0 else 'glass_pane')
+                        fr.set(u, yy, side_v, 'air' if side_v == 0 else 'recrafted:canal_window[axis=z,lit=false]')
                     continue
                 for du in (-1, 1):
                     if 0 <= u + du < W:

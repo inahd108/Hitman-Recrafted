@@ -1,0 +1,79 @@
+{
+ "variants": {
+  "facing=north,paint=black": {
+   "model": "recrafted:block/bicycle_black"
+  },
+  "facing=east,paint=black": {
+   "model": "recrafted:block/bicycle_black",
+   "y": 90
+  },
+  "facing=south,paint=black": {
+   "model": "recrafted:block/bicycle_black",
+   "y": 180
+  },
+  "facing=west,paint=black": {
+   "model": "recrafted:block/bicycle_black",
+   "y": 270
+  },
+  "facing=north,paint=navy": {
+   "model": "recrafted:block/bicycle_navy"
+  },
+  "facing=east,paint=navy": {
+   "model": "recrafted:block/bicycle_navy",
+   "y": 90
+  },
+  "facing=south,paint=navy": {
+   "model": "recrafted:block/bicycle_navy",
+   "y": 180
+  },
+  "facing=west,paint=navy": {
+   "model": "recrafted:block/bicycle_navy",
+   "y": 270
+  },
+  "facing=north,paint=red": {
+   "model": "recrafted:block/bicycle_red"
+  },
+  "facing=east,paint=red": {
+   "model": "recrafted:block/bicycle_red",
+   "y": 90
+  },
+  "facing=south,paint=red": {
+   "model": "recrafted:block/bicycle_red",
+   "y": 180
+  },
+  "facing=west,paint=red": {
+   "model": "recrafted:block/bicycle_red",
+   "y": 270
+  },
+  "facing=north,paint=green": {
+   "model": "recrafted:block/bicycle_green"
+  },
+  "facing=east,paint=green": {
+   "model": "recrafted:block/bicycle_green",
+   "y": 90
+  },
+  "facing=south,paint=green": {
+   "model": "recrafted:block/bicycle_green",
+   "y": 180
+  },
+  "facing=west,paint=green": {
+   "model": "recrafted:block/bicycle_green",
+   "y": 270
+  },
+  "facing=north,paint=cream": {
+   "model": "recrafted:block/bicycle_cream"
+  },
+  "facing=east,paint=cream": {
+   "model": "recrafted:block/bicycle_cream",
+   "y": 90
+  },
+  "facing=south,paint=cream": {
+   "model": "recrafted:block/bicycle_cream",
+   "y": 180
+  },
+  "facing=west,paint=cream": {
+   "model": "recrafted:block/bicycle_cream",
+   "y": 270
+  }
+ }
+}

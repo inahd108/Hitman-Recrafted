@@ -1,0 +1,12 @@
+{
+ "parent": "minecraft:block/cube",
+ "textures": {
+  "north": "recrafted:block/canal_window_dark",
+  "south": "recrafted:block/canal_window_dark",
+  "east": "recrafted:block/canal_window_frame",
+  "west": "recrafted:block/canal_window_frame",
+  "up": "recrafted:block/canal_window_frame",
+  "down": "recrafted:block/canal_window_frame",
+  "particle": "recrafted:block/canal_window_frame"
+ }
+}

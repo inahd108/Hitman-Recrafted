@@ -60,6 +60,25 @@ public final class ModRegistry {
     public static final RegistryObject<Block> LAB_CONSOLE = block("lab_console", () -> new ActionBlock(metal().lightLevel(s -> 7), ActionBlock.Action.NONE));
     public static final RegistryObject<Block> EXIT_POINT = block("exit_point", () -> new ActionBlock(metal().lightLevel(s -> 10), ActionBlock.Action.EXIT));
     public static final RegistryObject<Block> FUSE_BOX = block("fuse_box", () -> new FuseBoxBlock(metal()));
+    // Amsterdam
+    private static BlockBehaviour.Properties fixture() {
+        return BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(-1f, 3600000f).sound(SoundType.LANTERN).noOcclusion();
+    }
+
+    public static final RegistryObject<Block> CANAL_WINDOW = block("canal_window", () -> new recrafted.block.ams.CanalWindowBlock(
+            BlockBehaviour.Properties.of().mapColor(MapColor.SNOW).strength(-1f, 3600000f).sound(SoundType.GLASS)
+                    .lightLevel(s -> s.getValue(recrafted.block.ams.CanalWindowBlock.LIT) ? 10 : 0)));
+    public static final RegistryObject<Block> BULB_STRING = block("bulb_string", () -> new recrafted.block.ams.DecorBlock(
+            fixture().noCollission().lightLevel(s -> 9).sound(SoundType.GLASS), false, new double[]{0, 6, 13, 16, 9, 16}));
+    public static final RegistryObject<Block> BOLLARD = block("bollard", () -> new recrafted.block.ams.PostBlock(
+            fixture().mapColor(MapColor.COLOR_RED), 5.5, 0, 5.5, 10.5, 13, 10.5));
+    public static final RegistryObject<Block> LAMP_POST = block("lamp_post", () -> new recrafted.block.ams.PostBlock(
+            fixture().mapColor(MapColor.COLOR_GREEN), 6.5, 0, 6.5, 9.5, 16, 9.5));
+    public static final RegistryObject<Block> CANAL_LAMP = block("canal_lamp", () -> new recrafted.block.ams.PostBlock(
+            fixture().lightLevel(s -> 15), 4.5, 0, 4.5, 11.5, 11.5, 11.5));
+    public static final RegistryObject<Block> BICYCLE = block("bicycle", () -> new recrafted.block.ams.BicycleBlock(
+            fixture().noCollission().sound(SoundType.CHAIN)));
+
     public static final RegistryObject<Block> MEAL = block("meal", () -> new ConsumableBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.QUARTZ).strength(-1f, 3600000f).noOcclusion().sound(SoundType.STONE),
             Block.box(3, 0, 3, 13, 3, 13)));

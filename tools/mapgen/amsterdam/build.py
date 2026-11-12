@@ -27,6 +27,11 @@ OUT_MAP = os.path.join(ROOT, 'src/main/resources/data/recrafted/maps/amsterdam.r
 PREVIEW = os.path.join(ROOT, 'docs/preview')
 
 
+render.COLORS.update({
+    'recrafted:canal_window': (238, 190, 120), 'recrafted:bulb_string': (255, 220, 140), 'recrafted:bollard': (104, 42, 32),
+    'recrafted:lamp_post': (30, 52, 40), 'recrafted:canal_lamp': (255, 220, 150), 'recrafted:bicycle': (40, 40, 44)})
+
+
 def bridges(ctx):
     for (x0, x1) in L.OUTER_BRIDGES:
         ams_water.arch_bridge(ctx, x0, x1, L.OUTER[0], L.OUTER[1], 'z')

@@ -71,5 +71,11 @@
   "item.recrafted.outfit_security": "Halcyon Security Outfit",
   "item.recrafted.outfit_lab_guard": "Virus Lab Guard Outfit",
   "item.recrafted.outfit_scientist": "Scientist Outfit",
-  "item.recrafted.outfit_hazmat": "Hazmat Outfit"
+  "item.recrafted.outfit_hazmat": "Hazmat Outfit",
+  "block.recrafted.canal_window": "Sash Window",
+  "block.recrafted.bulb_string": "Bridge Lights",
+  "block.recrafted.bollard": "Bollard",
+  "block.recrafted.lamp_post": "Lamp Post",
+  "block.recrafted.canal_lamp": "Canal Lantern",
+  "block.recrafted.bicycle": "Bicycle"
 }

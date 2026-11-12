@@ -37,6 +37,16 @@ def arch_bridge(ctx, x0, x1, z0, z1, axis='z', name=None):
             put(c, t, arch_top, 'stone_bricks' if d < .9 else 'bricks')
         for edge in (cells[0], cells[-1]):
             put(edge, t, deck + 1, 'stone_brick_wall')
+        if d < .9:
+            # bridge lights: outline the arch and the deck on both faces of the bridge
+            if axis == 'z':
+                for xx, f in ((cells[0] - 1, 'west'), (cells[-1] + 1, 'east')):
+                    w.set(xx, arch_top, t, f'recrafted:bulb_string[facing={f}]')
+                    w.set(xx, deck, t, f'recrafted:bulb_string[facing={f}]')
+            else:
+                for zz, f in ((cells[0] - 1, 'north'), (cells[-1] + 1, 'south')):
+                    w.set(t, arch_top, zz, f'recrafted:bulb_string[facing={f}]')
+                    w.set(t, deck, zz, f'recrafted:bulb_string[facing={f}]')
         if d >= .9:
             for c in cells:
                 for y in range(CANAL_BED, WATER + 1):
@@ -53,6 +63,9 @@ def drawbridge(ctx, x0, x1, z0, z1, name='drawbridge'):
             w.set(x, deck, z, 'stripped_birch_log[axis=z]' if x in (x0, x1) else 'birch_planks')
         w.set(x0, deck + 1, z, 'birch_fence')
         w.set(x1, deck + 1, z, 'birch_fence')
+        if z0 <= z <= z1:
+            w.set(x0 - 1, deck, z, 'recrafted:bulb_string[facing=west]')
+            w.set(x1 + 1, deck, z, 'recrafted:bulb_string[facing=east]')
     # piers in the water
     for zp in (z0 + 2, z1 - 2):
         for x in (x0 + 1, x1 - 1):
@@ -69,6 +82,12 @@ def drawbridge(ctx, x0, x1, z0, z1, name='drawbridge'):
     for z in range(zc - 6, zc + 7):
         w.set(x0, deck + 10, z, 'stripped_birch_log[axis=z]')
         w.set(x1, deck + 10, z, 'stripped_birch_log[axis=z]')
+        w.set(x0 - 1, deck + 10, z, 'recrafted:bulb_string[facing=west]')
+        w.set(x1 + 1, deck + 10, z, 'recrafted:bulb_string[facing=east]')
+    for zp in (zc - 4, zc + 4):
+        for y in range(deck + 1, deck + 9):
+            w.set(x0 - 1, y, zp, 'recrafted:bulb_string[facing=west]')
+            w.set(x1 + 1, y, zp, 'recrafted:bulb_string[facing=east]')
     for z in (zc - 6, zc + 6):
         for x in (x0, x1):
             w.set(x, deck + 9, z, 'chain')
@@ -137,10 +156,9 @@ def houseboat(ctx, x0, z0, length, beam, rng, name=None, hull=None, cabin=None):
     w.fill(cx0 + 1, WATER + 2, z0 + 2, cx1 - 1, WATER + 3, z1 - 2, 'air')
     w.fill(cx0, WATER + 5, z0 + 1, cx1, WATER + 5, z1 - 1, 'spruce_slab')
     for x in range(cx0 + 1, cx1, 2):
-        w.set(x, WATER + 3, z0 + 1, 'glass_pane')
-        w.set(x, WATER + 3, z1 - 1, 'glass_pane')
-        if rng.random() < .7:
-            w.set(x, WATER + 3, (z0 + z1) // 2, 'light[level=11]')
+        lit = 'true' if rng.random() < .7 else 'false'
+        w.set(x, WATER + 3, z0 + 1, f'recrafted:canal_window[axis=z,lit={lit}]')
+        w.set(x, WATER + 3, z1 - 1, f'recrafted:canal_window[axis=z,lit={lit}]')
     w.set(cx0, WATER + 2, (z0 + z1) // 2, 'air')
     w.set(cx0, WATER + 3, (z0 + z1) // 2, 'air')
     # roof garden
