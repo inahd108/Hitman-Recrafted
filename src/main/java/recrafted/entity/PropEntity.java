@@ -2,6 +2,8 @@ package recrafted.entity;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -23,6 +25,9 @@ import net.minecraftforge.network.NetworkHooks;
 import recrafted.ModRegistry;
 import recrafted.mission.Awareness;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** A prop lying in the world. It never despawns and is picked up with a right-click. */
 public class PropEntity extends Entity {
     private static final EntityDataAccessor<ItemStack> ITEM = SynchedEntityData.defineId(PropEntity.class, EntityDataSerializers.ITEM_STACK);
@@ -30,6 +35,8 @@ public class PropEntity extends Entity {
 
     public int missionGen = -1;
     private int lureTicks;
+    /** Picked up together with the main item (a dropped gun's spare ammo). Server side only. */
+    private final List<ItemStack> extras = new ArrayList<>();
 
     public PropEntity(EntityType<? extends PropEntity> type, Level level) {
         super(type, level);
@@ -51,6 +58,8 @@ public class PropEntity extends Entity {
     public ItemStack getItem() { return entityData.get(ITEM); }
     public void setItem(ItemStack s) { entityData.set(ITEM, s.copy()); }
     public boolean isPlaying() { return entityData.get(PLAYING); }
+    public void addExtra(ItemStack s) { if (!s.isEmpty()) extras.add(s.copy()); }
+    public List<ItemStack> getExtras() { return extras; }
 
     /** Makes this prop a noise source for a while (thrown radio). */
     public void startLure(int ticks) {
@@ -87,6 +96,10 @@ public class PropEntity extends Entity {
         if (!s.isEmpty()) {
             if (player.getMainHandItem().isEmpty()) player.setItemInHand(InteractionHand.MAIN_HAND, s.copy());
             else if (!player.getInventory().add(s.copy())) return InteractionResult.FAIL;
+            for (ItemStack extra : extras) {
+                ItemStack copy = extra.copy();
+                if (!player.getInventory().add(copy) && !copy.isEmpty()) player.drop(copy, false);
+            }
             level().playSound(null, blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.3f, 1.4f);
         }
         discard();
@@ -102,6 +115,9 @@ public class PropEntity extends Entity {
         setItem(ItemStack.of(tag.getCompound("Item")));
         missionGen = tag.contains("Gen") ? tag.getInt("Gen") : -1;
         lureTicks = tag.getInt("Lure");
+        extras.clear();
+        ListTag list = tag.getList("Extras", Tag.TAG_COMPOUND);
+        for (int i = 0; i < list.size(); i++) addExtra(ItemStack.of(list.getCompound(i)));
     }
 
     @Override
@@ -109,6 +125,11 @@ public class PropEntity extends Entity {
         tag.put("Item", getItem().save(new CompoundTag()));
         tag.putInt("Gen", missionGen);
         tag.putInt("Lure", lureTicks);
+        if (!extras.isEmpty()) {
+            ListTag list = new ListTag();
+            for (ItemStack e : extras) list.add(e.save(new CompoundTag()));
+            tag.put("Extras", list);
+        }
     }
 
     @Override

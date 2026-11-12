@@ -13,6 +13,10 @@ Original weapons for the Recrafted: Contracts mission, built for
 
 More weapons are on the way (see the main README's roadmap).
 
+**In the mission:** with the Recrafted mod, guards carry these guns holstered (Vento: estate guards and
+bodyguards; Bastone: harbour police, Halcyon security, lab guards; Argento: Capitano Sordi) and drop them, with
+a spare reload, when knocked out or killed. Press **X** to throw a gun. See the main README for details.
+
 ## Install
 
 1. Install TACZ 1.2.0 for Forge 1.20.1.

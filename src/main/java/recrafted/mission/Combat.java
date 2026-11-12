@@ -128,19 +128,19 @@ public final class Combat {
         Awareness.crime(level, player, npc);
     }
 
-    public static void thrownHit(ServerPlayer player, NpcEntity npc, PropType type) {
+    public static void thrownHit(ServerPlayer player, NpcEntity npc, PropType.Kind kind) {
         if (npc.isDead()) return;
         if (npc.isDown()) {
-            if (type.kind == PropType.Kind.SHARP) {
+            if (kind == PropType.Kind.SHARP) {
                 npc.kill(player, false);
                 Awareness.crime((ServerLevel) npc.level(), player, npc);
             }
             return;
         }
         ServerLevel level = (ServerLevel) npc.level();
-        if (type.kind == PropType.Kind.SHARP) {
+        if (kind == PropType.Kind.SHARP) {
             npc.kill(player, false);
-        } else if (type.kind == PropType.Kind.BLUNT) {
+        } else if (kind == PropType.Kind.BLUNT) {
             npc.knockOut(player);
         } else {
             npc.addSuspicion(player, 0.5f);

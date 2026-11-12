@@ -40,6 +40,7 @@ import recrafted.block.DoorTimers;
 import recrafted.entity.PropEntity;
 import recrafted.item.RoutePlannerItem;
 import recrafted.net.Net;
+import recrafted.compat.Guns;
 import recrafted.npc.NpcEntity;
 import recrafted.npc.NpcRole;
 import recrafted.npc.Route;
@@ -409,6 +410,7 @@ public final class MissionManager {
         if (def.has("route")) n.setRoute(Route.fromJson(def.getAsJsonObject("route")));
         n.missionGen = gen;
         n.castIndex = castIndex;
+        n.arm(Guns.sidearmFor(role));
         JsonArray pos = def.getAsJsonArray("pos");
         float yaw = def.has("yaw") && !def.get("yaw").isJsonNull() ? def.get("yaw").getAsFloat() : 0f;
         n.moveTo(pos.get(0).getAsDouble(), pos.get(1).getAsDouble(), pos.get(2).getAsDouble(), yaw, 0f);

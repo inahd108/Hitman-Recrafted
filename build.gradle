@@ -34,6 +34,11 @@ legacyForge {
                 programArguments.addAll('--quickPlaySingleplayer', project.findProperty('world') ?: 'corvara_test',
                         '--width', '1280', '--height', '720')
             }
+            if (project.hasProperty('guardtest')) {
+                systemProperty 'recrafted.guardtest', 'true'
+                programArguments.addAll('--quickPlaySingleplayer', project.findProperty('world') ?: 'corvara_test',
+                        '--width', '1280', '--height', '720')
+            }
             if (project.hasProperty('clienttest')) {
                 systemProperty 'recrafted.clienttest', 'true'
                 systemProperty 'recrafted.clienttest.settle', project.findProperty('settle') ?: '20000'
@@ -81,6 +86,7 @@ repositories {
 dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     // TACZ is optional at runtime for players; the dev client loads it to test the gun pack
+    modCompileOnly "maven.modrinth:timeless-and-classics-zero:${tacz_version}"
     modRuntimeOnly "maven.modrinth:timeless-and-classics-zero:${tacz_version}"
 }
 

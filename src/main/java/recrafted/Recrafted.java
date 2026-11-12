@@ -17,5 +17,6 @@ public class Recrafted {
         ModRegistry.init(bus);
         bus.addListener((EntityAttributeCreationEvent e) -> e.put(ModRegistry.NPC.get(), NpcEntity.createAttributes().build()));
         bus.addListener((FMLCommonSetupEvent e) -> e.enqueueWork(Net::register));
+        recrafted.compat.Guns.init();
     }
 }

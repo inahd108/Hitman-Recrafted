@@ -48,14 +48,43 @@ public final class Awareness {
 
     /** A sound draws the closest calm NPCs over to look. */
     public static void noise(ServerLevel level, Vec3 at, double radius, int max, @Nullable ServerPlayer source) {
+        noiseLine(level, at, radius, max, "What was that?");
+    }
+
+    private static void noiseLine(ServerLevel level, Vec3 at, double radius, int max, String line) {
         List<NpcEntity> list = near(level, at, radius);
         list.removeIf(NpcEntity::isBusy);
         list.sort(Comparator.comparingDouble(e -> e.position().distanceToSqr(at)));
         for (int i = 0; i < Math.min(max, list.size()); i++) {
             NpcEntity n = list.get(i);
-            n.say("What was that?", 50);
+            n.say(line, 50);
             n.investigate(at, 120);
         }
+    }
+
+    /**
+     * The player fired a gun. Anyone in earshot who can see the shooter is compromised on the spot;
+     * the nearest others (guards first) come to check where the shot came from.
+     * Returns how many saw it.
+     */
+    public static int gunshot(ServerLevel level, ServerPlayer shooter, int radius) {
+        int saw = 0;
+        for (NpcEntity npc : near(level, shooter.position(), radius)) {
+            if (npc.canSee(shooter, Math.min(radius, 32), 85f)) {
+                npc.onCompromised(shooter);
+                saw++;
+            }
+        }
+        List<NpcEntity> list = near(level, shooter.position(), radius);
+        list.removeIf(NpcEntity::isBusy);
+        list.sort(Comparator.<NpcEntity>comparingInt(e -> e.getRole().guard ? 0 : 1)
+                .thenComparingDouble(e -> e.position().distanceToSqr(shooter.position())));
+        for (int i = 0; i < Math.min(4, list.size()); i++) {
+            NpcEntity n = list.get(i);
+            n.say(n.getRole().guard ? "Shots fired!" : "Was that a gunshot?!", 60);
+            n.investigate(shooter.position(), 200);
+        }
+        return saw;
     }
 
     /** A guard in a fight pulls nearby guards in. */

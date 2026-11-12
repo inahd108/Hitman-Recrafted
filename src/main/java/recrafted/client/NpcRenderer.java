@@ -23,6 +23,7 @@ public class NpcRenderer extends MobRenderer<NpcEntity, NpcModel> {
     public NpcRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new NpcModel(ctx.bakeLayer(ModelLayers.PLAYER)), 0.5f);
         addLayer(new ItemInHandLayer<>(this, ctx.getItemInHandRenderer()));
+        addLayer(new HolsterLayer(this, ctx.getItemInHandRenderer()));
     }
 
     public static ResourceLocation texture(String key) {

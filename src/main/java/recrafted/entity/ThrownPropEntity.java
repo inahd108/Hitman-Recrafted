@@ -21,6 +21,7 @@ import net.minecraftforge.network.NetworkHooks;
 import recrafted.ModRegistry;
 import recrafted.mission.Awareness;
 import recrafted.mission.Combat;
+import recrafted.mission.Throwing;
 import recrafted.npc.NpcEntity;
 import recrafted.prop.PropItem;
 import recrafted.prop.PropType;
@@ -44,9 +45,9 @@ public class ThrownPropEntity extends ThrowableItemProjectile {
     protected void onHitEntity(EntityHitResult hit) {
         super.onHitEntity(hit);
         if (level().isClientSide) return;
-        PropType type = PropItem.typeOf(getItem());
-        if (hit.getEntity() instanceof NpcEntity npc && type != null && getOwner() instanceof ServerPlayer sp) {
-            Combat.thrownHit(sp, npc, type);
+        PropType.Kind kind = Throwing.impact(getItem());
+        if (hit.getEntity() instanceof NpcEntity npc && kind != null && getOwner() instanceof ServerPlayer sp) {
+            Combat.thrownHit(sp, npc, kind);
         }
     }
 
@@ -67,6 +68,7 @@ public class ThrownPropEntity extends ThrowableItemProjectile {
                     type != null && type.kind == PropType.Kind.COIN ? SoundEvents.CHAIN_PLACE : SoundEvents.ANVIL_LAND,
                     SoundSource.NEUTRAL, type != null && type.kind == PropType.Kind.COIN ? 1.2f : 0.35f, 1.5f);
             PropEntity drop = new PropEntity(sl, at.x, at.y + 0.05, at.z, stack);
+            drop.missionGen = Throwing.genFor(sl, stack);
             if (hit.getType() == HitResult.Type.BLOCK) {
                 Vec3 back = getDeltaMovement().normalize().scale(-0.25);
                 drop.setPos(at.x + back.x, at.y + Math.max(0.05, back.y), at.z + back.z);

@@ -1,6 +1,7 @@
 {
   "itemGroup.recrafted": "Recrafted: Contracts",
   "key.recrafted.focus": "Focus (highlight targets and guards)",
+  "key.recrafted.throw": "Throw held item (props and guns)",
   "key.categories.recrafted": "Recrafted: Contracts",
   "entity.recrafted.npc": "Townsperson",
   "entity.recrafted.prop": "Prop",

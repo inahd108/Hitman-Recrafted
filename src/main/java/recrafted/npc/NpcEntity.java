@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -38,6 +39,8 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import recrafted.compat.Guns;
+import recrafted.entity.PropEntity;
 import recrafted.ModRegistry;
 import recrafted.block.ConsumableBlock;
 import recrafted.block.DoorTimers;
@@ -76,6 +79,7 @@ public class NpcEntity extends PathfinderMob {
     private static final EntityDataAccessor<Byte> FLAGS = SynchedEntityData.defineId(NpcEntity.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Float> SUSPICION = SynchedEntityData.defineId(NpcEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<String> SPEECH = SynchedEntityData.defineId(NpcEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<ItemStack> SIDEARM = SynchedEntityData.defineId(NpcEntity.class, EntityDataSerializers.ITEM_STACK);
 
     private static final int F_TARGET = 1, F_ENFORCER = 2, F_STRIPPED = 4;
     private static final double WALK = 0.55, BRISK = 0.8, RUN = 1.15;
@@ -146,6 +150,7 @@ public class NpcEntity extends PathfinderMob {
         entityData.define(FLAGS, (byte) 0);
         entityData.define(SUSPICION, 0f);
         entityData.define(SPEECH, "");
+        entityData.define(SIDEARM, ItemStack.EMPTY);
     }
 
     @Override
@@ -161,6 +166,10 @@ public class NpcEntity extends PathfinderMob {
         entityData.set(ROLE, role.id);
         setPathfindingMalus(BlockPathTypes.DOOR_IRON_CLOSED, role.opensSecurityDoors() ? 0f : -1f);
     }
+
+    /** The holstered gun this NPC carries (guards only), or empty. Dropped when they go down. */
+    public ItemStack getSidearm() { return entityData.get(SIDEARM); }
+    public void arm(ItemStack gun) { entityData.set(SIDEARM, gun.copy()); }
 
     public int getSkin() { return entityData.get(SKIN); }
     public void setSkin(int v) { entityData.set(SKIN, Math.floorMod(v, Math.max(1, getRole().variants))); }
@@ -605,7 +614,8 @@ public class NpcEntity extends PathfinderMob {
 
     private boolean holdsIllegal(ServerPlayer p) {
         PropType t = PropItem.typeOf(p.getMainHandItem());
-        if (t == null || !t.illegal()) return false;
+        boolean illegal = (t != null && t.illegal()) || Guns.isGun(p.getMainHandItem());
+        if (!illegal) return false;
         NpcRole worn = PlayerData.disguise(p);
         return worn == null || !worn.guard;
     }
@@ -882,12 +892,28 @@ public class NpcEntity extends PathfinderMob {
         entityData.set(SUSPICION, 0f);
         entityData.set(SPEECH, "");
         setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+        dropSidearm();
         setHealth(getMaxHealth());
         clearFire();
         waiting = false;
         poisonTicks = 0;
         suspicion.clear();
         setDeltaMovement(Vec3.ZERO);
+    }
+
+    /** The holstered gun clatters to the floor beside the body, with one spare reload. */
+    private void dropSidearm() {
+        ItemStack gun = getSidearm();
+        if (gun.isEmpty() || !(level() instanceof ServerLevel sl)) return;
+        entityData.set(SIDEARM, ItemStack.EMPTY);
+        Vec3 side = Vec3.directionFromRotation(0, getYRot() + 90f).scale(0.7);
+        Vec3 at = position().add(side);
+        if (!sl.noCollision(EntityType.ITEM.getAABB(at.x, at.y + 0.1, at.z))) at = position();
+        PropEntity drop = new PropEntity(sl, at.x, at.y + 0.1, at.z, gun);
+        drop.addExtra(Guns.spareAmmo(gun));
+        drop.missionGen = missionGen;
+        sl.addFreshEntity(drop);
+        sl.playSound(null, at.x, at.y, at.z, SoundEvents.CHAIN_FALL, SoundSource.NEUTRAL, 0.8f, 1.2f);
     }
 
     public void wakeUp() {
@@ -996,6 +1022,7 @@ public class NpcEntity extends PathfinderMob {
         tag.putInt("CastIndex", castIndex);
         tag.putBoolean("Discovered", discovered);
         tag.putBoolean("Frozen", frozen);
+        if (!getSidearm().isEmpty()) tag.put("Sidearm", getSidearm().save(new CompoundTag()));
         if (sickSpot != null) {
             tag.putDouble("SickX", sickSpot.x);
             tag.putDouble("SickY", sickSpot.y);
@@ -1020,6 +1047,7 @@ public class NpcEntity extends PathfinderMob {
         castIndex = tag.contains("CastIndex") ? tag.getInt("CastIndex") : -1;
         discovered = tag.getBoolean("Discovered");
         frozen = tag.getBoolean("Frozen");
+        entityData.set(SIDEARM, tag.contains("Sidearm") ? ItemStack.of(tag.getCompound("Sidearm")) : ItemStack.EMPTY);
         sickSpot = tag.contains("SickX") ? new Vec3(tag.getDouble("SickX"), tag.getDouble("SickY"), tag.getDouble("SickZ")) : null;
     }
 }

@@ -50,6 +50,8 @@ public final class Net {
                 .encoder(RouteEditC2S::write).decoder(RouteEditC2S::new).consumerMainThread(RouteEditC2S::handle).add();
         CHANNEL.messageBuilder(NpcEditC2S.class, id++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(NpcEditC2S::write).decoder(NpcEditC2S::new).consumerMainThread(NpcEditC2S::handle).add();
+        CHANNEL.messageBuilder(ThrowC2S.class, id++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(ThrowC2S::write).decoder(ThrowC2S::new).consumerMainThread(ThrowC2S::handle).add();
     }
 
     public static boolean canEdit(ServerPlayer p) {
@@ -197,5 +199,16 @@ public final class Net {
         List<String> l = new ArrayList<>();
         for (NpcRole r : NpcRole.values()) l.add(r.id);
         return l;
+    }
+
+    /** The Throw key was pressed: throw what is in the main hand. */
+    public record ThrowC2S() {
+        public ThrowC2S(FriendlyByteBuf b) { this(); }
+        void write(FriendlyByteBuf b) { }
+        void handle(Supplier<NetworkEvent.Context> ctx) {
+            ServerPlayer p = ctx.get().getSender();
+            ctx.get().setPacketHandled(true);
+            if (p != null) recrafted.mission.Throwing.throwHeld(p);
+        }
     }
 }

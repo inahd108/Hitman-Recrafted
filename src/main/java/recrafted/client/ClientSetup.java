@@ -32,6 +32,7 @@ import java.util.Locale;
 
 public final class ClientSetup {
     public static final KeyMapping FOCUS = new KeyMapping("key.recrafted.focus", InputConstants.KEY_V, "key.categories.recrafted");
+    public static final KeyMapping THROW = new KeyMapping("key.recrafted.throw", InputConstants.KEY_X, "key.categories.recrafted");
 
     private ClientSetup() {}
 
@@ -52,6 +53,7 @@ public final class ClientSetup {
         @SubscribeEvent
         public static void keys(RegisterKeyMappingsEvent e) {
             e.register(FOCUS);
+            e.register(THROW);
         }
     }
 
@@ -69,6 +71,12 @@ public final class ClientSetup {
                 return;
             }
             ClientState.focus = FOCUS.isDown();
+            while (THROW.consumeClick()) {
+                if (mc.screen == null && recrafted.mission.Throwing.canThrow(mc.player.getMainHandItem())) {
+                    recrafted.net.Net.CHANNEL.sendToServer(new recrafted.net.Net.ThrowC2S());
+                    mc.player.swing(net.minecraft.world.InteractionHand.MAIN_HAND);
+                }
+            }
             ClientState.holdingPlanner = mc.player.getMainHandItem().getItem() instanceof RoutePlannerItem
                     || mc.player.getOffhandItem().getItem() instanceof RoutePlannerItem;
         }

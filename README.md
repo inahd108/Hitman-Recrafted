@@ -35,6 +35,7 @@ All screenshots are taken in-game by the automated tour (`./gradlew runClient -P
 
 `/contract intel` lists what your handler knows. `/contract status` shows objectives.
 Hold **V** (Focus) to outline targets (red), guards (blue) and anyone who can see through your outfit (white).
+Press **X** to throw what you are holding: props, and guns too.
 
 ### How the town reacts
 
@@ -53,6 +54,14 @@ Hold **V** (Focus) to outline targets (red), guards (blue) and anyone who can se
   emetics send them somewhere private, lethal doses look like bad luck.
 - **Noise** moves people. Thrown coins, broken bottles, a pocket radio, or a sabotaged fuse box
   (wrench or screwdriver) all pull someone off their post.
+- **Guns** (with [TACZ](https://modrinth.com/mod/timeless-and-classics-zero) and the Recrafted Arsenal gun pack,
+  see [gunpack/README.md](gunpack/README.md)). Guards wear a holstered sidearm: estate guards and bodyguards a
+  **Vento .357** revolver, harbour police, Halcyon security and lab guards a **Bastone 9**, and Capitano Sordi
+  his engraved **Argento .45**. Knock a guard out or kill them and the gun drops beside the body, loaded, with a
+  spare reload that you pick up with it (right-click). Dropped guns are cleared when the contract restarts.
+  A gun in your hand is illegal unless you wear a guard uniform. A shot compromises you to anyone who sees it,
+  and the nearest people in earshot (guards first) come to look; suppressed guns are heard from much closer.
+  A thrown gun knocks out whoever it hits, then lies where it lands for you to pick up again.
 - **Security doors** open to the matching keycard, quietly to a lockpick, loudly to a crowbar. Right-click
   either the door itself or the card reader beside it.
   Staff with clearance walk through on their own.
@@ -61,7 +70,7 @@ Hold **V** (Focus) to outline targets (red), guards (blue) and anyone who can se
 
 | Kind | Items | Use |
 |---|---|---|
-| Blunt | wrench, crowbar, hammer, lead pipe, brick, bottle, frying pan, rolling pin, fish, oar, shovel, golf club, broom, baton, candlestick, fire extinguisher | Left-click to knock out. Most can be thrown (right-click). |
+| Blunt | wrench, crowbar, hammer, lead pipe, brick, bottle, frying pan, rolling pin, fish, oar, shovel, golf club, broom, baton, candlestick, fire extinguisher | Left-click to knock out. Most can be thrown (right-click or **X**). |
 | Sharp | kitchen knife, cleaver, scissors, letter opener, screwdriver, garden shears, fire axe, fishing gaff, corkscrew, scalpel | Left-click: lethal. Several can be thrown. |
 | Silent | fiber wire, sedative syringe, lethal syringe | From behind only. |
 | Distraction | coin, pocket radio | Throw. |
@@ -124,7 +133,8 @@ Other commands: `/contract visit` (go to the island without starting), `/contrac
   ignored by the NPCs, which is what you want while editing routes.
 - NPCs walk through each other rather than shoving. That is deliberate: it keeps narrow alleys, piers and
   doorways from jamming.
-- Guards are melee-only until the TACZ add-on lands.
+- Guards carry guns (with TACZ installed) but still fight with batons: they don't shoot back yet.
+- Without TACZ, or without the gun pack, guards are simply unarmed; nothing else changes.
 
 ## Building
 
@@ -170,7 +180,8 @@ The headless self-test currently reports, for two minutes of simulated town life
 
 ## Roadmap
 
-- Firearms through a **TACZ** add-on (guards are melee-only for now).
+- Guards who draw and fire their sidearms when the fight starts.
+- More guns for the Recrafted Arsenal (sawn-off, PDW, rifles, the briefcase sniper).
 - More accident kills, more exits, a second mission.
 
 ## Licence
