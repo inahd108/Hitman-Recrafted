@@ -164,7 +164,15 @@ public final class MenuShots {
         put(level, ax + 5, f + 4, az + 5, "minecraft:light[level=10]");
     }
 
+    /** Operatives left behind by a session that was cut short (the frozen flag is not saved, so they wander). */
+    private static void clearStrays(ServerLevel level, int ax, int az) {
+        net.minecraft.world.phys.AABB box = new net.minecraft.world.phys.AABB(ax - 48, level.getMinBuildHeight(), az - 48,
+                ax + 48, level.getMaxBuildHeight(), az + 48);
+        for (NpcEntity n : level.getEntitiesOfClass(NpcEntity.class, box, n -> n.getRole() == NpcRole.AGENT)) n.discard();
+    }
+
     private static void seat(ServerLevel level, int ax, int f, int az, double camX, double camZ) {
+        clearStrays(level, ax, az);
         agent = ModRegistry.NPC.get().create(level);
         agent.setRole(NpcRole.AGENT);
         agent.setSkin(0);
@@ -203,7 +211,10 @@ public final class MenuShots {
     }
 
     private static void restore(ServerLevel level) {
-        if (agent != null) agent.discard();
+        if (agent != null) {
+            agent.discard();
+            clearStrays(level, agent.getBlockX(), agent.getBlockZ());
+        }
         List<Map.Entry<BlockPos, BlockState>> list = new ArrayList<>(RESTORE.entrySet());
         for (int i = list.size() - 1; i >= 0; i--) level.setBlock(list.get(i).getKey(), list.get(i).getValue(), 2 | 16);
         RESTORE.clear();
