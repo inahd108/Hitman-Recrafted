@@ -293,6 +293,10 @@ def studio(ctx, info):
     W, D = fr.W, fr.D
     ly = info['levels'][-1]
     y = ly + 1
+    for u in range(3, W - 1):                       # one open room: no partition up here
+        for yy in range(y, info['top']):
+            if w.name(w.get(*fr.pos(u, yy, D // 2))).split(':')[-1] in ('white_terracotta', 'smooth_sandstone', 'stripped_birch_wood[axis=y]', 'stripped_birch_wood'):
+                fr.set(u, yy, D // 2, 'air')
     # easels in a row facing the windows
     for i, v in enumerate((3, 5, 7, 9)):
         u = 2 + (i % 2)

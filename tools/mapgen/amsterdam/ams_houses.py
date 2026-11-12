@@ -197,6 +197,7 @@ def interior(fr, info, st, rng):
         y = ly + 1                                                               # feet level
         kind = 'front' if k == 0 else ('bed' if k % 2 == 1 else 'living')
         rooms.append(_furnish(fr, W, D, y, floors[k + 1], kind, st, rng, h))
+        _dress(fr, W, D, y, floors[k + 1], kind, h)
     # attic: storage under the roof
     for v in range(3, D - 3, 3):
         if rng.random() < .6:
@@ -247,6 +248,41 @@ def _furnish(fr, W, D, y, ceil, kind, st, rng, h):
     if rng.random() < .7:
         fr.set((W - 1) // 2 + 1 if W > 5 else 2, ceil - 1, 5, 'lantern[hanging=true]')
     return anchors
+
+
+PLANTS = ['potted_fern', 'potted_azalea_bush', 'potted_red_tulip', 'potted_white_tulip', 'potted_orange_tulip',
+          'potted_oak_sapling', 'potted_flowering_azalea_bush', 'potted_cactus']
+
+
+def _dress(fr, W, D, y, ceil, kind, h):
+    """Lights every few blocks, a plastered partition between front and back rooms in deep houses, and a few
+    plants. Uses its own random stream so the rest of the town comes out exactly as before."""
+    import random as _r
+    p = fr.pos(0, y, 0)
+    lr = _r.Random(p[0] * 7919 + p[2] * 104729 + y)
+    R = W - 2
+    lu = (W - 1) // 2 + 1 if W > 5 else 2
+    for v in range(4, D - 2, 5):
+        if fr.get(lu, ceil - 1, v) == 0 and fr.get(lu, ceil - 2, v) == 0:
+            fr.set(lu, ceil - 1, v, 'lantern[hanging=true]')
+    top_step = D - 2 - (h - 1)
+    vp = D // 2
+    if D >= 13 and vp < top_step - 1 and W >= 6:
+        wall = lr.choice(['white_terracotta', 'smooth_sandstone', 'stripped_birch_wood'])
+        for u in range(3, R + 1):
+            for yy in range(y, ceil):
+                fr.set(u, yy, vp, wall)
+        fr.set(3, y, vp, 'air')                      # a doorway beside the passage to the stairs
+        fr.set(3, y + 1, vp, 'air')
+        if fr.get(R, y, vp + 1) == 0:
+            fr.set(R, y, vp + 1, lr.choice(['barrel[facing=up]', 'chest[facing={L}]', 'bookshelf', 'composter']))
+    for (u, v) in ((R, 2), (2, 2)):
+        if fr.get(u, y, v) == 0 and u != 1 and lr.random() < .7:
+            fr.set(u, y, v, lr.choice(PLANTS))
+    if kind == 'front' and fr.get(R, y, D - 3) == 0:
+        fr.set(R, y, D - 3, 'crafting_table')
+    if kind == 'bed' and fr.get(2, y, 5) == 0 and W >= 6:
+        fr.set(2, y, 5, 'flower_pot')
 
 
 # ---- roofs --------------------------------------------------------------------------------
