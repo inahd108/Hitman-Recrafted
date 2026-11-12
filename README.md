@@ -219,4 +219,4 @@ The headless self-test currently reports, for two minutes of simulated town life
 ## Licence
 
 MIT, except the bundled Inter font subsets, which stay under the SIL Open Font License 1.1
-(`src/main/resources/assets/recrafted/font/INTER_LICENSE.txt`).
+(`src/main/resources/assets/recrafted/font/inter_license.txt`).

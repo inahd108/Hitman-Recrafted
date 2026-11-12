@@ -48,7 +48,7 @@ def main():
     start = text.index('License: OFL-1.1\n')
     body = '\n'.join(l[1:] if l.startswith(' ') else l for l in text[start:].split('\n')[1:])
     body = body.split('\nLicense:')[0].replace('\n.\n', '\n\n')
-    with open(os.path.join(OUT, 'INTER_LICENSE.txt'), 'w') as fh:
+    with open(os.path.join(OUT, 'inter_license.txt'), 'w') as fh:
         fh.write('Inter typeface\nCopyright (c) 2016-2023 The Inter Project Authors (https://github.com/rsms/inter)\n\n'
                  'This Font Software is licensed under the SIL Open Font License, Version 1.1.\n'
                  'The files in this folder are subsets of the original fonts.\n\n' + body.strip() + '\n')
