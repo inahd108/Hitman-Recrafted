@@ -3,7 +3,7 @@ Usage: python3 tools/assets/menu_images.py <scene.png> <orbit_dir>   (orbit_dir 
 import glob
 import os
 import sys
-from PIL import Image, ImageEnhance, ImageFilter
+from PIL import Image, ImageEnhance
 
 OUT = 'src/main/resources/assets/recrafted/textures/gui/menu'
 
@@ -22,7 +22,8 @@ def grade(im, warmth=1.0, contrast=1.06, saturation=1.08):
 def save_small(im, path, colors=None):
     """PNG at a sane size: optionally palettised with dithering (the preview frames are small on screen)."""
     if colors:
-        im = im.quantize(colors=colors, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG).convert('RGB')
+        palette = im.quantize(colors=colors, method=Image.Quantize.MEDIANCUT, kmeans=3)
+        im = im.quantize(palette=palette, dither=Image.Dither.FLOYDSTEINBERG)    # dithers only with a given palette
     im.save(path, optimize=True)
     print(os.path.basename(path), im.size, os.path.getsize(path) // 1024, 'KB')
 
@@ -35,7 +36,7 @@ def main():
     frames = sorted(glob.glob(os.path.join(sys.argv[2], 'menu_orbit_*.png')), key=lambda p: int(p.rsplit('_', 1)[1][:-4]))
     for i, f in enumerate(frames):
         im = grade(Image.open(f).convert('RGB'), warmth=1.03, contrast=1.04, saturation=1.1)
-        im = im.resize((960, 540), Image.LANCZOS).filter(ImageFilter.UnsharpMask(radius=1.0, percent=30, threshold=3))
+        im = im.resize((960, 540), Image.LANCZOS)
         save_small(im, os.path.join(OUT, f'preview_{i}.png'), colors=256)
 
 
