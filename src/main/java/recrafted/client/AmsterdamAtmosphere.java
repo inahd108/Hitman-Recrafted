@@ -42,8 +42,13 @@ public final class AmsterdamAtmosphere {
 
     @SubscribeEvent
     public static void tick(TickEvent.ClientTickEvent e) {
-        if (e.phase != TickEvent.Phase.END || !inAmsterdam()) return;
+        if (e.phase != TickEvent.Phase.END) return;
         Minecraft mc = Minecraft.getInstance();
+        if (clearForPhotos && mc.level != null) {
+            mc.level.setRainLevel(0f);
+            return;
+        }
+        if (!inAmsterdam()) return;
         mc.level.setRainLevel(DRIZZLE);
         mc.level.setThunderLevel(0f);
     }
