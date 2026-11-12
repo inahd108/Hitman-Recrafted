@@ -50,6 +50,10 @@ public final class Guns {
             case SECURITY -> "bulwark";
             case LAB_GUARD -> "halcyon";
             case SORDI -> "argento";
+            // Amsterdam: placeholders until its own guns are in the pack
+            case POLICE, AUCTION_SECURITY -> "argento";
+            case DECKHAND -> "halcyon";
+            case KOOISTRA -> "vento";
             default -> null;
         };
         return id == null ? null : new ResourceLocation(Recrafted.MODID, id);

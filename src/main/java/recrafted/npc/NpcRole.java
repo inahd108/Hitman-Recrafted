@@ -4,19 +4,19 @@ import java.util.Locale;
 
 /** Who an NPC is. Also the set of outfits the player can wear. */
 public enum NpcRole {
-    CIVILIAN("Civilian", 3, false, false),
-    TOURIST("Tourist", 3, false, false),
+    CIVILIAN("Civilian", 6, false, false),
+    TOURIST("Tourist", 6, false, false),
     FISHERMAN("Fisherman", 2, false, true),
     SHOPKEEPER("Shopkeeper", 2, false, false),
-    WAITER("Waiter", 2, false, true),
-    COOK("Cook", 2, false, true),
-    CLEANER("Cleaner", 2, false, true),
+    WAITER("Waiter", 4, false, true),
+    COOK("Cook", 3, false, true),
+    CLEANER("Cleaner", 3, false, true),
     GARDENER("Gardener", 2, false, true),
     PRIEST("Priest", 1, false, true),
     WORKER("Cannery Worker", 2, false, true),
     HARBOUR_GUARD("Harbour Police", 2, true, true),
     ESTATE_GUARD("Estate Guard", 2, true, true),
-    BODYGUARD("Bodyguard", 1, true, true),
+    BODYGUARD("Bodyguard", 2, true, true),
     SECURITY("Halcyon Security", 2, true, true),
     LAB_GUARD("Virus Lab Guard", 1, true, true),
     SCIENTIST("Scientist", 2, false, true),
@@ -25,7 +25,26 @@ public enum NpcRole {
     VARGA("Dr. Ilse Varga", 1, false, false),
     SORDI("Capitano Sordi", 1, true, false),
     /** The operative from the title screen. Not part of any mission cast. */
-    AGENT("Operative", 1, false, false);
+    AGENT("Operative", 1, false, false),
+    // ---- Amsterdam (Oil & Water) ----
+    COURIER("Cycle Courier", 2, false, true),
+    SKIPPER("Boat Skipper", 2, false, true),
+    HOUSEBOATER("Houseboat Resident", 2, false, false),
+    FLOWER_SELLER("Flower Seller", 2, false, true),
+    HERRING_VENDOR("Herring Vendor", 1, false, true),
+    BARTENDER("Bartender", 2, false, true),
+    ORGANIST("Street Organist", 1, false, false),
+    POLICE("Politie Officer", 2, true, true),
+    AUCTION_SECURITY("Auction Security", 2, true, true),
+    LOT_PORTER("Lot Porter", 2, false, true),
+    COLLECTOR("Art Collector", 3, false, true),
+    PHOTOGRAPHER("Press Photographer", 2, false, true),
+    APPRENTICE("Apprentice Painter", 1, false, true),
+    BRIDGE_KEEPER("Bridge Keeper", 1, false, true),
+    DECKHAND("Deckhand", 2, true, true),
+    PORTER("Warehouse Porter", 2, false, true),
+    OSTENDORP("Margriet Ostendorp", 1, false, false),
+    KOOISTRA("Sem Kooistra", 1, true, false);
 
     public final String id;
     public final String title;
@@ -55,12 +74,14 @@ public enum NpcRole {
 
     /** Staff who pass security doors on their own. */
     public boolean opensSecurityDoors() {
-        return guard || this == SCIENTIST || this == HAZMAT || this == VARGA || this == WORKER;
+        return guard || this == SCIENTIST || this == HAZMAT || this == VARGA || this == WORKER
+                || this == LOT_PORTER || this == BRIDGE_KEEPER || this == OSTENDORP;
     }
 
     /** Roles that come when a fuse box sparks. */
     public boolean fixesThings() {
-        return this == WORKER || this == SECURITY || this == ESTATE_GUARD || this == GARDENER;
+        return this == WORKER || this == SECURITY || this == ESTATE_GUARD || this == GARDENER
+                || this == PORTER || this == BRIDGE_KEEPER || this == AUCTION_SECURITY;
     }
 
     public float visionRange() {

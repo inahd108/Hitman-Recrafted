@@ -81,5 +81,19 @@
   "block.recrafted.gable_scroll": "Gable Scroll",
   "block.recrafted.gable_scroll_stone": "Sandstone Gable Scroll",
   "block.recrafted.hoist_beam": "Hoisting Beam",
-  "block.recrafted.shutter": "Warehouse Shutter"
+  "block.recrafted.shutter": "Warehouse Shutter",
+  "item.recrafted.outfit_courier": "Cycle Courier Outfit",
+  "item.recrafted.outfit_skipper": "Boat Skipper Outfit",
+  "item.recrafted.outfit_flower_seller": "Flower Seller Outfit",
+  "item.recrafted.outfit_herring_vendor": "Herring Vendor Outfit",
+  "item.recrafted.outfit_bartender": "Bartender Outfit",
+  "item.recrafted.outfit_police": "Politie Officer Outfit",
+  "item.recrafted.outfit_auction_security": "Auction Security Outfit",
+  "item.recrafted.outfit_lot_porter": "Lot Porter Outfit",
+  "item.recrafted.outfit_collector": "Art Collector Outfit",
+  "item.recrafted.outfit_photographer": "Press Photographer Outfit",
+  "item.recrafted.outfit_apprentice": "Apprentice Painter Outfit",
+  "item.recrafted.outfit_bridge_keeper": "Bridge Keeper Outfit",
+  "item.recrafted.outfit_deckhand": "Deckhand Outfit",
+  "item.recrafted.outfit_porter": "Warehouse Porter Outfit"
 }

@@ -791,7 +791,9 @@ def main():
             save(make_skin(spec, random.Random(hash((role, i)) & 0xffff)), 'textures', 'entity', 'npc', f'{role}_{i}.png')
     save(agent_skin(), 'textures', 'entity', 'npc', 'agent_0.png')
     from ams_blocks import LANG as AMS_LANG
+    from ams_cast import LANG as CAST_LANG
     lang.update(AMS_LANG)
+    lang.update(CAST_LANG)
     write_json(os.path.join(ASSETS, 'lang/en_us.json'), lang)
     print(f'{len(sprites) + len(OUTFIT_COLORS)} item sprites, {sum(len(v) for v in ROLE_SKINS.values())} skins')
 
