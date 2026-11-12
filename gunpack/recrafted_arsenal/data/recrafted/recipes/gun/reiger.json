@@ -1,0 +1,27 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 13
+    },
+    {
+      "item": {
+        "item": "minecraft:blue_dye"
+      },
+      "count": 2
+    },
+    {
+      "item": {
+        "item": "minecraft:orange_dye"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "recrafted:reiger"
+  },
+  "type": "tacz:gun_smith_table_crafting"
+}

@@ -1,0 +1,27 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 18
+    },
+    {
+      "item": {
+        "item": "minecraft:green_dye"
+      },
+      "count": 2
+    },
+    {
+      "item": {
+        "item": "minecraft:black_wool"
+      },
+      "count": 3
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "recrafted:snoek"
+  },
+  "type": "tacz:gun_smith_table_crafting"
+}

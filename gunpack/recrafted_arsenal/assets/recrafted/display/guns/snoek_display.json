@@ -1,0 +1,108 @@
+{
+  "state_machine": "tacz:default_state_machine_v2",
+  "ads_preset": "tacz:renew",
+  "use_default_animation": "rifle",
+  "third_person_animation": "default",
+  "transform": {
+    "scale": {
+      "thirdperson": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "ground": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "fixed": [
+        1.2,
+        1.2,
+        1.2
+      ]
+    }
+  },
+  "muzzle_flash": {
+    "type": "renew",
+    "texture": "tacz:flash/common_muzzle_flash",
+    "scale": 0.12,
+    "smoke_scale": 0.6,
+    "initial_speed_scale": 0.8,
+    "smoke_particle_count": 6
+  },
+  "shell": {
+    "initial_velocity": [
+      5,
+      2,
+      1
+    ],
+    "random_velocity": [
+      2,
+      2,
+      0.5
+    ],
+    "acceleration": [
+      0.0,
+      -15,
+      0.0
+    ],
+    "angular_velocity": [
+      360,
+      -1200,
+      90
+    ],
+    "living_time": 1.0
+  },
+  "iron_zoom": 1.33,
+  "model_fov": 60,
+  "zoom_model_fov": 48,
+  "offhand_show": {
+    "pos": [
+      -1,
+      20,
+      4
+    ],
+    "rotate": [
+      0,
+      0,
+      45
+    ],
+    "scale": [
+      0.5,
+      0.5,
+      0.5
+    ]
+  },
+  "hotbar_show": {
+    "0": {
+      "pos": [
+        -1,
+        16,
+        -2
+      ],
+      "rotate": [
+        0,
+        0,
+        20
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  },
+  "model": "recrafted:gun/snoek_geo",
+  "texture": "recrafted:gun/uv/snoek",
+  "hud": "recrafted:gun/hud/snoek",
+  "slot": "recrafted:gun/slot/snoek",
+  "animation": "recrafted:snoek",
+  "sounds": {
+    "draw": "tacz:hk_mp5a5/hk_mp5a5_draw",
+    "put_away": "tacz:hk_mp5a5/hk_mp5a5_put_away",
+    "shoot": "tacz:hk_mp5a5/hk_mp5a5_silence",
+    "shoot_3p": "tacz:hk_mp5a5/hk_mp5a5_silence_3p",
+    "silence": "tacz:hk_mp5a5/hk_mp5a5_silence",
+    "silence_3p": "tacz:hk_mp5a5/hk_mp5a5_silence_3p"
+  }
+}

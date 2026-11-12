@@ -1,0 +1,7 @@
+{
+  "name": "recrafted.ammo.spear_bolt.name",
+  "display": "recrafted:spear_bolt_display",
+  "stack_size": 8,
+  "tooltip": "recrafted.ammo.spear_bolt.desc",
+  "sort": 1
+}

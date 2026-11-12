@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.reiger.name",
+  "display": "recrafted:reiger_display",
+  "data": "recrafted:reiger_data",
+  "tooltip": "recrafted.gun.reiger.desc",
+  "type": "pistol",
+  "sort": 10
+}

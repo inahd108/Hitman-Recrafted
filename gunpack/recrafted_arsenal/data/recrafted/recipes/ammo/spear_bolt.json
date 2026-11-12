@@ -1,0 +1,23 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 2
+    },
+    {
+      "item": {
+        "item": "minecraft:flint"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "type": "ammo",
+    "group": "tacz:alternative_proj",
+    "id": "recrafted:spear_bolt",
+    "count": 4
+  },
+  "type": "tacz:gun_smith_table_crafting"
+}

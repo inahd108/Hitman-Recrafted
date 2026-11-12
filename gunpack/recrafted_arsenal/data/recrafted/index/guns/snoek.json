@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.snoek.name",
+  "display": "recrafted:snoek_display",
+  "data": "recrafted:snoek_data",
+  "tooltip": "recrafted.gun.snoek.desc",
+  "type": "smg",
+  "sort": 11
+}

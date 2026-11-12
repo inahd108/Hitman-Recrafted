@@ -23,6 +23,7 @@ from common import arm_colour
 from geomodel import Model, arc_pts, disc_x, octagon, path_yz, round_bar, seg_yz
 
 ID = 'harpoen'
+AMMO_ID = 'spear_bolt'
 K = 12
 AIR_Y, AIR_R = 9.45, 0.86          # air chamber
 AIR_Z0, AIR_Z1 = -16.7, 9.4
@@ -192,7 +193,7 @@ def build():
 # ---- the ammo: one spear bolt ---------------------------------------------------------------
 def build_bolt_item():
     """Inventory / ground / item-frame model of the spear bolt ammo (TACZ ammo positioning bones)."""
-    m = Model('spear_bolt', tex_size=256, texels_per_unit=K)
+    m = Model('spear_bolt', tex_size=512, texels_per_unit=K)
     root = m.part('root', None, [0, 0, 0])
     s = m.part('spear', 'root', [0, 0.25, 0])
     # lying on its side along z, centred on the origin
@@ -206,7 +207,7 @@ def build_bolt_item():
 
 def build_bolt_entity():
     """The spear in flight: points down -z like TACZ's rocket, trailing behind the bullet position."""
-    m = Model('spear_bolt_entity', tex_size=256, texels_per_unit=20)
+    m = Model('spear_bolt_entity', tex_size=512, texels_per_unit=20)
     s = m.part('spear', None, [0, 0, 0])
     spear(s, (0.0, -SPEAR_Y, -TIP_Z - 1.5))
     for c in s.cubes:                    # in flight it is drawn at full scale: shrink it to the in-hand size

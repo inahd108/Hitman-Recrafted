@@ -56,13 +56,13 @@ def silhouette(model, tex, size, hide, eye, target, ortho, color=(214, 214, 214)
     return Image.fromarray(out)
 
 
-def icon(model, tex, size, hide, eye, target, ortho):
+def icon(model, tex, size, hide, eye, target, ortho, pose=None):
     """Coloured side view with transparent background (inventory slot)."""
     bg = (1, 2, 3)
-    img = render(model, tex, eye=eye, target=target, ortho_height=ortho, size=size, hide=hide, bg=bg, ss=1)
+    img = render(model, tex, eye=eye, target=target, ortho_height=ortho, size=size, hide=hide, bg=bg, ss=1, pose=pose)
     arr = np.asarray(img).astype(np.int32)
     ref = np.asarray(render(model, tex, eye=eye, target=target, ortho_height=ortho, size=size, hide=hide,
-                            bg=(250, 0, 250), ss=1)).astype(np.int32)
+                            bg=(250, 0, 250), ss=1, pose=pose)).astype(np.int32)
     solid = np.abs(arr - ref).sum(-1) < 30
     out = np.zeros((size[1], size[0], 4), dtype=np.uint8)
     out[..., :3] = np.clip(arr, 0, 255)
@@ -516,6 +516,203 @@ def build_falco():
     )
 
 
+# ---- Amsterdam: the second mission set ------------------------------------------------------
+def build_reiger():
+    import reiger
+    import reiger_anim
+    S = 'tacz:p320/p320_'
+    emit_pistol(
+        reiger, reiger_anim.animations(),
+        name='Reiger 9', desc='Amsterdam police service pistol. Slim, fifteen rounds, a light and eager trigger.',
+        sort=10,
+        data=pistol_data(
+            ammo='tacz:9mm', rpm=450, ammo_amount=15, weight=0.9, draw_time=0.45, aim_time=0.13,
+            extended_mag_ammo_amount=[17, 19, 22],
+            bullet={'damage': 9, 'speed': 200,
+                    'extra_damage': {'armor_ignore': 0.15, 'head_shot_multiplier': 1.8,
+                                     'damage_adjust': [{'distance': 18, 'damage': 9}, {'distance': 36, 'damage': 7},
+                                                       {'distance': 'infinite', 'damage': 4.5}]}},
+            reload={'feed': {'empty': 1.25, 'tactical': 1.18}, 'cooldown': {'empty': 2.23, 'tactical': 1.85}},
+            recoil={'pitch': [{'time': 0, 'value': [1.0, 1.0]}, {'time': 0.18, 'value': [0.08, 0.08]},
+                              {'time': 0.3, 'value': [0, 0]}],
+                    'yaw': [{'time': 0, 'value': [-0.4, -0.4]}, {'time': 0.05, 'value': [0.24, 0.24]},
+                            {'time': 0.25, 'value': [0, 0]}]},
+            inaccuracy={'stand': 1.25, 'move': 1.55, 'sneak': 0.8, 'lie': 0.7, 'aim': 0.1},
+            allow_attachment_types=['muzzle', 'extended_mag'],
+            fire_sound={'fire_multiplier': 1.0, 'silence_multiplier': 1.0},
+        ),
+        sounds={'draw': S + 'draw', 'put_away': S + 'put_away', 'shoot': S + 'shoot', 'shoot_3p': S + 'shoot_3p',
+                'silence': S + 'silence', 'silence_3p': S + 'silence_3p'},
+        allow=['#tacz:pistol_muzzle', '#tacz:light_extended_mag'],
+        recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 13},
+                {'item': {'item': 'minecraft:blue_dye'}, 'count': 2},
+                {'item': {'item': 'minecraft:orange_dye'}, 'count': 1}],
+        side_cz=-1.9, hud_ortho=7.0, slot_ortho=12.5,
+    )
+
+
+def build_snoek():
+    import snoek
+    import snoek_anim
+    S = 'tacz:hk_mp5a5/hk_mp5a5_'
+    display = dict(SMG_DISPLAY)
+    display.update({'muzzle_flash': {'type': 'renew', 'texture': 'tacz:flash/common_muzzle_flash', 'scale': 0.12,
+                                     'smoke_scale': 0.6, 'initial_speed_scale': 0.8, 'smoke_particle_count': 6}})
+    emit_pistol(
+        snoek, snoek_anim.animations(),
+        name='Snoek SMG', desc='Compact 9mm submachine gun, suppressed for its whole length. Thirty rounds, barely a whisper.',
+        sort=11, gun_type='smg', base_display=display, side_cy=6.0,
+        data={
+            'allow_ammo_unload': True, 'ammo': 'tacz:9mm', 'rpm': 780,
+            'bullet': {'life': 0.6, 'bullet_amount': 1, 'damage': 6.5, 'tracer_count_interval': 0,
+                       'extra_damage': {'armor_ignore': 0.15, 'head_shot_multiplier': 1.5,
+                                        'damage_adjust': [{'distance': 16, 'damage': 6.5}, {'distance': 32, 'damage': 5},
+                                                          {'distance': 'infinite', 'damage': 3}]},
+                       'speed': 220, 'gravity': 0.15, 'knockback': 0, 'friction': 0.025, 'ignite': False, 'pierce': 1},
+            'ammo_amount': 30, 'extended_mag_ammo_amount': [36, 42, 50], 'bolt': 'closed_bolt',
+            'reload': {'type': 'magazine', 'feed': {'empty': 1.5, 'tactical': 1.28},
+                       'cooldown': {'empty': 2.85, 'tactical': 2.2}},
+            'draw_time': 0.45, 'put_away_time': 0.4, 'aim_time': 0.2, 'sprint_time': 0.13, 'weight': 2.1,
+            'movement_speed': {'base': 0.0, 'aim': -0.1, 'reload': 0}, 'crawl_recoil_multiplier': 0.75,
+            'fire_mode': ['auto', 'semi'],
+            'allow_attachment_types': ['extended_mag'],
+            'recoil': {'pitch': [{'time': 0, 'value': [0.45, 0.55]}, {'time': 0.1, 'value': [0.08, 0.08]},
+                                 {'time': 0.2, 'value': [0, 0]}],
+                       'yaw': [{'time': 0, 'value': [-0.3, 0.3]}, {'time': 0.12, 'value': [0, 0]}]},
+            'inaccuracy': {'stand': 3.0, 'move': 3.8, 'sneak': 2.1, 'lie': 1.4, 'aim': 0.16},
+            'fire_sound': {'fire_multiplier': 0.18, 'silence_multiplier': 1.0},
+        },
+        sounds={'draw': S + 'draw', 'put_away': S + 'put_away', 'shoot': S + 'silence', 'shoot_3p': S + 'silence_3p',
+                'silence': S + 'silence', 'silence_3p': S + 'silence_3p'},
+        allow=['#tacz:light_extended_mag'],
+        recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 18},
+                {'item': {'item': 'minecraft:green_dye'}, 'count': 2},
+                {'item': {'item': 'minecraft:black_wool'}, 'count': 3}],
+        side_cz=-3.8, hud_ortho=13.2, slot_ortho=24.0,
+    )
+
+
+def build_kievit():
+    import kievit
+    import kievit_anim
+    D = 'tacz:deagle/deagle_'
+    emit_pistol(
+        kievit, kievit_anim.animations(),
+        name='Kievit', desc='Over-under pocket derringer. Two rounds of .357 at arm\'s length, then tip the barrels.',
+        sort=12,
+        data={
+            'allow_ammo_unload': True, 'ammo': 'tacz:357mag', 'rpm': 150,
+            'bullet': {'life': 0.5, 'bullet_amount': 1, 'damage': 12, 'tracer_count_interval': 0,
+                       'extra_damage': {'armor_ignore': 0.2, 'head_shot_multiplier': 1.8,
+                                        'damage_adjust': [{'distance': 8, 'damage': 12}, {'distance': 16, 'damage': 8},
+                                                          {'distance': 'infinite', 'damage': 4}]},
+                       'speed': 160, 'gravity': 0.15, 'knockback': 0.1, 'friction': 0.06, 'ignite': False, 'pierce': 1},
+            'ammo_amount': 2, 'bolt': 'open_bolt',
+            'reload': {'type': 'magazine', 'feed': {'empty': 1.95, 'tactical': 1.38},
+                       'cooldown': {'empty': 2.45, 'tactical': 1.8}},
+            'draw_time': 0.35, 'put_away_time': 0.25, 'aim_time': 0.12, 'sprint_time': 0.05, 'weight': 0.55,
+            'movement_speed': {'base': 0, 'aim': 0, 'reload': 0.1}, 'crawl_recoil_multiplier': 0.5,
+            'fire_mode': ['semi'], 'allow_attachment_types': [],
+            'recoil': {'pitch': [{'time': 0, 'value': [2.8, 3.2]}, {'time': 0.22, 'value': [0.3, 0.3]},
+                                 {'time': 0.38, 'value': [0, 0]}],
+                       'yaw': [{'time': 0, 'value': [-0.9, 0.9]}, {'time': 0.2, 'value': [0, 0]}]},
+            'inaccuracy': {'stand': 2.6, 'move': 3.0, 'sneak': 2.2, 'lie': 2.0, 'aim': 0.9},
+            'fire_sound': {'fire_multiplier': 1.45, 'silence_multiplier': 1.0},
+        },
+        sounds={'draw': 'tacz:m1911/m1911_draw', 'put_away': 'tacz:m1911/m1911_put_away', 'shoot': D + 'shoot',
+                'shoot_3p': D + 'shoot_3p', 'silence': D + 'silence', 'silence_3p': D + 'silence_3p'},
+        allow=[],
+        recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 8},
+                {'item': {'tag': 'forge:nuggets/gold'}, 'count': 2},
+                {'item': {'item': 'minecraft:amethyst_shard'}, 'count': 1}],
+        side_cz=-0.1, side_cy=3.4, hud_ortho=6.0, slot_ortho=9.5,
+        display_extra={'shell': None, 'iron_zoom': 1.15,
+                       'muzzle_flash': {'type': 'renew', 'texture': 'tacz:flash/common_muzzle_flash', 'scale': 0.9,
+                                        'smoke_scale': 1.4, 'initial_speed_scale': 1.2, 'smoke_particle_count': 20}},
+    )
+
+
+def build_harpoen():
+    import harpoen
+    import harpoen_anim
+    M3 = 'tacz:m320/m320_'
+    display = dict(SMG_DISPLAY)
+    display.update({'shell': None, 'muzzle_flash': None, 'iron_zoom': 1.3, 'zoom_model_fov': 46})
+    emit_pistol(
+        harpoen, harpoen_anim.animations(),
+        name='Harpoen', desc='Pneumatic speargun. One barbed bolt, no bang at all, and a long reload.',
+        sort=13, gun_type='rpg', base_display=display, side_cy=7.6,
+        data={
+            'allow_ammo_unload': True, 'ammo': f'{NS}:{harpoen.AMMO_ID}', 'rpm': 60,
+            'bullet': {'life': 3.0, 'bullet_amount': 1, 'damage': 16, 'tracer_count_interval': -1,
+                       'extra_damage': {'armor_ignore': 0.35, 'head_shot_multiplier': 2.0,
+                                        'damage_adjust': [{'distance': 12, 'damage': 16}, {'distance': 28, 'damage': 13},
+                                                          {'distance': 'infinite', 'damage': 9}]},
+                       'speed': 75, 'gravity': 0.08, 'knockback': 0.35, 'friction': 0.015, 'ignite': False, 'pierce': 1},
+            'ammo_amount': 1, 'bolt': 'open_bolt',
+            'reload': {'type': 'magazine', 'feed': {'empty': harpoen_anim.FEED_T, 'tactical': harpoen_anim.FEED_T},
+                       'cooldown': {'empty': 3.5, 'tactical': 3.5}},
+            'draw_time': 0.6, 'put_away_time': 0.45, 'aim_time': 0.24, 'sprint_time': 0.15, 'weight': 2.6,
+            'movement_speed': {'base': -0.05, 'aim': -0.15, 'reload': -0.1}, 'crawl_recoil_multiplier': 0.6,
+            'fire_mode': ['semi'], 'allow_attachment_types': [],
+            'recoil': {'pitch': [{'time': 0, 'value': [0.9, 1.1]}, {'time': 0.15, 'value': [0.15, 0.15]},
+                                 {'time': 0.3, 'value': [0, 0]}],
+                       'yaw': [{'time': 0, 'value': [-0.3, 0.3]}, {'time': 0.15, 'value': [0, 0]}]},
+            'inaccuracy': {'stand': 2.5, 'move': 3.2, 'sneak': 1.8, 'lie': 1.2, 'aim': 0.08},
+            'fire_sound': {'fire_multiplier': 0.06, 'silence_multiplier': 1.0},
+        },
+        sounds={'draw': M3 + 'draw', 'put_away': M3 + 'put_away', 'shoot': M3 + 'shoot', 'shoot_3p': M3 + 'shoot',
+                'silence': M3 + 'shoot', 'silence_3p': M3 + 'shoot'},
+        allow=[],
+        recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 16},
+                {'item': {'item': 'minecraft:light_blue_dye'}, 'count': 2},
+                {'item': {'item': 'minecraft:piston'}, 'count': 1}],
+        side_cz=-5.3, hud_ortho=14.5, slot_ortho=34.0,
+    )
+    build_spear_bolt(harpoen)
+
+
+def build_spear_bolt(harpoen):
+    """The Harpoen's ammo: item model, flying-spear model, textures, slot icon, data, recipe and name."""
+    aid = harpoen.AMMO_ID
+    m = harpoen.build_bolt_item()
+    m.layout()
+    tex = m.paint(harpoen.shader)
+    write_json(f'assets/{NS}/geo_models/ammo/{aid}_geo.json', m.to_bedrock())
+    save_png(f'assets/{NS}/textures/ammo/uv/{aid}.png', tex)
+    e = harpoen.build_bolt_entity()
+    e.layout()
+    etex = e.paint(harpoen.shader)
+    write_json(f'assets/{NS}/geo_models/ammo_entity/{aid}_geo.json', e.to_bedrock())
+    save_png(f'assets/{NS}/textures/ammo_entity/{aid}.png', etex)
+    diag = {'spear': {'rotation': [-45, 0, 0]}}                 # tip up to the right, like an arrow icon
+    save_png(f'assets/{NS}/textures/ammo/slot/{aid}.png',
+             icon(m, tex, (32, 32), (), eye=(40, 0.25, 0), target=(0, 0.25, 0), ortho=18.5, pose=diag))
+    write_json(f'data/{NS}/index/ammo/{aid}.json', {
+        'name': f'{NS}.ammo.{aid}.name', 'display': f'{NS}:{aid}_display', 'stack_size': 8,
+        'tooltip': f'{NS}.ammo.{aid}.desc', 'sort': 1,
+    })
+    write_json(f'assets/{NS}/display/ammo/{aid}_display.json', {
+        'model': f'{NS}:ammo/{aid}_geo', 'texture': f'{NS}:ammo/uv/{aid}', 'slot': f'{NS}:ammo/slot/{aid}',
+        'entity': {'model': f'{NS}:ammo_entity/{aid}_geo', 'texture': f'{NS}:ammo_entity/{aid}'},
+        'tracer_color': '#C8D2DA',
+        'transform': {'scale': {'thirdperson': [0.45, 0.45, 0.45], 'ground': [0.45, 0.45, 0.45],
+                                'fixed': [0.7, 0.7, 0.7]}},
+    })
+    write_json(f'data/{NS}/recipes/ammo/{aid}.json', {
+        'materials': [{'item': {'tag': 'forge:ingots/iron'}, 'count': 2},
+                      {'item': {'item': 'minecraft:flint'}, 'count': 1}],
+        'result': {'type': 'ammo', 'group': 'tacz:alternative_proj', 'id': f'{NS}:{aid}', 'count': 4},
+        'type': 'tacz:gun_smith_table_crafting',
+    })
+    LANG[f'{NS}.ammo.{aid}.name'] = 'Spear Bolt'
+    LANG[f'{NS}.ammo.{aid}.desc'] = 'Stainless spear with a barbed head, for the Harpoen.'
+    bb_export(m, tex, aid)
+    render(m, tex, eye=(-9, 7, -14), target=(0, 0.3, 0), fov=40, size=(1200, 700), hide=(),
+           pose={'spear': {'rotation': [0, -25, 0]}}).save(os.path.join(PREVIEW, f'{aid}_34.png'))
+    print(f'  {aid}: {m.cube_count()} cubes (item), {e.cube_count()} (in flight)')
+
+
 def build_argento():
     gid = argento.ID
     m = argento.build()
@@ -690,6 +887,10 @@ def main():
     build_bulwark()
     build_cicala()
     build_falco()
+    build_reiger()
+    build_snoek()
+    build_kievit()
+    build_harpoen()
     write_json(f'assets/{NS}/lang/en_us.json', LANG)
     os.makedirs(DIST, exist_ok=True)
     zpath = os.path.join(DIST, f'{PACK_NAME}.zip')

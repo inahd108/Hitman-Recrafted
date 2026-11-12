@@ -1,0 +1,108 @@
+{
+  "state_machine": "tacz:default_state_machine_v2",
+  "ads_preset": "tacz:renew",
+  "use_default_animation": "pistol",
+  "player_animator_3rd": "tacz:pistol_default.player_animation",
+  "transform": {
+    "scale": {
+      "thirdperson": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "ground": [
+        0.6,
+        0.6,
+        0.6
+      ],
+      "fixed": [
+        1.1,
+        1.1,
+        1.1
+      ]
+    }
+  },
+  "shell": {
+    "initial_velocity": [
+      5.0,
+      3.0,
+      1
+    ],
+    "random_velocity": [
+      2.5,
+      2,
+      0.25
+    ],
+    "acceleration": [
+      0.0,
+      -20,
+      0.0
+    ],
+    "angular_velocity": [
+      360,
+      -960,
+      90
+    ],
+    "living_time": 1.0
+  },
+  "muzzle_flash": {
+    "type": "renew",
+    "texture": "tacz:flash/common_muzzle_flash",
+    "scale": 0.6,
+    "smoke_scale": 1.1,
+    "initial_speed_scale": 1.1,
+    "smoke_particle_count": 16
+  },
+  "iron_zoom": 1.25,
+  "model_fov": 60,
+  "zoom_model_fov": 45,
+  "offhand_show": {
+    "pos": [
+      4,
+      13,
+      -1
+    ],
+    "rotate": [
+      -90,
+      -35,
+      90
+    ],
+    "scale": [
+      0.5,
+      0.5,
+      0.5
+    ]
+  },
+  "hotbar_show": {
+    "0": {
+      "pos": [
+        -5,
+        13,
+        -1
+      ],
+      "rotate": [
+        -90,
+        -35,
+        90
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    }
+  },
+  "model": "recrafted:gun/reiger_geo",
+  "texture": "recrafted:gun/uv/reiger",
+  "hud": "recrafted:gun/hud/reiger",
+  "slot": "recrafted:gun/slot/reiger",
+  "animation": "recrafted:reiger",
+  "sounds": {
+    "draw": "tacz:p320/p320_draw",
+    "put_away": "tacz:p320/p320_put_away",
+    "shoot": "tacz:p320/p320_shoot",
+    "shoot_3p": "tacz:p320/p320_shoot_3p",
+    "silence": "tacz:p320/p320_silence",
+    "silence_3p": "tacz:p320/p320_silence_3p"
+  }
+}

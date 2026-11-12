@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.harpoen.name",
+  "display": "recrafted:harpoen_display",
+  "data": "recrafted:harpoen_data",
+  "tooltip": "recrafted.gun.harpoen.desc",
+  "type": "rpg",
+  "sort": 13
+}

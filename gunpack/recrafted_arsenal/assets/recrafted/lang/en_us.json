@@ -17,5 +17,15 @@
   "recrafted.gun.cicala.name": "Cicala",
   "recrafted.gun.cicala.desc": "Takedown sniper rifle with an integral suppressor. Travels in a briefcase.",
   "recrafted.gun.falco.name": "Falco",
-  "recrafted.gun.falco.desc": "Semi-automatic .308 marksman rifle. Ten rounds, reach and authority."
+  "recrafted.gun.falco.desc": "Semi-automatic .308 marksman rifle. Ten rounds, reach and authority.",
+  "recrafted.gun.reiger.name": "Reiger 9",
+  "recrafted.gun.reiger.desc": "Amsterdam police service pistol. Slim, fifteen rounds, a light and eager trigger.",
+  "recrafted.gun.snoek.name": "Snoek SMG",
+  "recrafted.gun.snoek.desc": "Compact 9mm submachine gun, suppressed for its whole length. Thirty rounds, barely a whisper.",
+  "recrafted.gun.kievit.name": "Kievit",
+  "recrafted.gun.kievit.desc": "Over-under pocket derringer. Two rounds of .357 at arm's length, then tip the barrels.",
+  "recrafted.gun.harpoen.name": "Harpoen",
+  "recrafted.gun.harpoen.desc": "Pneumatic speargun. One barbed bolt, no bang at all, and a long reload.",
+  "recrafted.ammo.spear_bolt.name": "Spear Bolt",
+  "recrafted.ammo.spear_bolt.desc": "Stainless spear with a barbed head, for the Harpoen."
 }

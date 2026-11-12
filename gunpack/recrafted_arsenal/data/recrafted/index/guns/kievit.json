@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.kievit.name",
+  "display": "recrafted:kievit_display",
+  "data": "recrafted:kievit_data",
+  "tooltip": "recrafted.gun.kievit.desc",
+  "type": "pistol",
+  "sort": 12
+}
