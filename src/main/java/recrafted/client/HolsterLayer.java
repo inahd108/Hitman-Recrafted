@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import recrafted.npc.NpcEntity;
 
-/** A guard's sidearm, holstered on the right hip, muzzle down. Gone once they drop it. */
+/** A guard's gun when it isn't drawn: a handgun holstered on the right hip, a long gun slung across the back. */
 public class HolsterLayer extends RenderLayer<NpcEntity, NpcModel> {
     private final ItemInHandRenderer items;
 
@@ -26,6 +26,15 @@ public class HolsterLayer extends RenderLayer<NpcEntity, NpcModel> {
         if (gun.isEmpty() || e.isDown() || recrafted.compat.Guns.isGun(e.getMainHandItem())) return;
         pose.pushPose();
         getParentModel().body.translateAndRotate(pose);
+        if (recrafted.compat.Guns.isLongGun(gun)) {
+            // slung diagonally across the back, side facing out, muzzle up over the left shoulder
+            pose.translate(0f, 6f / 16f, 2.6f / 16f);
+            pose.mulPose(Axis.ZP.rotationDegrees(135f));
+            pose.scale(0.55f, 0.55f, 0.55f);
+            items.renderItem(e, gun, ItemDisplayContext.FIXED, false, pose, buf, light);
+            pose.popPose();
+            return;
+        }
         // the vanilla held-item transform for a hanging right hand, moved onto the hip: the gun hangs muzzle-down
         pose.translate(-6.0f / 16f, 3f / 16f, 0.8f / 16f);
         pose.mulPose(Axis.XP.rotationDegrees(-90f));

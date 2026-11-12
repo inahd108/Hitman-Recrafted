@@ -55,17 +55,17 @@ Press **X** to throw what you are holding: props, and guns too.
 - **Noise** moves people. Thrown coins, broken bottles, a pocket radio, or a sabotaged fuse box
   (wrench or screwdriver) all pull someone off their post.
 - **Guns** (with [TACZ](https://modrinth.com/mod/timeless-and-classics-zero) and the Recrafted Arsenal gun pack,
-  see [gunpack/README.md](gunpack/README.md)). Guards wear a holstered sidearm: estate guards and bodyguards a
-  **Vento .357** revolver, harbour police, Halcyon security and lab guards a **Bastone 9**, and Capitano Sordi
-  his engraved **Argento .45**. Knock a guard out or kill them and the gun drops beside the body, loaded, with a
+  see [gunpack/README.md](gunpack/README.md)). Guards carry a gun: estate guards a **Lupara** sawn-off slung on
+  the back, bodyguards a **Vento .357** revolver, harbour police, Halcyon security and lab guards a **Bastone 9**,
+  and Capitano Sordi his engraved **Argento .45**, holstered on the hip. Knock a guard out or kill them and the gun drops beside the body, loaded, with a
   spare reload that you pick up with it (right-click). Dropped guns are cleared when the contract restarts.
   A gun in your hand is illegal unless you wear a guard uniform. A shot compromises you to anyone who sees it,
   and the nearest people in earshot (guards first) come to look; suppressed guns are heard from much closer.
   A thrown gun knocks out whoever it hits, then lies where it lands for you to pick up again.
 - **Armed guards shoot back.** Once a guard is in a fight they draw their sidearm, take a two-handed aim and,
   after a moment to react, open fire: single shots from a revolver, short strings from a Bastone, a pause to
-  reload when empty, a pistol-whip if you get close. Inside about 15 blocks they hold position and shoot;
-  further out they close in. They miss more at range and against a running target, their bullets do a quarter
+  reload when empty, a pistol-whip if you get close. Inside about 15 blocks (8 with a shotgun) they hold
+  position and shoot; further out they close in. They miss more at range and against a running target, their bullets do a quarter
   of the gun's damage to you, and they never hit each other or bystanders. Guards without a gun (or once
   they've dropped it) still come at you with a baton.
 - **Security doors** open to the matching keycard, quietly to a lockpick, loudly to a crowbar. Right-click

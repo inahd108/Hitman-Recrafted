@@ -60,6 +60,24 @@ final class TaczBridge {
         MinecraftForge.EVENT_BUS.addListener(TaczBridge::onHurt);
     }
 
+    /** TACZ's gun type ("pistol", "shotgun", "rifle", "smg", ...), from the common index or the client's. */
+    static String type(ItemStack gun) {
+        IGun iGun = IGun.getIGunOrNull(gun);
+        if (iGun == null) return "pistol";
+        ResourceLocation id = iGun.getGunId(gun);
+        return TYPES.computeIfAbsent(id, k -> TimelessAPI.getCommonGunIndex(k).map(CommonGunIndex::getType)
+                .orElseGet(() -> net.minecraftforge.fml.loading.FMLEnvironment.dist.isClient() ? ClientTypes.of(k) : "pistol"));
+    }
+
+    private static final java.util.Map<ResourceLocation, String> TYPES = new java.util.concurrent.ConcurrentHashMap<>();
+
+    /** Client-only lookup, kept in its own class so servers never load the client index. */
+    private static final class ClientTypes {
+        static String of(ResourceLocation id) {
+            return TimelessAPI.getClientGunIndex(id).map(com.tacz.guns.client.resource.index.ClientGunIndex::getType).orElse("pistol");
+        }
+    }
+
     static int capacity(ItemStack gun) {
         IGun iGun = IGun.getIGunOrNull(gun);
         if (iGun == null) return 6;

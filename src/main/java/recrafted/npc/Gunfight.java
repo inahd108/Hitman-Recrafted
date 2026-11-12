@@ -20,8 +20,6 @@ public final class Gunfight {
     /** Shot results by TACZ outcome, for the dev tests. */
     public static final Map<String, Integer> RESULTS = new ConcurrentHashMap<>();
 
-    /** Guards stop and shoot inside this range, and close in beyond it. */
-    public static final double RANGE = 15.0;
     private static final int RELOAD_TICKS = 50;
 
     private int aim;

@@ -119,8 +119,11 @@ public final class GuardTest {
             sp.getInventory().clearContent();
             guardA = spawn(level, NpcRole.ESTATE_GUARD, "Test Estate Guard", X + 1.2, Z + 3.0, 90f);
             guardB = spawn(level, NpcRole.HARBOUR_GUARD, "Test Harbour Guard", X - 1.6, Z + 3.4, 90f);
-            check("estate guard carries the Vento", Guns.isGun(guardA.getSidearm())
-                    && guardA.getSidearm().getOrCreateTag().getString("GunId").equals("recrafted:vento"), guardA.getSidearm().getTag());
+            check("estate guard carries the Lupara", Guns.isGun(guardA.getSidearm())
+                    && guardA.getSidearm().getOrCreateTag().getString("GunId").equals("recrafted:lupara"), guardA.getSidearm().getTag());
+            check("bodyguards carry the Vento", Guns.sidearmFor(NpcRole.BODYGUARD).getOrCreateTag().getString("GunId").equals("recrafted:vento"), "");
+            check("the Lupara counts as a long gun, the Bastone doesn't", Guns.isLongGun(guardA.getSidearm())
+                    && !Guns.isLongGun(guardB.getSidearm()), "");
             check("harbour guard carries the Bastone", guardB.getSidearm().getOrCreateTag().getString("GunId").equals("recrafted:bastone"),
                     guardB.getSidearm().getTag());
             check("civilians are unarmed", Guns.sidearmFor(NpcRole.CIVILIAN).isEmpty(), "");
@@ -132,6 +135,10 @@ public final class GuardTest {
         step(1500, () -> shot(mc, "01b_holster_side"));
         step(200, () -> look(server, X - 0.4, Y, Z + 3.0, -90f, 38f));
         step(1500, () -> shot(mc, "01c_holster_front"));
+        step(200, () -> look(server, X + 3.6, Y - 0.2, Z + 3.0, 90f, 8f));
+        step(1500, () -> shot(mc, "01d_sling_back"));
+        step(200, () -> look(server, X + 1.2, Y - 0.2, Z + 0.4, 0f, 8f));
+        step(1500, () -> shot(mc, "01e_sling_side"));
         step(200, () -> look(server, X, Y, Z, 0f, 12f));
         step(300, () -> onServer(server, (level, sp) -> {
             guardA.knockOut(sp);
@@ -151,11 +158,11 @@ public final class GuardTest {
             if (!drops.isEmpty()) drops.get(0).interact(sp, InteractionHand.MAIN_HAND);
             ItemStack held = sp.getMainHandItem();
             check("picked-up gun is in hand", Guns.isGun(held), held);
-            check("picked-up gun kept its NBT (loaded revolver)", held.getOrCreateTag().getString("GunId").equals("recrafted:vento")
-                    && held.getOrCreateTag().getInt("GunCurrentAmmoCount") == 6, held.getTag());
+            check("picked-up gun kept its NBT (loaded shotgun)", held.getOrCreateTag().getString("GunId").equals("recrafted:lupara")
+                    && held.getOrCreateTag().getInt("GunCurrentAmmoCount") == 2, held.getTag());
             boolean ammo = sp.getInventory().items.stream().anyMatch(s -> BuiltInRegistries.ITEM.getKey(s.getItem()).toString().equals("tacz:ammo")
-                    && s.getOrCreateTag().getString("AmmoId").equals("tacz:357mag"));
-            check("spare .357 ammo went into the inventory", ammo, sp.getInventory().items.stream().filter(s -> !s.isEmpty()).toList());
+                    && s.getOrCreateTag().getString("AmmoId").equals("tacz:12g"));
+            check("spare 12 gauge shells went into the inventory", ammo, sp.getInventory().items.stream().filter(s -> !s.isEmpty()).toList());
             check("drop is gone after pickup", gunDropsNear(level, guardA).isEmpty(), "");
         }));
         step(200, () -> look(server, X, Y, Z, 0f, 4f));
@@ -175,9 +182,9 @@ public final class GuardTest {
         step(1500, () -> onServer(server, (level, sp) -> {
             check("thrown gun knocked the guard out", guardB.getState() == NpcEntity.State.UNCONSCIOUS, guardB.getState());
             List<PropEntity> drops = gunDropsNear(level, guardB);
-            boolean vento = drops.stream().anyMatch(d -> d.getItem().getOrCreateTag().getString("GunId").equals("recrafted:vento"));
+            boolean vento = drops.stream().anyMatch(d -> d.getItem().getOrCreateTag().getString("GunId").equals("recrafted:lupara"));
             boolean bastone = drops.stream().anyMatch(d -> d.getItem().getOrCreateTag().getString("GunId").equals("recrafted:bastone"));
-            check("thrown revolver landed as a pickup", vento, drops.size());
+            check("thrown shotgun landed as a pickup", vento, drops.size());
             check("second guard dropped the Bastone", bastone, drops.size());
         }));
         step(200, () -> look(server, X, Y, Z, -15f, 40f));
@@ -245,7 +252,8 @@ public final class GuardTest {
             check("guard fired real TACZ shots", ok >= 2, Gunfight.RESULTS);
             check("the player was hit", sp.getHealth() < healthBefore || sp.getCombatTracker().getCombatDuration() > 0
                     || sp.getLastDamageSource() != null, "health " + sp.getHealth() + " last " + sp.getLastDamageSource());
-            check("guard holds position while firing", gunman.getNavigation().isDone(), gunman.position());
+            check("guard keeps within its gun's range", gunman.distanceTo(sp) <= Guns.engageRange(gunman.getMainHandItem()) + 2.5,
+                    String.format("%.1f blocks", gunman.distanceTo(sp)));
             gunman.frozen = true;
             sp.setHealth(sp.getMaxHealth());
         }));

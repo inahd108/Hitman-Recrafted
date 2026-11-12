@@ -770,7 +770,7 @@ public class NpcEntity extends PathfinderMob {
         }
         boolean armed = Guns.isGun(getMainHandItem());
         double dist = Math.sqrt(distanceToSqr(t));
-        if (armed && sees && dist <= Gunfight.RANGE) {
+        if (armed && sees && dist <= Guns.engageRange(getMainHandItem())) {
             // hold position and shoot
             getNavigation().stop();
             setSprinting(false);

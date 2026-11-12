@@ -44,7 +44,8 @@ public final class Guns {
     @Nullable
     public static ResourceLocation sidearmId(NpcRole role) {
         String id = switch (role) {
-            case ESTATE_GUARD, BODYGUARD -> "vento";
+            case ESTATE_GUARD -> "lupara";
+            case BODYGUARD -> "vento";
             case HARBOUR_GUARD, SECURITY, LAB_GUARD -> "bastone";
             case SORDI -> "argento";
             default -> null;
@@ -72,6 +73,16 @@ public final class Guns {
         if (cap <= 6) return new Cadence(1, 18, 4);          // revolver: deliberate single shots
         if (cap <= 9) return new Cadence(1, 13, 6);          // single-stack pistol
         return new Cadence(3, 6, 22);                         // service pistol: short strings
+    }
+
+    /** A shoulder gun (shotgun, rifle, PDW...) rather than a handgun: slung on the back, not holstered. */
+    public static boolean isLongGun(ItemStack gun) {
+        return isGun(gun) && !"pistol".equals(safely(() -> TaczBridge.type(gun), "pistol"));
+    }
+
+    /** How close an NPC gets before it stops to shoot: shotguns have to be near to count. */
+    public static double engageRange(ItemStack gun) {
+        return "shotgun".equals(isGun(gun) ? safely(() -> TaczBridge.type(gun), "pistol") : "pistol") ? 8.0 : 15.0;
     }
 
     /** Magazine size of this gun (6 if unknown). */
