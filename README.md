@@ -31,7 +31,7 @@ All screenshots are taken in-game by the automated tour (`./gradlew runClient -P
 ## The title screen
 
 The mod replaces Minecraft's title screen with its own: an operative waits in a penthouse over Corvara at dusk,
-with **Play** (your worlds, as usual), **Missions**, **Options** and **Quit** down the side, and small links to
+with **Play** (the normal Singleplayer screen: load a world or create a new one), **Missions**, **Options** and **Quit** down the side, and small links to
 Multiplayer, Mods, Language and the classic menu at the bottom.
 
 **Missions** is the contract browser: a slow flyover of the island, the briefing, the three targets with their

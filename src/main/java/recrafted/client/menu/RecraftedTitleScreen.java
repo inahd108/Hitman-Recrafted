@@ -47,7 +47,7 @@ public class RecraftedTitleScreen extends ScaledScreen {
         int left = left();
         int y = (int) (height * 0.47f);
         int h = 20, gap = 3, w = Math.max(150, (int) (width * 0.3f));
-        add(new MenuButton(left, y, w, h, "PLAY", "Your worlds", MenuButton.Style.BIG,
+        add(new MenuButton(left, y, w, h, "PLAY", "Singleplayer: load or create a world", MenuButton.Style.BIG,
                 () -> minecraft.setScreen(new SelectWorldScreen(this))));
         add(new MenuButton(left, y += h + gap, w, h, "MISSIONS", "Locations and contracts", MenuButton.Style.BIG,
                 () -> minecraft.setScreen(new MissionsScreen(this))));
