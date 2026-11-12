@@ -20,7 +20,7 @@ import java.util.Locale;
  * the targets with their faces, and a button that drops you into the contract.
  */
 public class MissionsScreen extends Screen {
-    static final int FRAMES = 8, FRAME_W = 1280, FRAME_H = 720;
+    static final int FRAMES = 8, FRAME_W = 960, FRAME_H = 540;
     static final float HOLD = 3.6f, FADE = 1.6f;
 
     private final Screen parent;

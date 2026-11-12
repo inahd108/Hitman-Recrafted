@@ -31,12 +31,12 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     scene = Image.open(sys.argv[1]).convert('RGB')
     bg = grade(scene, warmth=1.02)
-    save_small(bg, os.path.join(OUT, 'background.png'))
+    save_small(bg, os.path.join(OUT, 'background.png'), colors=256)
     frames = sorted(glob.glob(os.path.join(sys.argv[2], 'menu_orbit_*.png')), key=lambda p: int(p.rsplit('_', 1)[1][:-4]))
     for i, f in enumerate(frames):
         im = grade(Image.open(f).convert('RGB'), warmth=1.03, contrast=1.04, saturation=1.1)
-        im = im.resize((1280, 720), Image.LANCZOS).filter(ImageFilter.UnsharpMask(radius=1.2, percent=40, threshold=2))
-        save_small(im, os.path.join(OUT, f'preview_{i}.png'))
+        im = im.resize((960, 540), Image.LANCZOS).filter(ImageFilter.UnsharpMask(radius=1.0, percent=30, threshold=3))
+        save_small(im, os.path.join(OUT, f'preview_{i}.png'), colors=256)
 
 
 if __name__ == '__main__':
