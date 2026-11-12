@@ -1,0 +1,27 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 22
+    },
+    {
+      "item": {
+        "item": "minecraft:green_dye"
+      },
+      "count": 2
+    },
+    {
+      "item": {
+        "tag": "forge:ingots/copper"
+      },
+      "count": 2
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "recrafted:bulwark"
+  },
+  "type": "tacz:gun_smith_table_crafting"
+}

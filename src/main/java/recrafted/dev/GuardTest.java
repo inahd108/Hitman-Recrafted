@@ -121,6 +121,7 @@ public final class GuardTest {
             guardB = spawn(level, NpcRole.HARBOUR_GUARD, "Test Harbour Guard", X - 1.6, Z + 3.4, 90f);
             check("estate guard carries the Lupara", Guns.isGun(guardA.getSidearm())
                     && guardA.getSidearm().getOrCreateTag().getString("GunId").equals("recrafted:lupara"), guardA.getSidearm().getTag());
+            check("Halcyon security carry the Bulwark AR", Guns.sidearmFor(NpcRole.SECURITY).getOrCreateTag().getString("GunId").equals("recrafted:bulwark"), "");
             check("lab guards carry the Halcyon PDW", Guns.sidearmFor(NpcRole.LAB_GUARD).getOrCreateTag().getString("GunId").equals("recrafted:halcyon")
                     && Guns.isLongGun(Guns.sidearmFor(NpcRole.LAB_GUARD)), "");
             check("bodyguards carry the Vento", Guns.sidearmFor(NpcRole.BODYGUARD).getOrCreateTag().getString("GunId").equals("recrafted:vento"), "");
@@ -199,7 +200,7 @@ public final class GuardTest {
             deaf.frozen = false;
         }));
         step(1000, () -> onServer(server, (level, sp) -> {
-            ItemStack gun = Guns.sidearmFor(NpcRole.SECURITY);
+            ItemStack gun = Guns.sidearmFor(NpcRole.HARBOUR_GUARD);
             sp.setItemInHand(InteractionHand.MAIN_HAND, gun);
             sp.setYRot(0);
             sp.setXRot(0);

@@ -79,13 +79,14 @@ def put_away(spec):
 
 
 def reload(spec, empty):
-    L = 2.93 if empty else 2.3
+    release = spec.extra.get('empty_action') == 'release'      # rifles: slap the bolt release instead of racking
+    L = (2.6 if release else 2.93) if empty else 2.3
     a = Anim(L).with_hands()
-    tilt = [-10, -22, -40]
-    near = [-1.4, 1.4, -1.0]
+    tilt = spec.extra.get('reload_tilt', [-10, -22, -40])
+    near = spec.extra.get('reload_near', [-1.4, 1.4, -1.0])
     mag_t = {'grab': 0.2, 'out': 0.4, 'away': 0.62, 'below': 1.0, 'hit': 1.2, 'in': 1.433} if empty else \
         {'grab': 0.45, 'out': 0.7, 'away': 0.95, 'below': 1.0, 'hit': 1.1, 'in': 1.233}
-    back = 2.55 if empty else 1.95
+    back = (2.2 if release else 2.55) if empty else 1.95
     a.rot('root', {0: [0, 0, 0], 0.15: [-2, 12, 20], 0.35: tilt, mag_t['hit']: [-12, -24, -42],
                    mag_t['in']: [-9, -21, -38], mag_t['in'] + 0.1: tilt, back - 0.4: [-8, -14, -24],
                    back: [1, 0.5, 1], L - 0.08: [0, 0, 0], L: [0, 0, 0]})
@@ -105,7 +106,14 @@ def reload(spec, empty):
     hc = list(spec.hand_to_charge)
     hand = {0: [0, 0, 0], mag_t['grab'] - 0.15: [0, 0, 0], mag_t['grab']: hm, mag_t['in'] + 0.05: hm}
     hrot = {0: [0, 0, 0], mag_t['grab'] - 0.15: [0, 0, 0], mag_t['grab']: [-12, 0, 0], mag_t['in'] + 0.05: [-12, 0, 0]}
-    if empty:
+    if empty and release:
+        hr = list(spec.extra['hand_to_release'])
+        hand.update({1.55: hr, 1.64: [hr[0] + 0.2, hr[1] - 0.15, hr[2]], 1.72: hr, 1.95: [0, 0, 0], L: [0, 0, 0]})
+        hrot.update({1.55: [0, 0, -15], 1.64: [8, 0, -15], 1.72: [0, 0, -15], 1.95: [0, 0, 0], L: [0, 0, 0]})
+        a.pos('bolt', {0: [0, 0, spec.bolt_travel], 1.66: [0, 0, spec.bolt_travel], 1.69: [0, 0, 0], L: [0, 0, 0]},
+              smooth=False)
+        a.rot('release', {0: [0, 0, 0], 1.64: [0, 0, 0], 1.66: [-12, 0, 0], 1.75: [0, 0, 0], L: [0, 0, 0]}, smooth=False)
+    elif empty:
         hand.update({1.6: [3, 2.5, 8], 1.75: hc, 1.95: hc, 2.05: [hc[0], hc[1], hc[2] + 2.5], 2.12: hc,
                      2.3: [3, 2.5, 8], 2.45: [0, 0, 0], L: [0, 0, 0]})
         cr = list(spec.charge_rot)
@@ -126,8 +134,8 @@ def reload(spec, empty):
         _snd(a, spec, 0.8333, 'mag_drop')
         _snd(a, spec, 1.2, 'maghit')
         _snd(a, spec, 1.4333, 'magin')
-        _snd(a, spec, 2.0333, 'charge')
-        _snd(a, spec, 2.4667, 'end')
+        _snd(a, spec, 1.6667 if release else 2.0333, 'charge')
+        _snd(a, spec, 2.1333 if release else 2.4667, 'empty_end' if spec.sounds.get('empty_end') else 'end')
     else:
         _snd(a, spec, 0.0667, 'raise')
         _snd(a, spec, 0.2333, 'magdown')
@@ -144,8 +152,8 @@ def inspect(spec, empty=False):
     L = 5.1
     a = Anim(L).with_hands()
     near = spec.extra.get('inspect_near', [0.6, 1.0, -1.0])
-    left = [-6, -42, -16]
-    right = [-6, 36, 14]
+    left = spec.extra.get('inspect_left', [-6, -42, -16])
+    right = spec.extra.get('inspect_right', [-6, 36, 14])
     a.rot('root', {0: [0, 0, 0], 0.7: left, 1.05: [-7, -45, -18], 1.5: right, 1.65: [-8, 30, -10], 2.6: [-10, 26, -14],
                    2.8: [-6, 30, -8], 3.25: [-16, 8, 4], 4.2: [-14, 4, 2], 4.75: [0, 0, 0], L: [0, 0, 0]})
     a.pos('root', {0: [0, 0, 0], 0.7: near, 1.5: [near[0] - 0.8, near[1], near[2]], 2.8: [near[0] - 0.8, near[1] + 0.3, near[2]],

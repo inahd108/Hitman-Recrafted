@@ -46,7 +46,8 @@ public final class Guns {
         String id = switch (role) {
             case ESTATE_GUARD -> "lupara";
             case BODYGUARD -> "vento";
-            case HARBOUR_GUARD, SECURITY -> "bastone";
+            case HARBOUR_GUARD -> "bastone";
+            case SECURITY -> "bulwark";
             case LAB_GUARD -> "halcyon";
             case SORDI -> "argento";
             default -> null;
@@ -71,7 +72,8 @@ public final class Guns {
 
     public static Cadence cadence(ItemStack gun) {
         String type = isGun(gun) ? safely(() -> TaczBridge.type(gun), "pistol") : "pistol";
-        if ("smg".equals(type) || "rifle".equals(type)) return new Cadence(5, 2, 26);   // automatic: short bursts
+        if ("smg".equals(type)) return new Cadence(5, 2, 26);      // PDW: short automatic bursts
+        if ("rifle".equals(type)) return new Cadence(3, 3, 24);    // rifle: controlled pairs and triples
         int cap = capacity(gun);
         if (cap <= 6) return new Cadence(1, 18, 4);          // revolver: deliberate single shots
         if (cap <= 9) return new Cadence(1, 13, 6);          // single-stack pistol
@@ -89,6 +91,7 @@ public final class Guns {
         return switch (type) {
             case "shotgun" -> 8.0;
             case "smg" -> 13.0;
+            case "rifle" -> 18.0;
             default -> 15.0;
         };
     }

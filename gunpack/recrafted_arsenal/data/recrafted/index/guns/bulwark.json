@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.bulwark.name",
+  "display": "recrafted:bulwark_display",
+  "data": "recrafted:bulwark_data",
+  "tooltip": "recrafted.gun.bulwark.desc",
+  "type": "rifle",
+  "sort": 7
+}

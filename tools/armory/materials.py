@@ -354,3 +354,22 @@ def teal(p, normal, seed=0):
     """Halcyon accent teal."""
     base = np.array([38, 168, 160], dtype=float)
     return base[None] * (0.96 + 0.04 * fbm(p, [10, 10, 10], 2, seed))[:, None]
+
+
+def anodized(p, normal, seed=0):
+    """Hard-anodized black aluminium: a hint of blue-grey, very fine grain."""
+    base = np.array([58, 60, 66], dtype=float)
+    return base[None] * (0.93 + 0.08 * fbm(p, [22, 22, 22], 2, seed))[:, None]
+
+
+def olive(p, normal, seed=0):
+    """Olive-drab polymer furniture with a light stipple."""
+    base = np.array([86, 92, 64], dtype=float)
+    n = vnoise(p, 40, seed)
+    return base[None] * (0.9 + 0.12 * (n > 0.55) + 0.04 * fbm(p, [8, 8, 8], 2, seed))[:, None]
+
+
+def bronze(p, normal, seed=0):
+    """Bronze-nitride finish for the muzzle brake and bolt carrier."""
+    base = np.array([150, 112, 64], dtype=float)
+    return base[None] * (0.9 + 0.1 * fbm(p, [16, 16, 16], 2, seed))[:, None]

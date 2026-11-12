@@ -388,6 +388,48 @@ def build_halcyon():
     )
 
 
+def build_bulwark():
+    import bulwark
+    import bulwark_anim
+    H = 'tacz:hk416d/hk416d_'
+    display = dict(SMG_DISPLAY)
+    display.update({'iron_zoom': 1.3, 'zoom_model_fov': 45,
+                    'muzzle_flash': {'type': 'renew', 'texture': 'tacz:flash/common_muzzle_flash', 'scale': 0.75,
+                                     'smoke_scale': 1.2, 'initial_speed_scale': 1.2}})
+    emit_pistol(
+        bulwark, bulwark_anim.animations(),
+        name='Bulwark AR', desc='Full-size 5.56 rifle. Thirty rounds, automatic, and not subtle at all.', sort=7,
+        gun_type='rifle', base_display=display, side_cy=8.0,
+        data={
+            'allow_ammo_unload': True, 'ammo': 'tacz:556x45', 'rpm': 760,
+            'bullet': {'life': 0.9, 'bullet_amount': 1, 'damage': 7.5, 'tracer_count_interval': 0,
+                       'extra_damage': {'armor_ignore': 0.3, 'head_shot_multiplier': 1.6,
+                                        'damage_adjust': [{'distance': 35, 'damage': 7.5}, {'distance': 70, 'damage': 6.5},
+                                                          {'distance': 'infinite', 'damage': 5}]},
+                       'speed': 330, 'gravity': 0.15, 'knockback': 0, 'friction': 0.015, 'ignite': False, 'pierce': 1},
+            'ammo_amount': 30, 'extended_mag_ammo_amount': [40, 50, 60], 'bolt': 'closed_bolt',
+            'reload': {'type': 'magazine', 'feed': {'empty': 1.5, 'tactical': 1.25},
+                       'cooldown': {'empty': 2.5, 'tactical': 2.2}},
+            'draw_time': 0.55, 'put_away_time': 0.45, 'aim_time': 0.22, 'sprint_time': 0.15, 'weight': 3.0,
+            'movement_speed': {'base': -0.05, 'aim': -0.15, 'reload': -0.05}, 'crawl_recoil_multiplier': 0.6,
+            'fire_mode': ['auto', 'semi'],
+            'allow_attachment_types': ['muzzle', 'extended_mag'],
+            'recoil': {'pitch': [{'time': 0, 'value': [0.7, 0.9]}, {'time': 0.12, 'value': [0.12, 0.12]},
+                                 {'time': 0.24, 'value': [0, 0]}],
+                       'yaw': [{'time': 0, 'value': [-0.4, 0.4]}, {'time': 0.14, 'value': [0, 0]}]},
+            'inaccuracy': {'stand': 2.8, 'move': 3.6, 'sneak': 2.0, 'lie': 1.2, 'aim': 0.12},
+            'fire_sound': {'fire_multiplier': 1.2, 'silence_multiplier': 1.0},
+        },
+        sounds={'draw': H + 'draw', 'put_away': H + 'put_away', 'shoot': H + 'shoot', 'shoot_3p': H + 'shoot_3p',
+                'silence': H + 'silence', 'silence_3p': H + 'silence_3p'},
+        allow=['#tacz:muzzle', '#tacz:extended_mag'],
+        recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 22},
+                {'item': {'item': 'minecraft:green_dye'}, 'count': 2},
+                {'item': {'tag': 'forge:ingots/copper'}, 'count': 2}],
+        side_cz=1.1, hud_ortho=16.0, slot_ortho=33.0,
+    )
+
+
 def build_argento():
     gid = argento.ID
     m = argento.build()
@@ -559,6 +601,7 @@ def main():
     build_vento()
     build_lupara()
     build_halcyon()
+    build_bulwark()
     write_json(f'assets/{NS}/lang/en_us.json', LANG)
     os.makedirs(DIST, exist_ok=True)
     zpath = os.path.join(DIST, f'{PACK_NAME}.zip')
