@@ -6,7 +6,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import recrafted.Recrafted;
 import recrafted.mission.Mission;
@@ -19,7 +18,7 @@ import java.util.Locale;
  * Mission browser: locations along the top, a slowly turning flyover of the selected map, the briefing,
  * the targets with their faces, and a button that drops you into the contract.
  */
-public class MissionsScreen extends Screen {
+public class MissionsScreen extends ScaledScreen {
     static final int FRAMES = 8, FRAME_W = 960, FRAME_H = 540;
     static final float HOLD = 3.6f, FADE = 1.6f;
 
@@ -49,7 +48,7 @@ public class MissionsScreen extends Screen {
     }
 
     @Override
-    protected void init() {
+    protected void layout() {
         MissionLauncher.cancelPending();
         try {
             mission = Mission.corvara();
@@ -74,7 +73,7 @@ public class MissionsScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics g, int mouseX, int mouseY, float partial) {
+    protected void renderScaled(GuiGraphics g, int mouseX, int mouseY, float partial) {
         float t = (Util.getMillis() - opened) / 1000f;
         Font font = this.font;
         int m = margin();
@@ -102,7 +101,7 @@ public class MissionsScreen extends Screen {
             float nw = MenuUi.width(font, note, MenuUi.SMALL);
             MenuUi.draw(g, font, note, MenuUi.SMALL, play.getX() - 10 - nw, play.getY() + 6, MenuUi.alpha(MenuUi.FAINT, in));
         }
-        super.render(g, mouseX, mouseY, partial);
+        renderWidgets(g, mouseX, mouseY, partial);
     }
 
     private void drawTabs(GuiGraphics g, Font font, float x, float y, float a) {
@@ -120,7 +119,7 @@ public class MissionsScreen extends Screen {
         float x = box[0], y = box[1], w = box[2], h = box[3];
         MenuUi.rect(g, x - 1, y - 1, x + w + 1, y + h + 1, MenuUi.alpha(0x40FFFFFF, a));
         MenuUi.rect(g, x, y, x + w, y + h, 0xFF000000);
-        g.enableScissor((int) x, (int) y, (int) Math.ceil(x + w), (int) Math.ceil(y + h));
+        scissor(g, x, y, x + w, y + h);
         float period = HOLD + FADE;
         int cur = (int) (t / period) % FRAMES;
         float local = t % period;
@@ -179,23 +178,15 @@ public class MissionsScreen extends Screen {
         int targetRows = mission.targets.size();
         float targetsH = 14 + targetRows * 25;
         float briefMax = bottomTargets - targetsH - 8;
-        // as many whole paragraphs as fit, the closing order always last
-        List<String> paras = new ArrayList<>(mission.briefing);
-        String last = paras.isEmpty() ? "" : paras.remove(paras.size() - 1);
-        List<FormattedCharSequence> lines = new ArrayList<>(font.split(MenuUi.text(last, MenuUi.TEXT), (int) w));
-        int room = (int) ((briefMax - cy) / 10);
-        for (int i = paras.size() - 1; i >= 1; i--) {
-            List<FormattedCharSequence> p = font.split(MenuUi.text(paras.get(i), MenuUi.TEXT), (int) w);
-            if (lines.size() + p.size() + 1 > room) continue;
-            List<FormattedCharSequence> merged = new ArrayList<>(p);
-            merged.add(FormattedCharSequence.EMPTY);
-            merged.addAll(lines);
-            lines = merged;
-        }
-        for (FormattedCharSequence line : lines) {
-            if (cy + 10 > briefMax) break;
-            g.drawString(font, line, (int) x, (int) cy, MenuUi.alpha(MenuUi.DIM, a), false);
-            cy += line == FormattedCharSequence.EMPTY ? 5 : 10;
+        // the hook and the closing order; whatever does not fit ends in an ellipsis
+        String brief = mission.briefing.size() > 2 ? mission.briefing.get(1) + " " + mission.briefing.get(mission.briefing.size() - 1)
+                : String.join(" ", mission.briefing);
+        List<String> lines = MenuUi.wrap(font, brief, MenuUi.TEXT, w);
+        int room = Math.max(1, (int) ((briefMax - cy) / 10));
+        for (int i = 0; i < lines.size() && i < room; i++) {
+            String line = i == room - 1 && lines.size() > room ? MenuUi.ellipsize(font, lines.get(i) + " …", MenuUi.TEXT, w) : lines.get(i);
+            MenuUi.draw(g, font, line, MenuUi.TEXT, x, cy, MenuUi.alpha(MenuUi.DIM, a));
+            cy += 10;
         }
         cy = Math.max(cy + 8, bottomTargets - targetsH);
         MenuUi.tracked(g, font, "TARGETS", MenuUi.LABEL, x, cy, 1.4f, MenuUi.alpha(MenuUi.ACCENT, a));
@@ -203,8 +194,8 @@ public class MissionsScreen extends Screen {
         for (Mission.Target target : mission.targets) {
             face(g, target.id(), x, cy, 18, a);
             MenuUi.draw(g, font, target.name(), MenuUi.TEXT, x + 25, cy + 1, MenuUi.alpha(MenuUi.WHITE, a));
-            List<FormattedCharSequence> d = font.split(MenuUi.text(target.desc(), MenuUi.SMALL), (int) (w - 25));
-            if (!d.isEmpty()) g.drawString(font, d.get(0), (int) x + 25, (int) cy + 11, MenuUi.alpha(MenuUi.FAINT, a), false);
+            MenuUi.draw(g, font, MenuUi.ellipsize(font, target.desc(), MenuUi.SMALL, w - 25), MenuUi.SMALL, x + 25, cy + 11,
+                    MenuUi.alpha(MenuUi.FAINT, a));
             cy += 25;
         }
     }

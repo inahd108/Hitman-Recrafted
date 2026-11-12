@@ -22,7 +22,7 @@ import java.util.List;
  * The title screen: the operative in his penthouse over Corvara at dusk, with the menu down the left.
  * Play and Options are the vanilla screens; Missions opens the mission browser.
  */
-public class RecraftedTitleScreen extends Screen {
+public class RecraftedTitleScreen extends ScaledScreen {
     /** Set by "Classic menu": the vanilla title screen is left alone for the rest of the session. */
     public static boolean classic;
     private static boolean shownOnce;
@@ -40,7 +40,7 @@ public class RecraftedTitleScreen extends Screen {
     }
 
     @Override
-    protected void init() {
+    protected void layout() {
         MissionLauncher.cancelPending();
         MenuUi.smooth(MenuUi.BACKGROUND);
         entries.clear();
@@ -86,7 +86,7 @@ public class RecraftedTitleScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics g, int mouseX, int mouseY, float partial) {
+    protected void renderScaled(GuiGraphics g, int mouseX, int mouseY, float partial) {
         float t = seconds();
         float in = intro ? t : t + 3f;            // returning to the menu skips most of the entrance
         drawBackdrop(g, width, height, t);
@@ -107,7 +107,7 @@ public class RecraftedTitleScreen extends Screen {
             MenuButton b = entries.get(i);
             b.reveal = Mth.clamp((in - 1.0f - i * 0.09f) / 0.7f, 0f, 1f);
         }
-        super.render(g, mouseX, mouseY, partial);
+        renderWidgets(g, mouseX, mouseY, partial);
 
         String version = "v" + ModList.get().getModContainerById("recrafted").map(c -> c.getModInfo().getVersion().toString()).orElse("?")
                 + "  ·  Minecraft " + SharedConstants.getCurrentVersion().getName();

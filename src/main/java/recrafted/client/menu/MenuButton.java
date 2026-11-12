@@ -80,7 +80,7 @@ public class MenuButton extends AbstractButton {
                 int fill = blend(0xFFC79D55, 0xFFE2BC74, hot);
                 MenuUi.rect(g, getX(), getY(), getX() + width, getY() + height, MenuUi.alpha(fill, a));
                 float tw = MenuUi.trackedWidth(font, label, MenuUi.LABEL, 1.4f);
-                MenuUi.tracked(g, font, label, MenuUi.LABEL, getX() + (width - tw) / 2f, getY() + (height - 7) / 2f, 1.4f,
+                MenuUi.tracked(g, font, label, MenuUi.LABEL, getX() + (width - tw) / 2f, getY() + (height - 7) / 2f + 1f, 1.4f,
                         MenuUi.alpha(MenuUi.INK, a));
             }
             case GHOST -> {
@@ -88,7 +88,7 @@ public class MenuButton extends AbstractButton {
                 MenuUi.rect(g, getX(), getY(), getX() + width, getY() + height, MenuUi.alpha(blend(0x66101216, 0x88303338, hot), a));
                 outline(g, getX(), getY(), getX() + width, getY() + height, MenuUi.alpha(line, a));
                 float tw = MenuUi.trackedWidth(font, label, MenuUi.LABEL, 1.4f);
-                MenuUi.tracked(g, font, label, MenuUi.LABEL, getX() + (width - tw) / 2f, getY() + (height - 7) / 2f, 1.4f,
+                MenuUi.tracked(g, font, label, MenuUi.LABEL, getX() + (width - tw) / 2f, getY() + (height - 7) / 2f + 1f, 1.4f,
                         MenuUi.alpha(blend(MenuUi.DIM, MenuUi.WHITE, hot), a));
             }
         }

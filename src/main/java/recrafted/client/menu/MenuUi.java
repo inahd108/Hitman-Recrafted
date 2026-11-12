@@ -89,6 +89,35 @@ public final class MenuUi {
         return Math.max(0, w - tracking);
     }
 
+    /** Word-wraps plain text to a width. */
+    public static java.util.List<String> wrap(Font font, String s, ResourceLocation face, float maxWidth) {
+        java.util.List<String> out = new java.util.ArrayList<>();
+        StringBuilder line = new StringBuilder();
+        for (String word : s.split(" ")) {
+            String next = line.length() == 0 ? word : line + " " + word;
+            if (line.length() > 0 && width(font, next, face) > maxWidth) {
+                out.add(line.toString());
+                line = new StringBuilder(word);
+            } else {
+                line = new StringBuilder(next);
+            }
+        }
+        if (line.length() > 0) out.add(line.toString());
+        return out;
+    }
+
+    /** Cuts text at a word so that it and a trailing ellipsis fit the width. */
+    public static String ellipsize(Font font, String s, ResourceLocation face, float maxWidth) {
+        if (width(font, s, face) <= maxWidth) return s;
+        String cut = s.endsWith(" …") ? s.substring(0, s.length() - 2) : s;
+        while (!cut.isEmpty() && width(font, cut + "…", face) > maxWidth) {
+            int sp = cut.lastIndexOf(' ');
+            cut = sp > 0 ? cut.substring(0, sp) : cut.substring(0, cut.length() - 1);
+        }
+        cut = cut.replaceAll("[\\s,;:.\u2014-]+$", "");
+        return cut + "…";
+    }
+
     /** A rectangle shading from one colour on the left to another on the right. */
     public static void hGradient(GuiGraphics g, float x0, float y0, float x1, float y1, int left, int right) {
         VertexConsumer vc = g.bufferSource().getBuffer(RenderType.gui());
