@@ -163,6 +163,16 @@ boat hook (shoves people into the water), bike chain lock (a legal garrotte), pa
 umbrella (people who know your face take longer to notice), turpentine, tulip bulbs (emetic), lead white
 (lethal), bidder paddle (gets you into the saleroom), bridge keeper's key and press camera (its flash dazzles).
 
+**New guns** in the Recrafted Arsenal pack (with TACZ): the **Reiger 9** police pistol, the **Snoek**, a compact
+SMG with an integral suppressor (Kooistra's deckhands), the **Kievit**, a two-shot pocket derringer, and the
+**Harpoen**, a silent pneumatic speargun with its own spear bolts. Spares lie in the police post, the smuggler's
+dock, the auction vault, Ostendorp's desk and on a diver's houseboat.
+
+| | |
+|---|---|
+| ![Reiger 9](docs/arsenal/ingame_reiger.png) | ![Snoek](docs/arsenal/ingame_snoek.png) |
+| ![Kievit](docs/arsenal/ingame_kievit.png) | ![Harpoen](docs/arsenal/ingame_harpoen.png) |
+
 The full design notes are in [docs/missions/amsterdam_plan.md](docs/missions/amsterdam_plan.md).
 
 ## Directing the cast
@@ -277,7 +287,7 @@ catches the café cook; and Kooistra drowns when dropped in a canal.
 
 ## Roadmap
 
-- Amsterdam: the four Recrafted Arsenal guns for the new roles, taking the *Zwaluw*'s wheel yourself, water taxis.
+- Amsterdam: taking the *Zwaluw*'s wheel yourself, crowd blending at the flower market.
 - More accident kills, more exits, a third contract.
 
 ## Licence

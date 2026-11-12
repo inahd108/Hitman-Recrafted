@@ -83,9 +83,16 @@ def _eject(a, name, t, far=1.0):
 
 
 def _feed(a, name, t_show, t_seat):
-    """A fresh shell appears in the left hand above the breech and is pushed home."""
+    """A fresh shell appears in the left hand above the breech and is pushed home.
+
+    The keys join the shell's eject track (written first by _eject) rather than replacing it, so the spent
+    shell still flies out before the fresh one is fed.
+    """
+    spent = a.bones.get(name, {}).get('position', {})
     a.pos(name, {t_show - 0.001: [-2.7, -12.7, -6.0], t_show: [0.2, 0.5, 2.1], t_seat - 0.08: [0, 0.12, 0.9],
                  t_seat: [0, 0, 0]})
+    merged = {**spent, **a.bones[name]['position']}
+    a.bones[name]['position'] = dict(sorted(merged.items(), key=lambda kv: float(kv[0])))
 
 
 def reload(spec, empty):
