@@ -6,6 +6,8 @@ town full of people who follow routines you can edit, and dozens of props to pic
 The mission, **Salt & Ash**, takes place in **Corvara** — an original sun-bleached harbour town on a
 limestone island. The setting, layout, characters and story are this project's own.
 
+![The title screen](docs/menu/title.jpg)
+
 ![Arriving in Corvara](docs/screenshots/harbour.jpg)
 
 | | |
@@ -26,10 +28,27 @@ All screenshots are taken in-game by the automated tour (`./gradlew runClient -P
 | **Props** | 39 usable props and 14 outfits lying around the map. |
 | **Tools** | The **Route Planner** and the **Casting Card** for building your own cast and routes on this map or any other. |
 
+## The title screen
+
+The mod replaces Minecraft's title screen with its own: an operative waits in a penthouse over Corvara at dusk,
+with **Play** (your worlds, as usual), **Missions**, **Options** and **Quit** down the side, and small links to
+Multiplayer, Mods, Language and the classic menu at the bottom.
+
+**Missions** is the contract browser: a slow flyover of the island, the briefing, the three targets with their
+faces, and **Play mission**, which opens a world called *Recrafted Contracts* (creating it the first time) and
+starts the contract as soon as you arrive.
+
+![The mission browser](docs/menu/missions.jpg)
+
+The background and the flyover frames are real in-game renders, made by `./gradlew runClient -Pmenushots=scene,orbit`
+(builds the penthouse next to the island, seats the operative, photographs it at dusk, circles the island, then
+puts every block back) and processed by `tools/assets/menu_images.py`. The menu text is set in Inter
+(SIL Open Font License; subsets in `assets/recrafted/font`, made by `tools/assets/fonts.py`).
+
 ## Playing the contract
 
 1. Install Forge 47.x for 1.20.1 and drop the mod jar in `mods/`.
-2. Create a world (any type) and run **`/contract start`**. You arrive on the evening ferry with three coins,
+2. Pick **Missions → Play mission** on the title screen, or create any world yourself and run **`/contract start`**. You arrive on the evening ferry with three coins,
    the fiber wire and (with TACZ and the gun pack) a loaded **Passero .22** plus two spare magazines. It's legal
    while it stays in your inventory; in your hand it's a gun like any other.
 3. Eliminate **Marco Belmonte**, **Dr. Ilse Varga** and **Capitano Renzo Sordi**, destroy the CINDER
@@ -156,6 +175,8 @@ Other commands: `/contract visit` (go to the island without starting), `/contrac
 ./gradlew runClient                   # dev client
 ./gradlew runServer -Pselftest        # headless smoke test: loads the island, runs the cast, checks objectives
 ./gradlew runClient -Pclienttest       # screenshot tour of a world named corvara_test (needs a display or xvfb-run)
+./gradlew runClient -Pmenushots=scene,orbit   # renders the title background and the mission flyover frames
+./gradlew runClient -Pmenutest         # screenshots of the title screen and mission browser at three GUI scales
 python3 tools/mapgen/build.py         # regenerate the island + mission data (+ previews in docs/preview)
 python3 tools/assets/gen_assets.py    # regenerate textures, models and the language file
 ```
@@ -197,4 +218,5 @@ The headless self-test currently reports, for two minutes of simulated town life
 
 ## Licence
 
-MIT.
+MIT, except the bundled Inter font subsets, which stay under the SIL Open Font License 1.1
+(`src/main/resources/assets/recrafted/font/INTER_LICENSE.txt`).

@@ -517,6 +517,80 @@ def make_skin(spec, rnd):
     return s.im
 
 
+def agent_skin():
+    """The operative from the title screen: hand-placed pixels rather than the generic outfit kit.
+    Charcoal suit, white shirt, slate tie, black gloves, dark hair combed back with a side parting."""
+    s = Skin(random.Random(47))
+    tone, tone_d = rgb('e2b693'), rgb('c99a78')
+    hair, hair_l = rgb('1d1916'), rgb('33291f')
+    suit, lapel, seam = rgb('2c2f36'), rgb('1e2026'), rgb('17191d')
+    shirt, tie, knot = rgb('ecebe6'), rgb('243244'), rgb('2f4058')
+    glove, shoe, shine = rgb('141416'), rgb('0e0e10'), rgb('34363c')
+    # ---- head ----
+    s.fill('head', tone, amt=0.02)
+    s.fill('head', hair, sides=('top',), amt=0.05)
+    for x in range(8):                                   # parting on his right, combed back
+        s.px('head', 'top', x, 2, hair_l if x > 0 else hair)
+    s.band('head', 0, 3, hair, sides=('right', 'left'))
+    s.band('head', 0, 6, hair, sides=('back',))
+    s.px('head', 'right', 7, 4, hair); s.px('head', 'left', 0, 4, hair)      # sideburns
+    s.px('head', 'right', 3, 4, tone_d); s.px('head', 'right', 3, 5, tone_d)  # ears
+    s.px('head', 'left', 4, 4, tone_d); s.px('head', 'left', 4, 5, tone_d)
+    s.hline('head', 'front', 0, 7, 0, hair)
+    s.px('head', 'front', 0, 1, hair); s.px('head', 'front', 1, 1, hair_l); s.px('head', 'front', 7, 1, hair)
+    s.hline('head', 'front', 1, 2, 3, rgb('2a221c')); s.hline('head', 'front', 5, 6, 3, rgb('2a221c'))   # brows
+    for (wx, ix) in ((1, 2), (6, 5)):
+        s.px('head', 'front', wx, 4, rgb('f4f2ee'))
+        s.px('head', 'front', ix, 4, rgb('2c3a46'))
+    s.px('head', 'front', 3, 5, tone_d); s.px('head', 'front', 4, 5, shade(tone, 0.94))                  # nose
+    s.hline('head', 'front', 3, 4, 6, rgb('a9725c')); s.px('head', 'front', 2, 6, shade(tone, 0.9))     # mouth
+    for x in range(1, 7):                                                                                 # jaw, a day's stubble
+        s.px('head', 'front', x, 7, shade(tone, 0.88))
+    for y in (5, 6, 7):
+        s.px('head', 'front', 0, y, shade(tone, 0.86)); s.px('head', 'front', 7, y, shade(tone, 0.86))
+    # ---- jacket ----
+    s.fill('body', suit, amt=0.025)
+    rows = [  # J jacket, L lapel, W shirt, T tie, K knot, P pocket square, B button
+        'JLWKKWLJ',
+        'JLWTTWLJ',
+        'JJLTTLPJ',
+        'JJLTTLJJ',
+        'JJJLLJJJ',
+        'JJJJBJJJ',
+        'JJJJJJJJ',
+        'JJJJBJJJ',
+        'JJJSJJJJ',
+        'JJJSJJJJ',
+        'JJJSJJJJ',
+        'JJJSJJJJ',
+    ]
+    col = {'L': lapel, 'W': shirt, 'T': tie, 'K': knot, 'P': shirt, 'B': rgb('3b3e46'), 'S': seam}
+    for y, row in enumerate(rows):
+        for x, c in enumerate(row):
+            if c in col:
+                s.px('body', 'front', x, y, col[c])
+    for y in range(8, 12):
+        s.px('body', 'back', 3, y, seam)                       # vent
+    s.band('body', 11, 11, shade(suit, 0.9), sides=('right', 'left', 'back'))
+    # ---- sleeves, cuffs, gloves ----
+    for arm in ('rarm', 'larm'):
+        s.fill(arm, suit, amt=0.025)
+        s.band(arm, 9, 9, shirt)
+        s.band(arm, 10, 11, glove)
+        s.fill(arm, glove, sides=('bottom',))
+    s.band('rarm', 0, 8, shade(suit, 0.9), sides=('left',))    # inner faces in shadow
+    s.band('larm', 0, 8, shade(suit, 0.9), sides=('right',))
+    # ---- trousers and shoes ----
+    for leg in ('rleg', 'lleg'):
+        s.fill(leg, suit, amt=0.025)
+        for y in range(0, 10):
+            s.px(leg, 'front', 1 if leg == 'rleg' else 2, y, shade(suit, 1.12))   # crease
+        s.band(leg, 10, 11, shoe)
+        s.fill(leg, shoe, sides=('bottom',))
+        s.px(leg, 'front', 1, 10, shine); s.px(leg, 'front', 2, 10, shine)
+    return s.im
+
+
 def D(**k):
     return k
 
@@ -715,6 +789,7 @@ def main():
     for role, variants in ROLE_SKINS.items():
         for i, spec in enumerate(variants):
             save(make_skin(spec, random.Random(hash((role, i)) & 0xffff)), 'textures', 'entity', 'npc', f'{role}_{i}.png')
+    save(agent_skin(), 'textures', 'entity', 'npc', 'agent_0.png')
     write_json(os.path.join(ASSETS, 'lang/en_us.json'), lang)
     print(f'{len(sprites) + len(OUTFIT_COLORS)} item sprites, {sum(len(v) for v in ROLE_SKINS.values())} skins')
 

@@ -23,7 +23,9 @@ public enum NpcRole {
     HAZMAT("Hazmat Technician", 1, false, true),
     BELMONTE("Marco Belmonte", 1, false, false),
     VARGA("Dr. Ilse Varga", 1, false, false),
-    SORDI("Capitano Sordi", 1, true, false);
+    SORDI("Capitano Sordi", 1, true, false),
+    /** The operative from the title screen. Not part of any mission cast. */
+    AGENT("Operative", 1, false, false);
 
     public final String id;
     public final String title;

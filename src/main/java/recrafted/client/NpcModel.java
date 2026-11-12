@@ -13,6 +13,9 @@ import recrafted.npc.NpcPose;
 
 /** Player-shaped model with a library of idle animations driven by {@link NpcPose}. */
 public class NpcModel extends PlayerModel<NpcEntity> {
+    /** Title-screen pose: right arm xyz, left arm xyz, gun pitch/yaw/roll (degrees), right and left leg yaw. */
+    public static float[] armed = {-0.72f, 0.12f, 0.05f, -0.5f, 0.05f, -0.12f, 0f, 0f, 0f, 0.15f, -0.15f};
+
     public NpcModel(ModelPart root) {
         super(root, false);
     }
@@ -20,7 +23,7 @@ public class NpcModel extends PlayerModel<NpcEntity> {
     public static boolean seated(NpcEntity e) {
         NpcPose p = e.getAnim();
         if (e.isDown() || p == NpcPose.STAND || p == NpcPose.SLEEP) return false;
-        if (p == NpcPose.SIT) return true;
+        if (p.seated()) return true;
         if (e.getDeltaMovement().horizontalDistanceSqr() > 1e-4) return false;
         // standing on the high half of a chair puts the feet a full block up, so look a little below them
         BlockState below = e.level().getBlockState(net.minecraft.core.BlockPos.containing(e.getX(), e.getY() - 0.3, e.getZ()));
@@ -137,6 +140,13 @@ public class NpcModel extends PlayerModel<NpcEntity> {
                 body.yRot = d * 0.3f;
                 head.yRot = -d * 0.3f;
                 rightLeg.xRot = d * 0.35f; leftLeg.xRot = -d * 0.35f;
+            }
+            case SIT_ARMED -> {
+                float[] a = armed;
+                rightArm.xRot = a[0]; rightArm.yRot = a[1]; rightArm.zRot = a[2];
+                leftArm.xRot = a[3]; leftArm.yRot = a[4]; leftArm.zRot = a[5];
+                rightLeg.yRot = a[9]; leftLeg.yRot = a[10];
+                body.xRot = Mth.sin(age * 0.05f) * 0.008f;         // breathing
             }
             case PRAY -> {
                 rightArm.xRot = -1.5f; leftArm.xRot = -1.5f;

@@ -440,7 +440,7 @@ public class NpcEntity extends PathfinderMob {
         if (wp.wait > 0) {
             waiting = true;
             waitLeft = wp.wait;
-            if (wp.pose == NpcPose.SIT || wp.pose == NpcPose.SLEEP || wp.pose == NpcPose.EAT || wp.pose == NpcPose.DRINK) {
+            if (wp.pose.seated() || wp.pose == NpcPose.SLEEP || wp.pose == NpcPose.EAT || wp.pose == NpcPose.DRINK) {
                 setPos(wp.x, getY(), wp.z);
             }
             if (wp.hasYaw()) faceYaw(wp.yaw);

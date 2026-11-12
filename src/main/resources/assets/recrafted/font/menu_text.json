@@ -1,0 +1,15 @@
+{
+  "providers": [
+    {
+      "type": "ttf",
+      "file": "recrafted:inter_regular.otf",
+      "size": 8,
+      "oversample": 4.0,
+      "shift": [
+        0.0,
+        0.5
+      ],
+      "skip": ""
+    }
+  ]
+}

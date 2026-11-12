@@ -34,6 +34,20 @@ legacyForge {
                 programArguments.addAll('--quickPlaySingleplayer', project.findProperty('world') ?: 'corvara_test',
                         '--width', '1280', '--height', '720')
             }
+            if (project.hasProperty('menushots')) {
+                systemProperty 'recrafted.menushots', project.findProperty('menushots')
+                ['anchor', 'cam', 'times', 'poses', 'fov', 'distance', 'settle', 'agentYaw', 'agentPitch',
+                 'orbitAt', 'orbitCount', 'orbitStart', 'orbitSettle', 'orbitTime', 'orbitFov'].each { k ->
+                    def prop = 'menu' + k.capitalize()
+                    if (project.hasProperty(prop)) systemProperty "recrafted.menushots.${k}", project.findProperty(prop)
+                }
+                programArguments.addAll('--quickPlaySingleplayer', project.findProperty('world') ?: 'corvara_test',
+                        '--width', '1920', '--height', '1080')
+            }
+            if (project.hasProperty('menutest')) {
+                systemProperty 'recrafted.menutest', 'true'
+                programArguments.addAll('--width', '1920', '--height', '1080')
+            }
             if (project.hasProperty('guardtest')) {
                 systemProperty 'recrafted.guardtest', 'true'
                 programArguments.addAll('--quickPlaySingleplayer', project.findProperty('world') ?: 'corvara_test',

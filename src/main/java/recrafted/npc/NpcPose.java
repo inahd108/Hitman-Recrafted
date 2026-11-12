@@ -6,7 +6,9 @@ import java.util.Locale;
 public enum NpcPose {
     STAND("Stand"), GUARD("Stand guard"), SIT("Sit"), LEAN("Lean"), PHONE("On the phone"), SMOKE("Smoke"),
     DRINK("Drink"), EAT("Eat"), WORK("Work with hands"), SWEEP("Sweep"), TYPE("Type / write"), TALK("Talk"),
-    LOOK("Look around"), WAVE("Wave"), CROUCH("Crouch"), SLEEP("Lie down"), DANCE("Dance"), PRAY("Pray");
+    LOOK("Look around"), WAVE("Wave"), CROUCH("Crouch"), SLEEP("Lie down"), DANCE("Dance"), PRAY("Pray"),
+    /** Seated, pistol resting in the right hand (the title-screen operative). */
+    SIT_ARMED("Sit, armed");
 
     public final String id;
     public final String label;
@@ -27,6 +29,6 @@ public enum NpcPose {
     }
 
     public boolean seated() {
-        return this == SIT;
+        return this == SIT || this == SIT_ARMED;
     }
 }

@@ -6,7 +6,8 @@
   "refmap": "recrafted.refmap.json",
   "mixins": [],
   "client": [
-    "AbstractClientPlayerMixin"
+    "AbstractClientPlayerMixin",
+    "DimensionTypeMixin"
   ],
   "injectors": {
     "defaultRequire": 1
