@@ -667,7 +667,7 @@ def build_harpoen():
         recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 16},
                 {'item': {'item': 'minecraft:light_blue_dye'}, 'count': 2},
                 {'item': {'item': 'minecraft:piston'}, 'count': 1}],
-        side_cz=-5.3, hud_ortho=14.5, slot_ortho=34.0,
+        side_cz=-5.3, hud_ortho=15.5, slot_ortho=34.0,
     )
     build_spear_bolt(harpoen)
 
@@ -685,9 +685,7 @@ def build_spear_bolt(harpoen):
     etex = e.paint(harpoen.shader)
     write_json(f'assets/{NS}/geo_models/ammo_entity/{aid}_geo.json', e.to_bedrock())
     save_png(f'assets/{NS}/textures/ammo_entity/{aid}.png', etex)
-    diag = {'spear': {'rotation': [-45, 0, 0]}}                 # tip up to the right, like an arrow icon
-    save_png(f'assets/{NS}/textures/ammo/slot/{aid}.png',
-             icon(m, tex, (32, 32), (), eye=(40, 0.25, 0), target=(0, 0.25, 0), ortho=18.5, pose=diag))
+    save_png(f'assets/{NS}/textures/ammo/slot/{aid}.png', harpoen.bolt_icon())
     write_json(f'data/{NS}/index/ammo/{aid}.json', {
         'name': f'{NS}.ammo.{aid}.name', 'display': f'{NS}:{aid}_display', 'stack_size': 8,
         'tooltip': f'{NS}.ammo.{aid}.desc', 'sort': 1,
@@ -696,8 +694,8 @@ def build_spear_bolt(harpoen):
         'model': f'{NS}:ammo/{aid}_geo', 'texture': f'{NS}:ammo/uv/{aid}', 'slot': f'{NS}:ammo/slot/{aid}',
         'entity': {'model': f'{NS}:ammo_entity/{aid}_geo', 'texture': f'{NS}:ammo_entity/{aid}'},
         'tracer_color': '#C8D2DA',
-        'transform': {'scale': {'thirdperson': [0.45, 0.45, 0.45], 'ground': [0.45, 0.45, 0.45],
-                                'fixed': [0.7, 0.7, 0.7]}},
+        'transform': {'scale': {'thirdperson': [0.6, 0.6, 0.6], 'ground': [0.6, 0.6, 0.6],
+                                'fixed': [0.9, 0.9, 0.9]}},
     })
     write_json(f'data/{NS}/recipes/ammo/{aid}.json', {
         'materials': [{'item': {'tag': 'forge:ingots/iron'}, 'count': 2},
@@ -708,8 +706,8 @@ def build_spear_bolt(harpoen):
     LANG[f'{NS}.ammo.{aid}.name'] = 'Spear Bolt'
     LANG[f'{NS}.ammo.{aid}.desc'] = 'Stainless spear with a barbed head, for the Harpoen.'
     bb_export(m, tex, aid)
-    render(m, tex, eye=(-9, 7, -14), target=(0, 0.3, 0), fov=40, size=(1200, 700), hide=(),
-           pose={'spear': {'rotation': [0, -25, 0]}}).save(os.path.join(PREVIEW, f'{aid}_34.png'))
+    render(m, tex, eye=(-22, 11, -9), target=(0, 0.4, -1.6), fov=36, size=(1200, 700),
+           hide=()).save(os.path.join(PREVIEW, f'{aid}_34.png'))
     print(f'  {aid}: {m.cube_count()} cubes (item), {e.cube_count()} (in flight)')
 
 

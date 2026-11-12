@@ -193,16 +193,48 @@ def build():
 # ---- the ammo: one spear bolt ---------------------------------------------------------------
 def build_bolt_item():
     """Inventory / ground / item-frame model of the spear bolt ammo (TACZ ammo positioning bones)."""
-    m = Model('spear_bolt', tex_size=512, texels_per_unit=K)
-    root = m.part('root', None, [0, 0, 0])
-    s = m.part('spear', 'root', [0, 0.25, 0])
-    # lying on its side along z, centred on the origin
-    spear(s, (0.0, 0.25 - SPEAR_Y, -(TAIL_Z + TIP_Z) / 2))
+    m = Model('spear_bolt', tex_size=1024, texels_per_unit=K)
+    m.part('root', None, [0, 0, 0])
+    s = m.part('spear', 'root', [0, 0.5, 0])
+    # a bundle of three spears lying along z, centred on the origin, tied twice with leather
+    cz = -(TAIL_Z + TIP_Z) / 2
+    for (x, y, dz) in ((-0.34, 0.16, 0.0), (0.34, 0.16, 0.9), (0.0, 0.46, -0.7)):
+        spear(s, (x, y - SPEAR_Y, cz + dz))
+    for zc in (-4.5, 5.0):
+        s.bar(-0.56, 0.56, -0.02, 0.68, zc - 0.35, zc + 0.35, 'leather')
     m.part('positioning', None, [-3.025, -8.95, -11.225])
     m.part('ground', 'positioning', [0, 0, 0])
-    m.part('fixed', 'positioning', [0, 0.25, 0])
+    m.part('fixed', 'positioning', [0, 0.35, 0])
     m.part('thirdperson_hand', 'positioning', [0, 0, 3])
     return m
+
+
+def bolt_icon():
+    """32x32 inventory sprite of a spear bolt, drawn as pixel art (a render of something this thin vanishes)."""
+    from PIL import Image
+    ys, xs = np.mgrid[0:32, 0:32]
+    px, py = xs + 0.5, 31.5 - ys                     # y up
+    u = (px + py) / math.sqrt(2)                     # along the spear: tail bottom-left -> tip top-right
+    v = (py - px) / math.sqrt(2)                     # across it
+    U0, U1, HEAD = 6.5, 41.0, 32.5                   # tail, tip, start of the head
+    shaft = (u > U0) & (u < HEAD + 0.5) & (np.abs(v) < 0.95)
+    tail = (u > U0 - 0.3) & (u < U0 + 1.8) & (np.abs(v) < 1.5)
+    point = (u >= HEAD) & (u < U1) & (np.abs(v) < 1.7 * (U1 - u) / (U1 - HEAD) + 0.35)
+    t = HEAD + 0.8 - u                               # 0 at the barb roots, growing back along the shaft
+    barb = (t > 0) & (t < 5.6) & (np.abs(np.abs(v) - (0.9 + t * 0.4)) < 0.6)
+    body = shaft | tail | point | barb
+    outline = np.zeros_like(body)
+    for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+        outline |= np.roll(np.roll(body, dy, 0), dx, 1)
+    outline &= ~body
+    img = np.zeros((32, 32, 4), dtype=np.uint8)
+    img[outline] = (34, 38, 46, 255)
+    img[shaft] = (198, 204, 212, 255)
+    img[shaft & (v < -0.2)] = (142, 148, 158, 255)  # shaded underside
+    img[tail] = (92, 98, 108, 255)
+    img[barb | point] = (168, 174, 184, 255)
+    img[point & (v > 0.0)] = (236, 240, 244, 255)
+    return Image.fromarray(img, 'RGBA')
 
 
 def build_bolt_entity():
@@ -221,6 +253,7 @@ BASE = {
     'air': lambda p, n: M.anodized(p, n) * np.array([[0.86, 1.18, 1.42]]), 'alu': M.gunmetal,
     'poly': lambda p, n: M.polymer(p, n, stipple=False), 'rubber': M.rubber, 'steel': M.blued,
     'brass': M.brass, 'shaft': M.stainless, 'tip': lambda p, n: M.stainless(p, n) * 0.8,
+    'leather': lambda p, n: M.walnut(p, n) * 0.9,
 }
 
 
