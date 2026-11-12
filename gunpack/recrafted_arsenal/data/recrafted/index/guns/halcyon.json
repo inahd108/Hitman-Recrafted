@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.halcyon.name",
+  "display": "recrafted:halcyon_display",
+  "data": "recrafted:halcyon_data",
+  "tooltip": "recrafted.gun.halcyon.desc",
+  "type": "smg",
+  "sort": 6
+}

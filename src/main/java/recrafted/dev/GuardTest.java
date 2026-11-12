@@ -121,6 +121,8 @@ public final class GuardTest {
             guardB = spawn(level, NpcRole.HARBOUR_GUARD, "Test Harbour Guard", X - 1.6, Z + 3.4, 90f);
             check("estate guard carries the Lupara", Guns.isGun(guardA.getSidearm())
                     && guardA.getSidearm().getOrCreateTag().getString("GunId").equals("recrafted:lupara"), guardA.getSidearm().getTag());
+            check("lab guards carry the Halcyon PDW", Guns.sidearmFor(NpcRole.LAB_GUARD).getOrCreateTag().getString("GunId").equals("recrafted:halcyon")
+                    && Guns.isLongGun(Guns.sidearmFor(NpcRole.LAB_GUARD)), "");
             check("bodyguards carry the Vento", Guns.sidearmFor(NpcRole.BODYGUARD).getOrCreateTag().getString("GunId").equals("recrafted:vento"), "");
             check("the Lupara counts as a long gun, the Bastone doesn't", Guns.isLongGun(guardA.getSidearm())
                     && !Guns.isLongGun(guardB.getSidearm()), "");
@@ -254,6 +256,25 @@ public final class GuardTest {
                     || sp.getLastDamageSource() != null, "health " + sp.getHealth() + " last " + sp.getLastDamageSource());
             check("guard keeps within its gun's range", gunman.distanceTo(sp) <= Guns.engageRange(gunman.getMainHandItem()) + 2.5,
                     String.format("%.1f blocks", gunman.distanceTo(sp)));
+            gunman.frozen = true;
+            sp.setHealth(sp.getMaxHealth());
+        }));
+        // ---- a lab guard with the PDW fires in bursts -------------------------------------------------
+        step(300, () -> onServer(server, (level, sp) -> {
+            cleanUp(level);
+            Gunfight.RESULTS.clear();
+            sp.setHealth(sp.getMaxHealth());
+            healthBefore = sp.getHealth();
+            gunman = spawn(level, NpcRole.LAB_GUARD, "Test Lab Gunman", X + 9.5, Z + 2.0, 90f);
+            gunman.frozen = false;
+        }));
+        step(100, () -> { mc.getToasts().clear(); look(server, X, Y, Z + 2.0, -90f, 4f); });
+        step(300, () -> onServer(server, (level, sp) -> gunman.onCompromised(sp)));
+        step(2600, () -> shot(mc, "10_pdw_firing_a"));
+        step(250, () -> shot(mc, "10_pdw_firing_b"));
+        step(2000, () -> onServer(server, (level, sp) -> {
+            LOG.info("GUARDTEST pdw balance: {} after the fight (from {}), results {}", sp.getHealth(), healthBefore, Gunfight.RESULTS);
+            check("lab guard fires PDW bursts", Gunfight.RESULTS.getOrDefault("SUCCESS", 0) >= 5, Gunfight.RESULTS);
             gunman.frozen = true;
             sp.setHealth(sp.getMaxHealth());
         }));

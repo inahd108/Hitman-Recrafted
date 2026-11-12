@@ -332,6 +332,62 @@ def build_lupara():
     )
 
 
+SMG_DISPLAY = {
+    'state_machine': 'tacz:default_state_machine_v2',
+    'ads_preset': 'tacz:renew',
+    'use_default_animation': 'rifle',
+    'third_person_animation': 'default',
+    'transform': {'scale': {'thirdperson': [0.6, 0.6, 0.6], 'ground': [0.6, 0.6, 0.6], 'fixed': [1.2, 1.2, 1.2]}},
+    'muzzle_flash': {'type': 'renew', 'texture': 'tacz:flash/common_muzzle_flash', 'scale': 0.6, 'smoke_scale': 1,
+                     'initial_speed_scale': 1},
+    'shell': {'initial_velocity': [5, 2, 1], 'random_velocity': [2, 2, 0.5], 'acceleration': [0.0, -15, 0.0],
+              'angular_velocity': [360, -1200, 90], 'living_time': 1.0},
+    'iron_zoom': 1.33,
+    'model_fov': 60,
+    'zoom_model_fov': 48,
+    'offhand_show': {'pos': [-1, 20, 4], 'rotate': [0, 0, 45], 'scale': [0.5, 0.5, 0.5]},
+    'hotbar_show': {'0': {'pos': [-1, 16, -2], 'rotate': [0, 0, 20], 'scale': [0.5, 0.5, 0.5]}},
+}
+
+
+def build_halcyon():
+    import halcyon
+    import halcyon_anim
+    S = 'tacz:hk_mp7a1/hk_mp7a1_'
+    emit_pistol(
+        halcyon, halcyon_anim.animations(),
+        name='Halcyon PDW', desc='Halcyon lab security issue. Thirty rounds of 4.6mm, quick and quiet-ish.', sort=6,
+        gun_type='smg', base_display=SMG_DISPLAY, side_cy=6.2,
+        data={
+            'allow_ammo_unload': True, 'ammo': 'tacz:46x30', 'rpm': 900,
+            'bullet': {'life': 0.75, 'bullet_amount': 1, 'damage': 6, 'tracer_count_interval': 0,
+                       'extra_damage': {'armor_ignore': 0.6, 'head_shot_multiplier': 1.3,
+                                        'damage_adjust': [{'distance': 20, 'damage': 6}, {'distance': 40, 'damage': 5},
+                                                          {'distance': 'infinite', 'damage': 3.5}]},
+                       'speed': 340, 'gravity': 0.15, 'knockback': 0, 'friction': 0.02, 'ignite': False, 'pierce': 1},
+            'ammo_amount': 30, 'extended_mag_ammo_amount': [36, 42, 50], 'bolt': 'closed_bolt',
+            'reload': {'type': 'magazine', 'feed': {'empty': 1.5, 'tactical': 1.28},
+                       'cooldown': {'empty': 2.85, 'tactical': 2.2}},
+            'draw_time': 0.4, 'put_away_time': 0.4, 'aim_time': 0.18, 'sprint_time': 0.12, 'weight': 1.6,
+            'movement_speed': {'base': 0.0, 'aim': -0.1, 'reload': 0}, 'crawl_recoil_multiplier': 0.75,
+            'fire_mode': ['auto', 'semi'],
+            'allow_attachment_types': ['muzzle', 'extended_mag'],
+            'recoil': {'pitch': [{'time': 0, 'value': [0.55, 0.7]}, {'time': 0.1, 'value': [0.1, 0.1]},
+                                 {'time': 0.2, 'value': [0, 0]}],
+                       'yaw': [{'time': 0, 'value': [-0.35, 0.35]}, {'time': 0.12, 'value': [0, 0]}]},
+            'inaccuracy': {'stand': 3.2, 'move': 4.0, 'sneak': 2.2, 'lie': 1.5, 'aim': 0.18},
+            'fire_sound': {'fire_multiplier': 0.9, 'silence_multiplier': 1.0},
+        },
+        sounds={'draw': S + 'draw', 'put_away': S + 'put_away', 'shoot': S + 'shoot', 'shoot_3p': S + 'shoot_3p',
+                'silence': S + 'silence', 'silence_3p': S + 'silence_3p'},
+        allow=['#tacz:muzzle', '#tacz:pistol_muzzle', '#tacz:light_extended_mag'],
+        recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 18},
+                {'item': {'item': 'minecraft:white_dye'}, 'count': 2},
+                {'item': {'item': 'minecraft:cyan_dye'}, 'count': 1}],
+        side_cz=-2.6, hud_ortho=12.6, slot_ortho=22.0,
+    )
+
+
 def build_argento():
     gid = argento.ID
     m = argento.build()
@@ -502,6 +558,7 @@ def main():
     build_bastone()
     build_vento()
     build_lupara()
+    build_halcyon()
     write_json(f'assets/{NS}/lang/en_us.json', LANG)
     os.makedirs(DIST, exist_ok=True)
     zpath = os.path.join(DIST, f'{PACK_NAME}.zip')

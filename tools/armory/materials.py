@@ -342,3 +342,15 @@ def shell_hull(p, normal, seed=0):
     """Red plastic shotgun shell hull."""
     base = np.array([168, 34, 30], dtype=float)
     return base[None] * (0.9 + 0.1 * fbm(p, [12, 12, 12], 2, seed))[:, None]
+
+
+def lab_white(p, normal, seed=0):
+    """Clinical off-white polymer: very slightly warm, faint mould texture."""
+    base = np.array([214, 216, 210], dtype=float)
+    return base[None] * (0.95 + 0.05 * fbm(p, [18, 18, 18], 2, seed))[:, None]
+
+
+def teal(p, normal, seed=0):
+    """Halcyon accent teal."""
+    base = np.array([38, 168, 160], dtype=float)
+    return base[None] * (0.96 + 0.04 * fbm(p, [10, 10, 10], 2, seed))[:, None]

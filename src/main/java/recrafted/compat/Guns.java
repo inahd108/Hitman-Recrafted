@@ -46,7 +46,8 @@ public final class Guns {
         String id = switch (role) {
             case ESTATE_GUARD -> "lupara";
             case BODYGUARD -> "vento";
-            case HARBOUR_GUARD, SECURITY, LAB_GUARD -> "bastone";
+            case HARBOUR_GUARD, SECURITY -> "bastone";
+            case LAB_GUARD -> "halcyon";
             case SORDI -> "argento";
             default -> null;
         };
@@ -69,6 +70,8 @@ public final class Guns {
     public record Cadence(int burst, int interval, int pause) {}
 
     public static Cadence cadence(ItemStack gun) {
+        String type = isGun(gun) ? safely(() -> TaczBridge.type(gun), "pistol") : "pistol";
+        if ("smg".equals(type) || "rifle".equals(type)) return new Cadence(5, 2, 26);   // automatic: short bursts
         int cap = capacity(gun);
         if (cap <= 6) return new Cadence(1, 18, 4);          // revolver: deliberate single shots
         if (cap <= 9) return new Cadence(1, 13, 6);          // single-stack pistol
@@ -82,7 +85,12 @@ public final class Guns {
 
     /** How close an NPC gets before it stops to shoot: shotguns have to be near to count. */
     public static double engageRange(ItemStack gun) {
-        return "shotgun".equals(isGun(gun) ? safely(() -> TaczBridge.type(gun), "pistol") : "pistol") ? 8.0 : 15.0;
+        String type = isGun(gun) ? safely(() -> TaczBridge.type(gun), "pistol") : "pistol";
+        return switch (type) {
+            case "shotgun" -> 8.0;
+            case "smg" -> 13.0;
+            default -> 15.0;
+        };
     }
 
     /** Magazine size of this gun (6 if unknown). */

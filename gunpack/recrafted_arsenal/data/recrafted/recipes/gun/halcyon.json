@@ -1,0 +1,27 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 18
+    },
+    {
+      "item": {
+        "item": "minecraft:white_dye"
+      },
+      "count": 2
+    },
+    {
+      "item": {
+        "item": "minecraft:cyan_dye"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "recrafted:halcyon"
+  },
+  "type": "tacz:gun_smith_table_crafting"
+}
