@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.bastone.name",
+  "display": "recrafted:bastone_display",
+  "data": "recrafted:bastone_data",
+  "tooltip": "recrafted.gun.bastone.desc",
+  "type": "pistol",
+  "sort": 3
+}

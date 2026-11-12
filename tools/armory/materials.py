@@ -260,3 +260,22 @@ def satin_black(p, normal, seed=0):
     base = np.array([60, 62, 68], dtype=float)
     n = fbm(p, [18, 18, 1.2], 2, seed)
     return base[None] * (0.9 + 0.16 * n)[:, None]
+
+
+def parkerized(p, normal, seed=0):
+    """Grey-green phosphate finish: flat, slightly mottled."""
+    base = np.array([96, 101, 98], dtype=float)
+    n = fbm(p, 9, 3, seed)
+    m = fbm(p, 1.4, 2, seed + 7)
+    return base[None] * (0.86 + 0.16 * n + 0.08 * (m - 0.5))[:, None]
+
+
+def polymer(p, normal, seed=0, stipple=False):
+    """Black moulded polymer; optionally stippled (grip texture)."""
+    base = np.array([40, 41, 44], dtype=float)
+    if stipple:
+        n = vnoise(p, 46, seed)
+        k = 0.88 + 0.16 * (n > 0.55) + 0.06 * n
+    else:
+        k = 0.92 + 0.12 * vnoise(p, 12, seed)
+    return base[None] * k[:, None]

@@ -97,7 +97,7 @@ def emit_pistol(gun, anims, *, name, desc, sort, data, sounds, allow, recipe, si
     m = gun.build()
     m.layout()
     tex = m.paint(gun.shader)
-    hide = ('righthand_pos', 'lefthand_pos')
+    hide = ('righthand_pos', 'lefthand_pos', 'mag_extended_1', 'mag_extended_2', 'mag_extended_3')
     write_json(f'assets/{NS}/geo_models/gun/{gid}_geo.json', m.to_bedrock())
     save_png(f'assets/{NS}/textures/gun/uv/{gid}.png', tex)
     side = dict(eye=(-40, 3.2, side_cz), target=(0, 3.2, side_cz))
@@ -169,6 +169,32 @@ def pistol_data(**over):
         else:
             d[k] = v
     return d
+
+
+def build_bastone():
+    import bastone
+    import bastone_anim
+    S = 'tacz:m9a4/m9a4_'
+    emit_pistol(
+        bastone, bastone_anim.all_animations(),
+        name='Bastone 9', desc='Corvara police service pistol. Fifteen rounds, no subtlety.', sort=3,
+        data=pistol_data(
+            ammo='tacz:9mm', rpm=380, ammo_amount=15, weight=1.05,
+            extended_mag_ammo_amount=[17, 20, 24],
+            bullet={'damage': 10, 'speed': 210,
+                    'extra_damage': {'armor_ignore': 0.2, 'head_shot_multiplier': 1.8,
+                                     'damage_adjust': [{'distance': 22, 'damage': 10}, {'distance': 45, 'damage': 8},
+                                                       {'distance': 'infinite', 'damage': 5}]}},
+            allow_attachment_types=['muzzle', 'extended_mag', 'laser'],
+            fire_sound={'fire_multiplier': 1.1, 'silence_multiplier': 1.0},
+        ),
+        sounds={'draw': S + 'draw', 'put_away': S + 'put_away', 'shoot': S + 'shoot', 'shoot_3p': S + 'shoot_3p',
+                'silence': S + 'silence', 'silence_3p': S + 'silence_3p'},
+        allow=['#tacz:pistol_muzzle', '#tacz:light_extended_mag', '#tacz:pistol_laser'],
+        recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 14},
+                {'item': {'item': 'minecraft:black_dye'}, 'count': 2}],
+        side_cz=-2.0, hud_ortho=7.0, slot_ortho=12.5,
+    )
 
 
 def build_passero():
@@ -374,6 +400,7 @@ def main():
     write_json('gunpack.meta.json', {'namespace': NS})
     build_argento()
     build_passero()
+    build_bastone()
     write_json(f'assets/{NS}/lang/en_us.json', LANG)
     os.makedirs(DIST, exist_ok=True)
     zpath = os.path.join(DIST, f'{PACK_NAME}.zip')
