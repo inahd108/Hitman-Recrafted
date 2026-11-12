@@ -27,7 +27,7 @@ legacyForge {
                 systemProperty 'recrafted.gunshots', project.findProperty('gunshots')
                 if (project.hasProperty('gunshotsAt')) systemProperty 'recrafted.gunshots.at', project.findProperty('gunshotsAt')
                 if (project.hasProperty('gunshotsGui')) systemProperty 'recrafted.gunshots.gui', 'true'
-                ['reload', 'reloadLen', 'inspect', 'inspectLen'].each { k ->
+                ['reload', 'reloadLen', 'inspect', 'inspectLen', 'ammo'].each { k ->
                     def prop = 'gunshots' + k.capitalize()
                     if (project.hasProperty(prop)) systemProperty "recrafted.gunshots.${k}", project.findProperty(prop)
                 }

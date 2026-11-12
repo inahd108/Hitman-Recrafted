@@ -91,7 +91,7 @@ PISTOL_DISPLAY = {
 
 
 def emit_pistol(gun, anims, *, name, desc, sort, data, sounds, allow, recipe, side_cz, hud_ortho, slot_ortho,
-                display_extra=None):
+                display_extra=None, gun_type='pistol', base_display=None, side_cy=3.2):
     """Model, texture, icons, animations, index, display, data, tags and recipe for one handgun."""
     gid = gun.ID
     m = gun.build()
@@ -100,15 +100,15 @@ def emit_pistol(gun, anims, *, name, desc, sort, data, sounds, allow, recipe, si
     hide = ('righthand_pos', 'lefthand_pos', 'mag_extended_1', 'mag_extended_2', 'mag_extended_3', 'loader_and_round')
     write_json(f'assets/{NS}/geo_models/gun/{gid}_geo.json', m.to_bedrock())
     save_png(f'assets/{NS}/textures/gun/uv/{gid}.png', tex)
-    side = dict(eye=(-40, 3.2, side_cz), target=(0, 3.2, side_cz))
+    side = dict(eye=(-40, side_cy, side_cz), target=(0, side_cy, side_cz))
     save_png(f'assets/{NS}/textures/gun/hud/{gid}.png', silhouette(m, tex, (384, 128), hide, ortho=hud_ortho, **side))
     save_png(f'assets/{NS}/textures/gun/slot/{gid}.png', icon(m, tex, (64, 64), hide, ortho=slot_ortho, **side))
     write_json(f'assets/{NS}/animations/{gid}.animation.json', {'format_version': '1.8.0', 'animations': anims})
     write_json(f'data/{NS}/index/guns/{gid}.json', {
         'name': f'{NS}.gun.{gid}.name', 'display': f'{NS}:{gid}_display', 'data': f'{NS}:{gid}_data',
-        'tooltip': f'{NS}.gun.{gid}.desc', 'type': 'pistol', 'sort': sort,
+        'tooltip': f'{NS}.gun.{gid}.desc', 'type': gun_type, 'sort': sort,
     })
-    display = dict(PISTOL_DISPLAY)
+    display = dict(base_display or PISTOL_DISPLAY)
     display.update({'model': f'{NS}:gun/{gid}_geo', 'texture': f'{NS}:gun/uv/{gid}', 'hud': f'{NS}:gun/hud/{gid}',
                     'slot': f'{NS}:gun/slot/{gid}', 'animation': f'{NS}:{gid}', 'sounds': sounds})
     display.update(display_extra or {})
@@ -124,10 +124,11 @@ def emit_pistol(gun, anims, *, name, desc, sort, data, sounds, allow, recipe, si
     LANG[f'{NS}.gun.{gid}.desc'] = desc
     os.makedirs(PREVIEW, exist_ok=True)
     for lab, ex in (('left', -40), ('right', 40)):
-        render(m, tex, eye=(ex, 3.2, side_cz), target=(0, 3.2, side_cz), ortho_height=hud_ortho * 1.25,
+        render(m, tex, eye=(ex, side_cy, side_cz), target=(0, side_cy, side_cz), ortho_height=hud_ortho * 1.25,
                size=(1200, 640), hide=hide).save(os.path.join(PREVIEW, f'{gid}_{lab}.png'))
-    render(m, tex, eye=(-10, 8.5, side_cz - 13), target=(0, 3.4, side_cz + 0.3), fov=40, size=(1200, 700),
-           hide=hide).save(os.path.join(PREVIEW, f'{gid}_34.png'))
+    far = 1.0 if gun_type == 'pistol' else 1.6
+    render(m, tex, eye=(-10 * far, side_cy + 5.3 * far, side_cz - 13 * far), target=(0, side_cy + 0.2, side_cz + 0.3),
+           fov=40, size=(1200, 700), hide=hide).save(os.path.join(PREVIEW, f'{gid}_34.png'))
     bb_export(m, tex, gid)
     print(f'  {gid}: {m.cube_count()} cubes')
     return m, tex
@@ -270,6 +271,64 @@ def build_vento():
         display_extra={'state_machine': 'tacz:taurus500_state_machine', 'shell': None,
                        'muzzle_flash': {'type': 'renew', 'texture': 'tacz:flash/common_muzzle_flash', 'scale': 0.85,
                                         'smoke_scale': 1.3, 'initial_speed_scale': 1.2, 'smoke_particle_count': 20}},
+    )
+
+
+SHOTGUN_DISPLAY = {
+    'state_machine': 'tacz:db_short_state_machine',
+    'ads_preset': 'tacz:renew',
+    'use_default_animation': 'rifle',
+    'third_person_animation': 'default',
+    'transform': {'scale': {'thirdperson': [0.6, 0.6, 0.6], 'ground': [0.6, 0.6, 0.6], 'fixed': [1.2, 1.2, 1.2]}},
+    'muzzle_flash': {'type': 'renew', 'texture': 'tacz:flash/common_muzzle_flash', 'scale': 0.8,
+                     'initial_speed_scale': 1.7, 'smoke_scale': 2, 'smoke_particle_count': 32},
+    'iron_zoom': 1.2,
+    'model_fov': 60,
+    'zoom_model_fov': 45,
+    'offhand_show': {'pos': [2, 20, 4], 'rotate': [0, 0, 60], 'scale': [0.5, 0.5, 0.5]},
+    'hotbar_show': {'0': {'pos': [-2, 20, 3], 'rotate': [-180, 0, 120], 'scale': [0.5, 0.5, 0.5]}},
+}
+
+
+def build_lupara():
+    import lupara
+    import lupara_anim
+    D = 'tacz:db_short/db_short_'
+    emit_pistol(
+        lupara, lupara_anim.animations(),
+        name='Lupara', desc='Sawn-off side-by-side. One barrel or both; two shells, then a reload.', sort=5,
+        gun_type='shotgun', base_display=SHOTGUN_DISPLAY, side_cy=7.6,
+        data={
+            'allow_ammo_unload': True, 'script': 'tacz:db_short_gun_logic', 'ammo': 'tacz:12g',
+            'force_aim_exit_on_reload': True, 'rpm': 150,
+            'bullet': {'life': 0.3, 'bullet_amount': 12, 'damage': 28, 'tracer_count_interval': 0,
+                       'extra_damage': {'armor_ignore': 0.3, 'head_shot_multiplier': 1.25,
+                                        'damage_adjust': [{'distance': 5, 'damage': 28}, {'distance': 9, 'damage': 20},
+                                                          {'distance': 'infinite', 'damage': 12}]},
+                       'speed': 120, 'gravity': 0.15, 'knockback': 0.9, 'friction': 0.05, 'ignite': False, 'pierce': 1},
+            'ammo_amount': 2, 'bolt': 'open_bolt',
+            'reload': {'type': 'magazine', 'feed': {'empty': 1.95, 'tactical': 1.38},
+                       'cooldown': {'empty': 2.45, 'tactical': 1.8}},
+            'draw_time': 0.4, 'put_away_time': 0.3, 'aim_time': 0.15, 'sprint_time': 0.05, 'weight': 1.9,
+            'movement_speed': {'base': 0.0, 'aim': 0, 'reload': 0.15}, 'crawl_recoil_multiplier': 0.5,
+            'fire_mode': ['semi', 'burst'],
+            'burst_data': {'continuous_shoot': False, 'count': 1, 'bpm': 600, 'min_interval': 0.5},
+            'allow_attachment_types': [],
+            'recoil': {'pitch': [{'time': 0, 'value': [3.4, 3.8]}, {'time': 0.2, 'value': [0.4, 0.4]},
+                                 {'time': 0.35, 'value': [0, 0]}],
+                       'yaw': [{'time': 0, 'value': [-1.0, 1.0]}, {'time': 0.1, 'value': [0.3, 0.3]},
+                               {'time': 0.3, 'value': [0, 0]}]},
+            'inaccuracy': {'stand': 5.0, 'move': 5.5, 'sneak': 4.5, 'lie': 4.5, 'aim': 3.6},
+            'fire_sound': {'fire_multiplier': 1.5, 'silence_multiplier': 1.0},
+        },
+        sounds={'draw': D + 'draw', 'put_away': D + 'put_away', 'shoot': 'tacz:db_short/db_shoot',
+                'shoot_3p': 'tacz:db_short/db_shoot_3p', 'reload_empty': D + 'reload_empty',
+                'reload_tactical': D + 'reload_tactical', 'inspect': D + 'inspect', 'inspect_empty': D + 'inspect_empty'},
+        allow=[],
+        recipe=[{'item': {'tag': 'forge:ingots/iron'}, 'count': 14},
+                {'item': {'item': 'minecraft:dark_oak_planks'}, 'count': 3},
+                {'item': {'tag': 'forge:nuggets/gold'}, 'count': 1}],
+        side_cz=-0.3, hud_ortho=11.0, slot_ortho=25.0,
     )
 
 
@@ -442,6 +501,7 @@ def main():
     build_passero()
     build_bastone()
     build_vento()
+    build_lupara()
     write_json(f'assets/{NS}/lang/en_us.json', LANG)
     os.makedirs(DIST, exist_ok=True)
     zpath = os.path.join(DIST, f'{PACK_NAME}.zip')

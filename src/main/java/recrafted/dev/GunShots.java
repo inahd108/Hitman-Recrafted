@@ -97,7 +97,9 @@ public final class GunShots {
                     ServerPlayer sp = server.getPlayerList().getPlayers().get(0);
                     try {
                         StringBuilder nbt = new StringBuilder("{id:\"tacz:modern_kinetic_gun\",Count:1b,tag:{GunId:\"" + gun
-                                + "\",GunCurrentAmmoCount:2,HasBulletInBarrel:1b,GunFireMode:\"SEMI\"");
+                                + "\",GunCurrentAmmoCount:" + Integer.getInteger("recrafted.gunshots.ammo", 2)
+                                + ",HasBulletInBarrel:" + (Integer.getInteger("recrafted.gunshots.ammo", 2) > 0 ? "1b" : "0b")
+                                + ",GunFireMode:\"SEMI\"");
                         if (attachment != null) {
                             nbt.append(",AttachmentMUZZLE:{id:\"tacz:attachment\",Count:1b,tag:{AttachmentId:\"").append(attachment).append("\"}}");
                         }

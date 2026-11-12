@@ -1,0 +1,27 @@
+{
+  "materials": [
+    {
+      "item": {
+        "tag": "forge:ingots/iron"
+      },
+      "count": 14
+    },
+    {
+      "item": {
+        "item": "minecraft:dark_oak_planks"
+      },
+      "count": 3
+    },
+    {
+      "item": {
+        "tag": "forge:nuggets/gold"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "type": "gun",
+    "id": "recrafted:lupara"
+  },
+  "type": "tacz:gun_smith_table_crafting"
+}

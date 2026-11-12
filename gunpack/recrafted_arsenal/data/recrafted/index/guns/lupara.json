@@ -1,0 +1,8 @@
+{
+  "name": "recrafted.gun.lupara.name",
+  "display": "recrafted:lupara_display",
+  "data": "recrafted:lupara_data",
+  "tooltip": "recrafted.gun.lupara.desc",
+  "type": "shotgun",
+  "sort": 5
+}

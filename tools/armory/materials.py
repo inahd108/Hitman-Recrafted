@@ -302,3 +302,43 @@ def rosewood(p, normal, seed=0):
     streak = np.sin(p[:, 1] * 11.0 + warp * 7.0) * 0.5 + 0.5
     k = 0.8 + 0.25 * streak * fbm(p * np.array([1, 3.5, 1]), [5, 1.4, 5], 2, seed)
     return base[None] * k[:, None]
+
+
+def case_hardened(p, normal, seed=0):
+    """Colour case-hardened steel: dark grey with broad, soft blue, plum and straw mottling."""
+    n1 = fbm(p, [1.3, 1.3, 1.3], 3, seed)
+    n2 = fbm(p, [2.1, 2.1, 2.1], 2, seed + 7)
+    grey = np.array([92, 94, 98], dtype=float)
+    blue = np.array([58, 70, 104], dtype=float)
+    plum = np.array([92, 66, 84], dtype=float)
+    straw = np.array([138, 116, 80], dtype=float)
+    col = np.tile(grey, (len(p), 1))
+    w_blue = np.clip((n1 - 0.5) * 3.0, 0, 0.85)[:, None]
+    w_plum = np.clip((n2 - 0.58) * 3.0, 0, 0.7)[:, None]
+    w_straw = np.clip((0.36 - n1) * 3.0, 0, 0.6)[:, None]
+    col = col * (1 - w_blue) + blue * w_blue
+    col = col * (1 - w_plum) + plum * w_plum
+    col = col * (1 - w_straw) + straw * w_straw
+    return col * (0.92 + 0.08 * fbm(p, [10, 10, 10], 2, seed + 3))[:, None]
+
+
+def worn_blue(p, normal, seed=0):
+    """Old blued barrels: blue-black with brown-grey wear showing through."""
+    base = np.array([44, 48, 58], dtype=float)
+    wear = np.array([104, 98, 90], dtype=float)
+    n = fbm(p * np.array([1, 1, 0.3]), [3, 3, 3], 3, seed)
+    w = np.clip((n - 0.6) * 2.2, 0, 0.45)[:, None]
+    col = base[None] * (1 - w) + wear[None] * w
+    return col * (0.92 + 0.12 * fbm(p, [26, 26, 4], 2, seed + 1))[:, None]
+
+
+def raw_steel(p, normal, seed=0):
+    """Freshly sawn steel: bright, slightly scratchy."""
+    base = np.array([176, 174, 168], dtype=float)
+    return base[None] * (0.85 + 0.2 * fbm(p, [30, 30, 30], 2, seed))[:, None]
+
+
+def shell_hull(p, normal, seed=0):
+    """Red plastic shotgun shell hull."""
+    base = np.array([168, 34, 30], dtype=float)
+    return base[None] * (0.9 + 0.1 * fbm(p, [12, 12, 12], 2, seed))[:, None]
