@@ -72,6 +72,7 @@ class Style:
         self.lit = rng.uniform(.55, .9)
         self.hoist = True
         self.shop = None          # wool colour for a shop awning, or None
+        self.interior = True      # stairs and furniture; landmarks build their own
         self.__dict__.update(over)
 
 
@@ -148,6 +149,9 @@ def canal_house(ctx, x0, z0, x1, z1, front, floors, st, base=FLOOR0, side_window
                 fr.set(u, ly + 1, D - 1, pane)
                 fr.set(u, ly + 2, D - 1, pane)
 
+    if st.interior and W >= 5 and D >= 10:
+        info['rooms'] = interior(fr, info, st, rng)
+
     # ---- gable and roof ---------------------------------------------------------------
     if st.gable == 'cornice':
         roof_parallel(fr, W, D, top, st, wall)
@@ -164,6 +168,84 @@ def canal_house(ctx, x0, z0, x1, z1, front, floors, st, base=FLOOR0, side_window
             fr.set(cu, yy, cv, wall)
         fr.set(cu, h + 1, cv, 'stone_brick_slab')
     return info
+
+
+# ---- interiors -----------------------------------------------------------------------------
+TABLES = ['dark_oak', 'spruce', 'oak']
+CARPETS = ['red', 'brown', 'gray', 'green', 'blue', 'light_gray', 'cyan']
+BEDS = ['red', 'white', 'blue', 'green', 'gray', 'brown']
+
+
+def interior(fr, info, st, rng):
+    """Steep stacked stairs along the left wall at the back, and one furnished room per storey.
+    Returns anchors (frame-local) for each level: hall, table, stairs foot."""
+    W, D = fr.W, fr.D
+    levels, top = info['levels'], info['top']
+    floors = levels + [top]
+    rooms = []
+    for k, ly in enumerate(levels):
+        h = floors[k + 1] - ly
+        # flight from this floor to the next, rising towards the front
+        for i in range(h):
+            v = D - 2 - i
+            fr.set(1, ly + 1 + i, v, f'{"dark_oak" if st.floor == "dark_oak_planks" else "spruce"}_stairs[facing={{F}}]')
+            for yy in range(ly + 2 + i, ly + 4 + i):
+                if yy < floors[k + 1] + 1:
+                    fr.set(1, yy, v, 'air')
+            fr.set(1, floors[k + 1], v, 'air')                                 # stairwell in the floor above
+        y = ly + 1                                                               # feet level
+        kind = 'front' if k == 0 else ('bed' if k % 2 == 1 else 'living')
+        rooms.append(_furnish(fr, W, D, y, floors[k + 1], kind, st, rng, h))
+    # attic: storage under the roof
+    for v in range(3, D - 3, 3):
+        if rng.random() < .6:
+            fr.set(W - 2, top + 1, v, 'barrel[facing=up]')
+    return rooms
+
+
+def _furnish(fr, W, D, y, ceil, kind, st, rng, h):
+    """One storey. Furniture sits against the right wall and the back; the stair column (u=1) stays clear."""
+    R = W - 2
+    stair_v = set(range(D - 2 - h, D - 1))
+    anchors = {'hall': (2 if W > 5 else W // 2, y, 3), 'stairs': (2, y, D - 3 - h)}
+    if kind == 'front':
+        # front room: table with chairs by the windows, kitchen at the back
+        tv = 4
+        tu = min(R - 1, max(2, W // 2))
+        fr.set(tu, y, tv, f'{rng.choice(TABLES)}_fence')
+        fr.set(tu, y + 1, tv, f'{rng.choice(TABLES)}_pressure_plate')
+        for dv in (-1, 1):
+            if 2 <= tv + dv < D - 2:
+                fr.set(tu, y, tv + dv, f'{rng.choice(TABLES)}_stairs[facing={"{F}" if dv > 0 else "{B}"}]')
+        anchors['table'] = (tu, y, tv + 1)
+        kv = D - 2
+        for u, blk in ((R, 'smoker[facing={F},lit=false]'), (R - 1, 'barrel[facing=up]'), (R - 2, 'water_cauldron[level=2]')):
+            if u >= 2 and kv not in () and fr.get(u, y, kv) == 0:
+                fr.set(u, y, kv, blk)
+        anchors['kitchen'] = (max(2, R - 1), y, kv - 1)
+    elif kind == 'bed':
+        col = rng.choice(BEDS)
+        bv = 3
+        fr.set(R, y, bv, f'{col}_bed[facing={{F}},part=head]')
+        fr.set(R, y, bv + 1, f'{col}_bed[facing={{F}},part=foot]')
+        fr.set(R, y, bv + 2, 'chest[facing={L}]')
+        if W >= 7:
+            fr.fill(2, y, 3, R - 1, y, min(D - 4, 7), f'{rng.choice(CARPETS)}_carpet')
+        anchors['bed'] = (R - 1, y, bv + 1)
+    else:
+        # living room: bookcases on the right wall, an armchair by the window, a rug
+        for v in range(5, min(D - 3, 11)):
+            if v not in stair_v:
+                fr.set(R, y, v, 'bookshelf')
+                if rng.random() < .5:
+                    fr.set(R, y + 1, v, 'bookshelf')
+        fr.set(R, y, 3, f'{rng.choice(["dark_oak", "spruce"])}_stairs[facing={{L}}]')
+        if W >= 7:
+            fr.fill(2, y, 3, R - 1, y, 6, f'{rng.choice(CARPETS)}_carpet')
+        anchors['chair'] = (R, y, 3)
+    if rng.random() < .7:
+        fr.set((W - 1) // 2 + 1 if W > 5 else 2, ceil - 1, 5, 'lantern[hanging=true]')
+    return anchors
 
 
 # ---- roofs --------------------------------------------------------------------------------
