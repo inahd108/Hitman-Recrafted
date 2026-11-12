@@ -44,6 +44,15 @@ legacyForge {
                 programArguments.addAll('--quickPlaySingleplayer', project.findProperty('world') ?: 'corvara_test',
                         '--width', '1920', '--height', '1080')
             }
+            if (project.hasProperty('mapshots')) {
+                systemProperty 'recrafted.mapshots', project.findProperty('mapshots')
+                ['views', 'times', 'settle', 'fov', 'distance'].each { k ->
+                    def prop = 'map' + k.capitalize()
+                    if (project.hasProperty(prop)) systemProperty "recrafted.mapshots.${k}", project.findProperty(prop)
+                }
+                programArguments.addAll('--quickPlaySingleplayer', project.findProperty('world') ?: 'corvara_test',
+                        '--width', '1920', '--height', '1080')
+            }
             if (project.hasProperty('menutest')) {
                 systemProperty 'recrafted.menutest', 'true'
                 if (project.hasProperty('menutestPlay')) systemProperty 'recrafted.menutest.play', 'true'

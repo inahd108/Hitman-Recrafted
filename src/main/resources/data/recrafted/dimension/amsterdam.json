@@ -1,0 +1,11 @@
+{
+  "type": "recrafted:amsterdam",
+  "generator": {
+    "type": "recrafted:map",
+    "map": "amsterdam",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "recrafted:amsterdam_canals"
+    }
+  }
+}
