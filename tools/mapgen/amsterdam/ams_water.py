@@ -2,7 +2,7 @@
 from ams_layout import *  # noqa: F401,F403
 
 
-def arch_bridge(ctx, x0, x1, z0, z1, axis='z', name=None):
+def arch_bridge(ctx, x0, x1, z0, z1, axis='z', name=None, wide=False):
     """Brick arch over a canal. axis = direction of travel across the bridge ('z' crosses an east-west canal).
     x0..x1 (axis z) is the width of the deck; z0..z1 the water it spans."""
     w, rng = ctx['w'], ctx['rng']
@@ -28,8 +28,12 @@ def arch_bridge(ctx, x0, x1, z0, z1, axis='z', name=None):
                     put(c, t, h - 1, 'bricks')
     for t in range(span[0], span[1] + 1):
         d = abs(t - mid) / (n / 2)              # 0 at the crown, 1 at the abutments
-        deck = STREET + 2 if d < .55 else STREET + 1
-        arch_top = WATER + (3 if d < .35 else 2 if d < .7 else 1)
+        if wide:                                 # a flatter arch with boat headroom across most of the span
+            deck = STREET + 2 if d < .8 else STREET + 1
+            arch_top = WATER + (3 if d < .7 else 2 if d < .85 else 1)
+        else:
+            deck = STREET + 2 if d < .55 else STREET + 1
+            arch_top = WATER + (3 if d < .35 else 2 if d < .7 else 1)
         for c in cells:
             put(c, t, deck, 'bricks')
             for y in range(arch_top + 1, deck):

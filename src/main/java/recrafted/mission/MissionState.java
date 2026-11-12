@@ -26,6 +26,7 @@ public class MissionState extends SavedData {
     public int clockMinute = -1;
     public final Set<Integer> pendingNpcs = new HashSet<>();
     public final Set<Integer> pendingProps = new HashSet<>();
+    public final Set<Integer> pendingBoats = new HashSet<>();
     public final Set<String> done = new HashSet<>();
     /** Hidden targets the player has identified (contract ids). */
     public final Set<String> identified = new HashSet<>();
@@ -50,6 +51,7 @@ public class MissionState extends SavedData {
         s.clockMinute = t.contains("clockMinute") ? t.getInt("clockMinute") : -1;
         for (int i : t.getIntArray("pendingNpcs")) s.pendingNpcs.add(i);
         for (int i : t.getIntArray("pendingProps")) s.pendingProps.add(i);
+        for (int i : t.getIntArray("pendingBoats")) s.pendingBoats.add(i);
         for (int i : t.getIntArray("deletedCast")) s.deletedCast.add(i);
         ListTag d = t.getList("done", Tag.TAG_STRING);
         for (int i = 0; i < d.size(); i++) s.done.add(d.getString(i));
@@ -80,6 +82,7 @@ public class MissionState extends SavedData {
         t.putInt("clockMinute", clockMinute);
         t.putIntArray("pendingNpcs", pendingNpcs.stream().mapToInt(Integer::intValue).toArray());
         t.putIntArray("pendingProps", pendingProps.stream().mapToInt(Integer::intValue).toArray());
+        t.putIntArray("pendingBoats", pendingBoats.stream().mapToInt(Integer::intValue).toArray());
         t.putIntArray("deletedCast", deletedCast.stream().mapToInt(Integer::intValue).toArray());
         ListTag d = new ListTag();
         for (String s : done) d.add(StringTag.valueOf(s));

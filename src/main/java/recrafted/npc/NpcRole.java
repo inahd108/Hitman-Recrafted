@@ -73,6 +73,11 @@ public enum NpcRole {
     }
 
     /** Staff who pass security doors on their own. */
+    /** Falls in the water and does not come out. */
+    public boolean cantSwim() {
+        return this == KOOISTRA;
+    }
+
     public boolean opensSecurityDoors() {
         return guard || this == SCIENTIST || this == HAZMAT || this == VARGA || this == WORKER
                 || this == LOT_PORTER || this == BRIDGE_KEEPER || this == OSTENDORP;

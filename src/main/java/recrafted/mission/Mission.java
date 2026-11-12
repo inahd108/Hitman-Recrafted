@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -48,6 +49,12 @@ public final class Mission {
      * {@code secondsPerMinute} real seconds. Schedules and events repeat every {@code period} minutes (0 = never).
      */
     public record Clock(int start, int secondsPerMinute, int period, List<ClockEvent> events) {}
+    /** A point on a boat's water route: a stop (name + wait), a gate it needs open, an NPC it waits for. */
+    public record BoatPoint(double x, double z, String stop, int waitTicks, String gate, String hold) {}
+    public record BoatDef(String name, String design, double y, List<BoatPoint> route) {}
+    /** One block a gate sets when it opens; closing puts back whatever was there. */
+    public record GateBlock(BlockPos pos, String state) {}
+    public record GateDef(String name, String kind, List<GateBlock> open, AABB clear) {}
 
     public String id, title, location;
     public ResourceKey<Level> dimension;
@@ -62,6 +69,8 @@ public final class Mission {
     public final List<PropSpawn> props = new ArrayList<>();
     /** Raw NPC definitions; see MissionManager.spawnNpc for the fields. */
     public final List<JsonObject> npcs = new ArrayList<>();
+    public final List<BoatDef> boats = new ArrayList<>();
+    public final List<GateDef> gates = new ArrayList<>();
 
     public static Path castFile(String id) {
         return FMLPaths.CONFIGDIR.get().resolve("recrafted").resolve(id + ".cast.json");
@@ -93,6 +102,22 @@ public final class Mission {
     /** Forget the cached missions so an exported cast is picked up. */
     public static synchronized void reload() {
         CACHE.clear();
+    }
+
+    private static String str(JsonObject o, String k) {
+        return o.has(k) && !o.get(k).isJsonNull() ? o.get(k).getAsString() : "";
+    }
+
+    @Nullable
+    public BoatDef boat(String name) {
+        for (BoatDef b : boats) if (b.name().equals(name)) return b;
+        return null;
+    }
+
+    @Nullable
+    public GateDef gate(String name) {
+        for (GateDef g : gates) if (g.name().equals(name)) return g;
+        return null;
     }
 
     private static Vec3 vec(JsonArray a) {
@@ -141,6 +166,29 @@ public final class Mission {
                 m.props.add(new PropSpawn(new ResourceLocation(p.get("item").getAsString()), vec(p.getAsJsonArray("pos"))));
             }
             for (JsonElement e : o.getAsJsonArray("npcs")) m.npcs.add(e.getAsJsonObject());
+            if (o.has("boats")) for (JsonElement e : o.getAsJsonArray("boats")) {
+                JsonObject b = e.getAsJsonObject();
+                List<BoatPoint> pts = new ArrayList<>();
+                for (JsonElement pe : b.getAsJsonArray("route")) {
+                    JsonObject p = pe.getAsJsonObject();
+                    JsonArray xz = p.getAsJsonArray("pos");
+                    pts.add(new BoatPoint(xz.get(0).getAsDouble(), xz.get(1).getAsDouble(), str(p, "stop"),
+                            p.has("wait") ? p.get("wait").getAsInt() : 0, str(p, "gate"), str(p, "hold")));
+                }
+                m.boats.add(new BoatDef(b.get("name").getAsString(), b.get("design").getAsString(), b.get("y").getAsDouble(), pts));
+            }
+            if (o.has("gates")) for (JsonElement e : o.getAsJsonArray("gates")) {
+                JsonObject g = e.getAsJsonObject();
+                List<GateBlock> blocks = new ArrayList<>();
+                for (JsonElement be : g.getAsJsonArray("open")) {
+                    JsonArray a = be.getAsJsonArray();
+                    blocks.add(new GateBlock(new BlockPos(a.get(0).getAsInt(), a.get(1).getAsInt(), a.get(2).getAsInt()), a.get(3).getAsString()));
+                }
+                JsonArray c = g.getAsJsonArray("clear");
+                m.gates.add(new GateDef(g.get("name").getAsString(), g.get("kind").getAsString(), blocks,
+                        new AABB(c.get(0).getAsDouble(), c.get(1).getAsDouble(), c.get(2).getAsDouble(),
+                                c.get(3).getAsDouble() + 1, c.get(4).getAsDouble() + 1, c.get(5).getAsDouble() + 1)));
+            }
             if (o.has("clock")) {
                 JsonObject c = o.getAsJsonObject("clock");
                 List<ClockEvent> ev = new ArrayList<>();

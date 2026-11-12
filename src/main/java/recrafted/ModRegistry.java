@@ -94,6 +94,10 @@ public final class ModRegistry {
     public static final RegistryObject<Block> METAL_DETECTOR = block("metal_detector", () -> new recrafted.block.ams.MetalDetectorBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(-1f, 3600000f).sound(SoundType.METAL).noOcclusion()
                     .noCollission().lightLevel(s -> 4)));
+    public static final RegistryObject<Block> BRIDGE_CONTROL = block("bridge_control", () -> new ActionBlock(
+            metal().lightLevel(s -> 6), ActionBlock.Action.BRIDGE));
+    public static final RegistryObject<Block> LOCK_CONTROL = block("lock_control", () -> new ActionBlock(
+            metal().lightLevel(s -> 6), ActionBlock.Action.SLUICE));
     public static final RegistryObject<Block> WINCH = block("winch", () -> new ActionBlock(
             BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(-1f, 3600000f).sound(SoundType.WOOD).noOcclusion(),
             ActionBlock.Action.WINCH));
@@ -134,6 +138,10 @@ public final class ModRegistry {
     public static final RegistryObject<EntityType<ThrownPropEntity>> THROWN_PROP = ENTITIES.register("thrown_prop", () ->
             EntityType.Builder.<ThrownPropEntity>of(ThrownPropEntity::new, MobCategory.MISC).sized(0.25f, 0.25f)
                     .clientTrackingRange(4).updateInterval(10).build("thrown_prop"));
+
+    public static final RegistryObject<EntityType<recrafted.boat.CanalBoat>> CANAL_BOAT = ENTITIES.register("canal_boat", () ->
+            EntityType.Builder.<recrafted.boat.CanalBoat>of(recrafted.boat.CanalBoat::new, MobCategory.MISC).sized(4.5f, 1.4f)
+                    .clientTrackingRange(12).updateInterval(1).build("canal_boat"));
 
     public static final RegistryObject<CreativeModeTab> TAB = TABS.register("main", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.recrafted"))

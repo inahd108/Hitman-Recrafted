@@ -28,6 +28,8 @@ LANG = {
     'block.recrafted.hoist_beam': 'Hoisting Beam',
     'block.recrafted.shutter': 'Warehouse Shutter',
     'block.recrafted.winch': 'Winch',
+    'block.recrafted.bridge_control': 'Drawbridge Lever',
+    'block.recrafted.lock_control': 'Sluice Wheel',
     'block.recrafted.metal_detector': 'Metal Detector Gate',
     'block.recrafted.chandelier': 'Brass Chandelier',
     'block.recrafted.wage_book': 'Wage Book',
@@ -424,6 +426,28 @@ def main():
             v[f'alarm={alarm},facing={d}'] = m
     write('blockstates/metal_detector.json', {'variants': v})
     write('models/item/metal_detector.json', {'parent': NS + 'metal_detector_idle'})
+
+    # keeper's controls: a cast-iron pedestal with a long lever (bridge) or a spoked wheel (lock)
+    base = [el([3, 0, 3], [13, 1, 13], tex='#b'), el([5, 1, 5], [11, 10, 11], tex='#i'), el([4, 10, 4], [12, 11, 12], tex='#b')]
+    write('models/block/bridge_control.json', {
+        'textures': {'b': 'minecraft:block/polished_blackstone', 'i': 'minecraft:block/green_concrete',
+                     'h': 'minecraft:block/stripped_oak_log', 'k': 'minecraft:block/red_concrete', 'particle': 'minecraft:block/green_concrete'},
+        'elements': base + [el([7, 11, 7], [9, 12, 9], tex='#b'),
+                            el([7.5, 11, 7.5], [8.5, 21, 8.5], tex='#h', rot={'origin': [8, 11, 8], 'axis': 'x', 'angle': -22.5}),
+                            el([7, 20, 7], [9, 22, 9], tex='#k', rot={'origin': [8, 11, 8], 'axis': 'x', 'angle': -22.5})]})
+    spokes = []
+    for a in (0, 45, -45):
+        spokes.append(el([7.5, 12, 7.5], [8.5, 24, 8.5], tex='#w', rot={'origin': [8, 18, 8], 'axis': 'z', 'angle': a} if a else None))
+    spokes.append(el([2, 17.5, 7.5], [14, 18.5, 8.5], tex='#w'))
+    ring = [el([3, 12, 7], [13, 13, 9], tex='#k'), el([3, 23, 7], [13, 24, 9], tex='#k'),
+            el([2, 13, 7], [3, 23, 9], tex='#k'), el([13, 13, 7], [14, 23, 9], tex='#k')]
+    write('models/block/lock_control.json', {
+        'textures': {'b': 'minecraft:block/polished_blackstone', 'i': 'minecraft:block/green_concrete',
+                     'w': 'minecraft:block/stripped_oak_log', 'k': 'minecraft:block/red_concrete', 'particle': 'minecraft:block/green_concrete'},
+        'elements': base + [el([7, 11, 7], [9, 18, 9], tex='#b')] + spokes + ring})
+    for blk in ('bridge_control', 'lock_control'):
+        write(f'blockstates/{blk}.json', {'variants': {'': {'model': NS + blk}}})
+        write(f'models/item/{blk}.json', {'parent': NS + blk})
 
     # language
     lang_path = os.path.join(ASSETS, 'lang/en_us.json')

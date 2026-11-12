@@ -52,6 +52,33 @@ public final class MapShots {
         Screenshot.grab(mc.gameDirectory, "map_" + name + ".png", mc.getMainRenderTarget(), c -> LOG.info("MAPSHOTS saved {}", name));
     }
 
+    private static final String[] GATES = System.getProperty("recrafted.mapshots.gates", "").split(",");
+
+    private static ServerLevel level(IntegratedServer server) {
+        return server.getLevel(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(Recrafted.MODID, DIM)));
+    }
+
+    /** A camera in a boat's own frame: x across, y up from the waterline, z towards the bow; yaw relative to its heading. */
+    private static void follow(IntegratedServer server, String boat, double lx, double ly, double lz, float yaw, float pitch) {
+        server.execute(() -> {
+            ServerLevel level = level(server);
+            if (level == null) return;
+            recrafted.boat.CanalBoat b = null;
+            for (net.minecraft.world.entity.Entity e : level.getAllEntities()) {
+                if (e instanceof recrafted.boat.CanalBoat cb && cb.name.equals(boat)) b = cb;
+            }
+            if (b == null) {
+                LOG.error("MAPSHOTS no boat {}", boat);
+                return;
+            }
+            net.minecraft.world.phys.Vec3 at = b.local(lx, ly, lz);
+            ServerPlayer sp = server.getPlayerList().getPlayers().get(0);
+            sp.setGameMode(GameType.SPECTATOR);
+            float y = b.getYRot() + yaw;
+            sp.teleportTo(level, at.x, at.y - sp.getEyeHeight(), at.z, y, pitch);
+        });
+    }
+
     private static void camera(IntegratedServer server, double x, double eyeY, double z, float yaw, float pitch) {
         server.execute(() -> {
             ServerPlayer sp = server.getPlayerList().getPlayers().get(0);
@@ -90,6 +117,16 @@ public final class MapShots {
             if (view.isBlank()) continue;
             String[] nv = view.split(":");
             String[] p = nv[1].split(",");
+            if (p[0].startsWith("@")) {                     // @boat,lx,ly,lz,yaw,pitch[,delayMs]
+                double lx = Double.parseDouble(p[1]), ly = Double.parseDouble(p[2]), lz = Double.parseDouble(p[3]);
+                float yaw = Float.parseFloat(p[4]), pitch = Float.parseFloat(p[5]);
+                long wait = p.length > 6 ? Long.parseLong(p[6]) : 500;
+                step(wait, () -> follow(server, p[0].substring(1), lx, ly, lz, yaw, pitch));
+                step(first ? settle + 10000 : 2500, () -> follow(server, p[0].substring(1), lx, ly, lz, yaw, pitch));
+                first = false;
+                step(300, () -> shot(mc, nv[0]));
+                continue;
+            }
             double x = Double.parseDouble(p[0]), y = Double.parseDouble(p[1]), z = Double.parseDouble(p[2]);
             float yaw = Float.parseFloat(p[3]), pitch = Float.parseFloat(p[4]);
             step(500, () -> camera(server, x, y, z, yaw, pitch));
@@ -136,6 +173,12 @@ public final class MapShots {
             return;
         }
         mc.options.hideGui = !GUI;
+        if (!GATES[0].isEmpty() && mc.level.getGameTime() % 10 == 0) {
+            server.execute(() -> {
+                ServerLevel lv = level(server);
+                if (lv != null) for (String g : GATES) recrafted.boat.Waterways.request(lv, g);
+            });
+        }
         if (now < nextAt || index >= STEPS.size() - 1) return;
         index++;
         try {

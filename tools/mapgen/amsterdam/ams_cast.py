@@ -72,11 +72,12 @@ def build(ctx):
         add('Apprentice', 'apprentice', [wp(e, 70, 'work', 'n', say=said), wp('studio', 15, 'talk'),
                                          wp('studio.stove', 15, 'drink', 'e'), wp(e, 50, 'work', 'n')])
 
+    # Kooistra lives on his houseboat and does his business at the smuggler's dock; the Zwaluw carries him between
     add('Sem Kooistra', 'kooistra', [
         wp('kooistra.houseboat', 45, 'drink', 'n', say='Weather like this, nobody looks at the water.'),
-        q(240, Z_OUTER_S), *cross(ob[2], Z_OUTER_S, Z_OUTER_N), q(320, Z_OUTER_N), q(X_EAST_W + 2, Z_OUTER_N),
+        wp('kooistra.landing', 0, 'look', board='zwaluw', alight='dock', say='Take her round. Slowly.'),
         wp('dock.jetty', 40, 'talk', 'w', say='Count it twice. Then once more.'),
-        q(X_EAST_W + 2, Z_OUTER_N), q(320, Z_OUTER_N), *cross(ob[2], Z_OUTER_N, Z_OUTER_S), q(240, Z_OUTER_S),
+        wp('dock.landing', 0, 'look', board='zwaluw', alight='home'),
     ], target=True, id='kooistra')
     for i in range(2):
         add(f'Deckhand {"Joop" if i == 0 else "Kees"}', 'deckhand', [wp('kooistra.houseboat', 5, 'guard', off=(i * 2 - 1, 0, 0))],
@@ -209,7 +210,7 @@ def build(ctx):
         idle(f'Skipper {["Gerard", "Willem", "Nel", "Bas"][i]}', 'skipper', 'ferry.square' if i < 2 else 'exit.ferry',
              'smoke' if i % 2 else 'look', 'n', off=(i * 2 - 3, 0, 0), skin=i % 2)
     idle('Lock Keeper Hendrik', 'bridge_keeper', 'lock.keeper', 'look', 'w')
-    idle('Bridge Keeper Toos', 'bridge_keeper', 'drawbridge.s', 'look', 'n', off=(-3, 0, 1))
+    idle('Bridge Keeper Toos', 'bridge_keeper', 'drawbridge.booth', 'look', 'n')
     # harbour: warehouse porters and the smuggler's crew
     for i in range(8):
         x = 60 + i * 30

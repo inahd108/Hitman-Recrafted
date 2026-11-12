@@ -153,6 +153,8 @@ def split_long_legs(w, npcs, max_leg=14, spacing=9):
             pairs.append((pts[-1], pts[0]))
         for k, (pa, pb) in enumerate(pairs):
             out.append(pa)
+            if pa.get('board'):          # this leg is made on a boat
+                continue
             a = (int(pa['pos'][0] // 1), int(pa['pos'][1]), int(pa['pos'][2] // 1))
             b = (int(pb['pos'][0] // 1), int(pb['pos'][1]), int(pb['pos'][2] // 1))
             if abs(a[0] - b[0]) + abs(a[2] - b[2]) + abs(a[1] - b[1]) <= max_leg:
@@ -192,6 +194,8 @@ def check_routes(w, npcs):
         if n['route'].get('mode') == 'loop' and len(cells) > 2:
             legs.append((len(cells) - 1, 0))
         for i, j in legs:
+            if pts[i].get('board'):
+                continue
             if wk.snap(*cells[i]) is None or wk.snap(*cells[j]) is None:
                 continue
             if not wk.reachable(cells[i], cells[j]):

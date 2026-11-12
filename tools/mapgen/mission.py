@@ -18,7 +18,7 @@ class Cast:
         p = self.A[a] if isinstance(a, str) else a
         return (p[0] + off[0], p[1] + off[1], p[2] + off[2])
 
-    def wp(self, a, wait=0, pose='stand', face=None, run=False, say=None, off=(0, 0, 0), seat=False):
+    def wp(self, a, wait=0, pose='stand', face=None, run=False, say=None, off=(0, 0, 0), seat=False, board=None, alight=None):
         x, y, z = self.P(a, off)
         x, y, z = int(x), int(y), int(z)
         if seat:
@@ -32,6 +32,9 @@ class Cast:
             d['run'] = True
         if say:
             d['say'] = say
+        if board:                        # get on this boat here; off again where it ties up at `alight`
+            d['board'] = board
+            d['alight'] = alight
         return d
 
     def _ok(self, x, y, z):

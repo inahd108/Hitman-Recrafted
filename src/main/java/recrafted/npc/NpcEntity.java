@@ -93,6 +93,11 @@ public class NpcEntity extends PathfinderMob {
     /** A target whose face nobody knows: not marked until the player identifies them. */
     public boolean hiddenTarget;
     public String followId = "";
+    /** Crew or passenger of this boat for good (skippers, tourists); empty for everyone else. */
+    public String aboard = "";
+    /** Who put a non-swimmer in the water, for the accident. */
+    @Nullable public ServerPlayer drownedBy;
+    private int wetTicks;
     @Nullable public Vec3 sickSpot;
     public int missionGen = -1;
     /** Index into the mission's cast list, or -1 for NPCs made in the editor. */
@@ -194,6 +199,7 @@ public class NpcEntity extends PathfinderMob {
     public float getSuspicionLevel() { return entityData.get(SUSPICION); }
     public String getSpeech() { return entityData.get(SPEECH); }
     public Route getRoute() { return route; }
+    public int routeIndex() { return routeIndex; }
     public boolean inCombat() { return getState() == State.ALERT; }
     @Nullable public UUID getDraggedBy() { return draggedBy; }
 
@@ -316,6 +322,7 @@ public class NpcEntity extends PathfinderMob {
             kill(null, true);
             return;
         }
+        if (tickWater()) return;
         if ((tickCount + getId()) % 5 == 0) perceive();
         switch (getState()) {
             case CALM -> tickRoutine();
@@ -373,6 +380,7 @@ public class NpcEntity extends PathfinderMob {
             tickFollow();
             return;
         }
+        if (tickAboard()) return;
         if (route.isEmpty()) {
             setAnim(NpcPose.STAND);
             return;
@@ -398,6 +406,17 @@ public class NpcEntity extends PathfinderMob {
         }
         setAnim(NpcPose.STAND);
         double dx = wp.x - getX(), dz = wp.z - getZ(), dy = wp.y - getY();
+        if (!wp.board.isEmpty() && dx * dx + dz * dz < 4 && Math.abs(dy) < 2) {
+            // a landing: get on the boat when it is tied up here, otherwise wait for it
+            getNavigation().stop();
+            recrafted.boat.CanalBoat boat = recrafted.boat.CanalBoat.find(level(), wp.board, position(), 10);
+            if (boat != null && boat.isMoored("") && startRiding(boat, true)) {
+                if (!wp.say.isEmpty()) say(wp.say, 80);
+            } else {
+                setAnim(NpcPose.LOOK);
+            }
+            return;
+        }
         if (dx * dx + dz * dz < 0.55 && Math.abs(dy) < 1.8) {
             arrive(wp);
             return;
@@ -495,7 +514,81 @@ public class NpcEntity extends PathfinderMob {
         yBodyRot = yaw;
     }
 
+    /**
+     * Riding a boat: stay put on the seat, and get off when the boat ties up at the mooring this leg was for.
+     * Crew and passengers who live aboard climb back on if they are ever left behind. Returns true if handled.
+     */
+    private boolean tickAboard() {
+        if (getVehicle() instanceof recrafted.boat.CanalBoat boat) {
+            getNavigation().stop();
+            Waypoint cur = route.isEmpty() ? null : route.points.get(Mth.clamp(routeIndex, 0, route.points.size() - 1));
+            if (aboard.isEmpty() && cur != null && !cur.board.isEmpty() && boat.isMoored(cur.alight)) {
+                Waypoint nxt = route.points.get((routeIndex + 1) % route.points.size());
+                Vec3 land = nxt.pos().distanceToSqr(position()) < 196 ? nxt.pos() : boat.getDismountLocationForPassenger(this);
+                stopRiding();
+                teleportTo(land.x, land.y, land.z);
+                advance();
+                return true;
+            }
+            NpcPose pose = boat.seatOf(this).helm() ? NpcPose.STAND : boat.design().seated ? NpcPose.SIT
+                    : cur != null && !aboard.isEmpty() ? cur.pose : getRole().guard ? NpcPose.GUARD : NpcPose.LOOK;
+            setAnim(pose);
+            return true;
+        }
+        if (!aboard.isEmpty()) {
+            getNavigation().stop();
+            setAnim(NpcPose.STAND);
+            if (tickCount % 20 == 0) {
+                recrafted.boat.CanalBoat boat = recrafted.boat.CanalBoat.find(level(), aboard, position(), 96);
+                if (boat != null) startRiding(boat, true);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /** In the water: non-swimmers go under after a few seconds, everyone else keeps their head up. Returns true if drowned. */
+    private boolean tickWater() {
+        if (!isInWater() || isPassenger() || isDown()) {
+            wetTicks = 0;
+            return false;
+        }
+        wetTicks++;
+        if (getRole().cantSwim()) {
+            if (wetTicks == 1) say("Help! I can't—", 50);
+            if (wetTicks % 8 == 0) {
+                ((ServerLevel) level()).sendParticles(ParticleTypes.SPLASH, getX(), getY() + 0.8, getZ(), 12, .4, .1, .4, .05);
+                ((ServerLevel) level()).sendParticles(ParticleTypes.BUBBLE, getX(), getY() + 0.3, getZ(), 6, .3, .2, .3, .02);
+            }
+            setDeltaMovement(getDeltaMovement().multiply(0.6, 1, 0.6).add(0, -0.02, 0));
+            if (wetTicks > 70) {
+                kill(drownedBy, true);
+                return true;
+            }
+        } else if (random.nextFloat() < 0.8f) {
+            getJumpControl().jump();
+        }
+        return false;
+    }
+
     private void tickFollow() {
+        if (leader != null && leader.isAlive() && !leader.isDown()) {
+            if (leader.getVehicle() instanceof recrafted.boat.CanalBoat boat) {
+                if (getVehicle() != boat && distanceTo(boat) < 16) startRiding(boat, true);
+                if (getVehicle() == boat) {
+                    getNavigation().stop();
+                    setAnim(NpcPose.GUARD);
+                    return;
+                }
+            } else if (getVehicle() instanceof recrafted.boat.CanalBoat) {
+                if (leader.isInWater()) {
+                    setAnim(NpcPose.LOOK);
+                    return;
+                }
+                stopRiding();
+                teleportTo(leader.getX(), leader.getY(), leader.getZ());
+            }
+        }
         if (leader == null || !leader.isAlive() || leader.isRemoved()) {
             leader = null;
             if (tickCount % 20 == 0) {
@@ -913,6 +1006,7 @@ public class NpcEntity extends PathfinderMob {
     }
 
     private void goDown(State s) {
+        if (isPassenger()) stopRiding();
         setState(s);
         getNavigation().stop();
         setSprinting(false);
@@ -1048,6 +1142,7 @@ public class NpcEntity extends PathfinderMob {
         tag.putString("ContractId", contractId);
         tag.putBoolean("HiddenTarget", hiddenTarget);
         tag.putString("FollowId", followId);
+        tag.putString("Aboard", aboard);
         tag.putInt("Gen", missionGen);
         tag.putInt("CastIndex", castIndex);
         tag.putInt("ScheduleStage", scheduleStage);
@@ -1075,6 +1170,7 @@ public class NpcEntity extends PathfinderMob {
         contractId = tag.getString("ContractId");
         hiddenTarget = tag.getBoolean("HiddenTarget");
         followId = tag.getString("FollowId");
+        aboard = tag.getString("Aboard");
         missionGen = tag.contains("Gen") ? tag.getInt("Gen") : -1;
         castIndex = tag.contains("CastIndex") ? tag.getInt("CastIndex") : -1;
         scheduleStage = tag.contains("ScheduleStage") ? tag.getInt("ScheduleStage") : -1;

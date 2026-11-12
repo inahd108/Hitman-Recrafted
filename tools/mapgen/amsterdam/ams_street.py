@@ -101,13 +101,7 @@ def boats(ctx):
         if any(bx0 - 4 <= x + L and x <= bx1 + 4 for bx0, bx1 in OUTER_BRIDGES):
             x += 6
             continue
-        name = 'kooistra_houseboat' if n == 7 else None
-        houseboat(ctx, x, OUTER[1] - 5, L, 5, rng, name=name,
-                  hull='black_concrete' if name else None, cabin='dark_oak_planks' if name else None)
-        if name:
-            ctx['anchors']['kooistra.houseboat'] = (x + 3, WATER + 2, OUTER[1] - 3)
-            ctx['w'].set(x + 5, WATER + 2, OUTER[1] - 3, 'barrel[facing=up]')          # his bottle of jenever
-            ctx['w'].set(x + 5, WATER + 3, OUTER[1] - 3, 'recrafted:drink[poison=none]')
+        houseboat(ctx, x, OUTER[1] - 5, L, 5, rng)
         x += L + rng.randint(3, 8)
         n += 1
     # a few along the west cross canal

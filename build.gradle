@@ -46,7 +46,7 @@ legacyForge {
             }
             if (project.hasProperty('mapshots')) {
                 systemProperty 'recrafted.mapshots', project.findProperty('mapshots')
-                ['views', 'times', 'settle', 'fov', 'distance', 'start', 'gui'].each { k ->
+                ['views', 'times', 'settle', 'fov', 'distance', 'start', 'gui', 'gates'].each { k ->
                     def prop = 'map' + k.capitalize()
                     if (project.hasProperty(prop)) systemProperty "recrafted.mapshots.${k}", project.findProperty(prop)
                 }

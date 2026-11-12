@@ -23,8 +23,11 @@ INTEL = [
     "Ostendorp takes her champagne in the private viewing room. Kooistra keeps a bottle of jenever in his cabin.",
     "The saleroom chandelier hangs on a rope from the press balcony. Ostendorp stands under it for every lot.",
     "The Gulden Hamer's ledger is kept in the strongbox in the basement vault.",
-    "Kooistra can't swim, so he never leaves the boat between stops.",
-    "The bridge keeper raises the Gildegracht drawbridge for any boat that sounds its horn twice.",
+    "Kooistra can't swim. His salon boat, the Zwaluw, takes him from his houseboat on the Gildegracht through the "
+    "drawbridge, up to the smuggler's dock, out on the IJ and home again through the lock.",
+    "The bridge keeper raises the Gildegracht drawbridge for any boat that sounds its horn twice. Boats wait for it "
+    "under the goods crane on the south quay. The lever in her booth holds the bridge down.",
+    "The lock keeper's sluice wheel empties the lock chamber all at once. Nobody should be standing at the rail when it does.",
 ]
 TARGETS = [
     dict(id='ostendorp', name='Margriet Ostendorp', desc='Auctioneer. Runs tonight\'s sale at the Gulden Hamer, never alone.'),
@@ -70,7 +73,10 @@ def props(ctx):
 def build(ctx):
     exits(ctx)
     import ams_cast
+    import ams_boats
     npcs, zones = ams_cast.build(ctx)
+    boats, gate_defs = ams_boats.mission_data(ctx)
+    npcs += ams_boats.crews(ctx, boats)
     sp = ctx['anchors'].get('station.platform', (20, STREET + 2, 50))
     return {
         'id': 'amsterdam',
@@ -86,4 +92,6 @@ def build(ctx):
         'props': props(ctx),
         'npcs': npcs,
         'clock': CLOCK,
+        'boats': boats,
+        'gates': gate_defs,
     }

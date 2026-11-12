@@ -44,6 +44,7 @@ public final class ClientSetup {
             e.registerEntityRenderer(ModRegistry.NPC.get(), NpcRenderer::new);
             e.registerEntityRenderer(ModRegistry.PROP.get(), PropRenderer::new);
             e.registerEntityRenderer(ModRegistry.THROWN_PROP.get(), ThrownItemRenderer::new);
+            e.registerEntityRenderer(ModRegistry.CANAL_BOAT.get(), CanalBoatRenderer::new);
         }
 
         @SubscribeEvent

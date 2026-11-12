@@ -35,6 +35,9 @@ public final class SelfTest {
     private static final boolean ENABLED = Boolean.getBoolean("recrafted.selftest");
     private static final int RUN_TICKS = Integer.getInteger("recrafted.selftest.ticks", 2400);
     private static final String MISSION = System.getProperty("recrafted.selftest.mission", "corvara");
+    private static boolean kooAboard, phaseOne;
+    private static double tourMoved;
+    private static final Map<Integer, Vec3> boatStart = new HashMap<>();
     private static int ticks = -1;
     private static final Map<Integer, Vec3> startPos = new HashMap<>();
 
@@ -88,11 +91,33 @@ public final class SelfTest {
             // jump the clock to the sixteenth minute: the sale has started
             MissionState.get(level).startTick = level.getGameTime() - 16L * 20 * cur.clock.secondsPerMinute();
         }
-        if (ticks == RUN_TICKS && !MISSION.equals("corvara")) {
-            boolean ok = amsterdam(level);
-            LOG.info(ok ? "SELFTEST PASS" : "SELFTEST FAIL");
-            server.halt(false);
-            return;
+        if (!MISSION.equals("corvara")) {
+            for (Entity en : level.getAllEntities()) {
+                if (en instanceof recrafted.boat.CanalBoat b) {
+                    Vec3 s0 = boatStart.computeIfAbsent(b.getId(), k -> b.position());
+                    if (b.name.startsWith("tour")) tourMoved = Math.max(tourMoved, s0.distanceTo(b.position()));
+                }
+                if (en instanceof NpcEntity n && n.contractId.equals("kooistra") && n.getVehicle() instanceof recrafted.boat.CanalBoat) kooAboard = true;
+                if (ticks % 100 == 0 && en instanceof NpcEntity n && n.contractId.equals("kooistra")) {
+                    LOG.info("SELFTEST trace kooistra at {} route #{} state {} anim {} vehicle {}", n.blockPosition().toShortString(), n.routeIndex(),
+                            n.getState(), n.getAnim(), n.getVehicle());
+                }
+                if (ticks % 100 == 0 && en instanceof recrafted.boat.CanalBoat b && b.name.equals("zwaluw")) {
+                    LOG.info("SELFTEST trace zwaluw at {} moored {}", b.blockPosition().toShortString(), b.isMoored(""));
+                }
+            }
+            if (ticks > RUN_TICKS - 100 && ticks <= RUN_TICKS) recrafted.boat.Waterways.request(level, "drawbridge");
+            if (ticks == RUN_TICKS) {
+                phaseOne = amsterdam(level);
+                return;
+            }
+            if (ticks == RUN_TICKS + 140) {
+                MissionState st = MissionState.get(level);
+                boolean ok = phaseOne & check(st.done.contains("kill_kooistra"), "Kooistra drowns in the canal");
+                LOG.info(ok ? "SELFTEST PASS" : "SELFTEST FAIL");
+                server.halt(false);
+            }
+            if (ticks >= RUN_TICKS) return;
         }
         if (ticks == RUN_TICKS) {
             Mission m = Mission.corvara();
@@ -200,8 +225,20 @@ public final class SelfTest {
             ok &= check(MissionManager.metalDetector(level, armed, gate), "knife sets off the gate");
             ok &= check(!MissionManager.metalDetector(level, clean, gate), "empty pockets pass");
         }
-        koo.kill(null, true);
-        ok &= check(st.done.contains("kill_kooistra"), "Kooistra objective");
+        // the boats
+        List<recrafted.boat.CanalBoat> boats = new ArrayList<>();
+        for (Entity en : level.getAllEntities()) if (en instanceof recrafted.boat.CanalBoat b) boats.add(b);
+        ok &= check(boats.size() == m.boats.size(), boats.size() + " of " + m.boats.size() + " boats afloat");
+        for (recrafted.boat.CanalBoat b : boats) {
+            boolean skipper = b.getPassengers().stream().anyMatch(e -> e instanceof NpcEntity n && n.getRole() == recrafted.npc.NpcRole.SKIPPER);
+            ok &= check(skipper, b.name + " has its skipper aboard (" + b.getPassengers().size() + " aboard)");
+        }
+        ok &= check(tourMoved > 30, String.format("tour boats under way (%.0f blocks)", tourMoved));
+        ok &= check(kooAboard, "Kooistra boarded the Zwaluw");
+        ok &= check(recrafted.boat.Waterways.isOpen(level, "drawbridge"), "drawbridge opens for a boat");
+        // a non-swimmer in the canal: drop Kooistra off his boat into the Gildegracht
+        if (koo.isPassenger()) koo.stopRiding();
+        koo.teleportTo(230.5, 62.2, 204.5);
         ok &= check(!st.done.contains("ledger"), "ledger bonus still open");
         return ok;
     }

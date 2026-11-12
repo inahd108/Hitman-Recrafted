@@ -77,8 +77,9 @@
   "Ostendorp takes her champagne in the private viewing room. Kooistra keeps a bottle of jenever in his cabin.",
   "The saleroom chandelier hangs on a rope from the press balcony. Ostendorp stands under it for every lot.",
   "The Gulden Hamer's ledger is kept in the strongbox in the basement vault.",
-  "Kooistra can't swim, so he never leaves the boat between stops.",
-  "The bridge keeper raises the Gildegracht drawbridge for any boat that sounds its horn twice."
+  "Kooistra can't swim. His salon boat, the Zwaluw, takes him from his houseboat on the Gildegracht through the drawbridge, up to the smuggler's dock, out on the IJ and home again through the lock.",
+  "The bridge keeper raises the Gildegracht drawbridge for any boat that sounds its horn twice. Boats wait for it under the goods crane on the south quay. The lever in her booth holds the bridge down.",
+  "The lock keeper's sluice wheel empties the lock chamber all at once. Nobody should be standing at the rail when it does."
  ],
  "zones": [
   {
@@ -1014,9 +1015,9 @@
    "name": "Sem Kooistra",
    "role": "kooistra",
    "pos": [
-    251.5,
+    155.5,
     64,
-    110.5
+    192.5
    ],
    "yaw": 180,
    "route": {
@@ -1024,9 +1025,9 @@
     "points": [
      {
       "pos": [
-       251.5,
+       155.5,
        64,
-       110.5
+       192.5
       ],
       "wait": 900,
       "pose": "drink",
@@ -1035,192 +1036,15 @@
      },
      {
       "pos": [
-       251.5,
+       158.5,
        64,
-       113.5
+       194.5
       ],
       "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       247.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       240.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       249.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       258.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       266.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       275.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       284.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       293.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       293.5,
-       65,
-       109.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       293.5,
-       66,
-       102.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       293.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       300.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       307.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       313.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       320.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       327.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       334.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       341.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       344.5,
-       64,
-       85.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       344.5,
-       64,
-       78.5
-      ],
-      "wait": 0,
-      "pose": "stand"
+      "pose": "look",
+      "say": "Take her round. Slowly.",
+      "board": "zwaluw",
+      "alight": "dock"
      },
      {
       "pos": [
@@ -1235,192 +1059,14 @@
      },
      {
       "pos": [
-       344.5,
+       345.5,
        64,
-       78.5
+       71.5
       ],
       "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       344.5,
-       64,
-       85.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       341.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       334.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       327.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       320.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       313.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       306.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       300.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       293.5,
-       64,
-       89.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       293.5,
-       65,
-       97.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       293.5,
-       66,
-       104.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       293.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       284.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       275.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       267.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       258.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       249.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       240.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       247.5,
-       64,
-       117.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       251.5,
-       64,
-       113.5
-      ],
-      "wait": 0,
-      "pose": "stand"
+      "pose": "look",
+      "board": "zwaluw",
+      "alight": "home"
      }
     ]
    },
@@ -1431,9 +1077,9 @@
    "name": "Deckhand Joop",
    "role": "deckhand",
    "pos": [
-    250.5,
+    154.5,
     64,
-    110.5
+    192.5
    ],
    "yaw": 0,
    "route": {
@@ -1441,9 +1087,9 @@
     "points": [
      {
       "pos": [
-       250.5,
+       154.5,
        64,
-       110.5
+       192.5
       ],
       "wait": 100,
       "pose": "guard"
@@ -1458,9 +1104,9 @@
    "name": "Deckhand Kees",
    "role": "deckhand",
    "pos": [
-    252.5,
+    156.5,
     64,
-    110.5
+    192.5
    ],
    "yaw": 0,
    "route": {
@@ -1468,9 +1114,9 @@
     "points": [
      {
       "pos": [
-       252.5,
+       156.5,
        64,
-       110.5
+       192.5
       ],
       "wait": 100,
       "pose": "guard"
@@ -12851,7 +12497,7 @@
      },
      {
       "pos": [
-       324.5,
+       325.5,
        64,
        221.5
       ],
@@ -12860,7 +12506,7 @@
      },
      {
       "pos": [
-       315.5,
+       317.5,
        64,
        221.5
       ],
@@ -12869,7 +12515,7 @@
      },
      {
       "pos": [
-       307.5,
+       309.5,
        64,
        221.5
       ],
@@ -12878,7 +12524,7 @@
      },
      {
       "pos": [
-       298.5,
+       302.5,
        64,
        221.5
       ],
@@ -12887,7 +12533,16 @@
      },
      {
       "pos": [
-       289.5,
+       295.5,
+       64,
+       222.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       288.5,
        64,
        221.5
       ],
@@ -13117,18 +12772,18 @@
      },
      {
       "pos": [
-       34.5,
-       64,
-       57.5
+       38.5,
+       66,
+       53.5
       ],
       "wait": 0,
       "pose": "stand"
      },
      {
       "pos": [
-       25.5,
-       64,
-       57.5
+       29.5,
+       66,
+       53.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -13575,7 +13230,7 @@
      },
      {
       "pos": [
-       324.5,
+       323.5,
        64,
        221.5
       ],
@@ -13584,7 +13239,7 @@
      },
      {
       "pos": [
-       315.5,
+       314.5,
        64,
        221.5
       ],
@@ -13604,16 +13259,16 @@
       "pos": [
        298.5,
        64,
-       221.5
+       222.5
       ],
       "wait": 0,
       "pose": "stand"
      },
      {
       "pos": [
-       290.5,
+       289.5,
        64,
-       221.5
+       222.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -13841,18 +13496,18 @@
      },
      {
       "pos": [
-       35.5,
-       64,
-       57.5
+       39.5,
+       65,
+       53.5
       ],
       "wait": 0,
       "pose": "stand"
      },
      {
       "pos": [
-       26.5,
-       64,
-       57.5
+       30.5,
+       66,
+       53.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -22423,7 +22078,7 @@
      },
      {
       "pos": [
-       289.5,
+       290.5,
        64,
        221.5
       ],
@@ -22434,14 +22089,14 @@
       "pos": [
        298.5,
        64,
-       221.5
+       222.5
       ],
       "wait": 0,
       "pose": "stand"
      },
      {
       "pos": [
-       307.5,
+       305.5,
        64,
        221.5
       ],
@@ -22450,7 +22105,7 @@
      },
      {
       "pos": [
-       315.5,
+       314.5,
        64,
        221.5
       ],
@@ -22477,7 +22132,7 @@
      },
      {
       "pos": [
-       324.5,
+       323.5,
        64,
        221.5
       ],
@@ -22495,8 +22150,8 @@
      },
      {
       "pos": [
-       307.5,
-       64,
+       306.5,
+       65,
        221.5
       ],
       "wait": 0,
@@ -22504,9 +22159,9 @@
      },
      {
       "pos": [
-       298.5,
+       299.5,
        64,
-       221.5
+       222.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -22515,14 +22170,14 @@
       "pos": [
        290.5,
        64,
-       221.5
+       222.5
       ],
       "wait": 0,
       "pose": "stand"
      },
      {
       "pos": [
-       282.5,
+       283.5,
        64,
        221.5
       ],
@@ -22531,7 +22186,7 @@
      },
      {
       "pos": [
-       273.5,
+       274.5,
        64,
        221.5
       ],
@@ -22540,7 +22195,7 @@
      },
      {
       "pos": [
-       265.5,
+       266.5,
        64,
        221.5
       ],
@@ -22549,7 +22204,7 @@
      },
      {
       "pos": [
-       256.5,
+       257.5,
        64,
        221.5
       ],
@@ -22560,7 +22215,7 @@
       "pos": [
        249.5,
        64,
-       222.5
+       221.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -22578,7 +22233,7 @@
       "pos": [
        249.5,
        64,
-       239.5
+       238.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -22594,7 +22249,7 @@
      },
      {
       "pos": [
-       232.5,
+       233.5,
        64,
        239.5
       ],
@@ -22710,7 +22365,7 @@
      },
      {
       "pos": [
-       290.5,
+       291.5,
        64,
        221.5
       ],
@@ -22721,6 +22376,15 @@
       "pos": [
        299.5,
        64,
+       222.5
+      ],
+      "wait": 0,
+      "pose": "stand"
+     },
+     {
+      "pos": [
+       306.5,
+       65,
        221.5
       ],
       "wait": 0,
@@ -22728,16 +22392,7 @@
      },
      {
       "pos": [
-       308.5,
-       64,
-       221.5
-      ],
-      "wait": 0,
-      "pose": "stand"
-     },
-     {
-      "pos": [
-       316.5,
+       315.5,
        64,
        221.5
       ],
@@ -22764,7 +22419,7 @@
      },
      {
       "pos": [
-       325.5,
+       324.5,
        64,
        221.5
       ],
@@ -22782,7 +22437,7 @@
      },
      {
       "pos": [
-       308.5,
+       307.5,
        64,
        221.5
       ],
@@ -22791,9 +22446,9 @@
      },
      {
       "pos": [
-       299.5,
+       300.5,
        64,
-       221.5
+       222.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -22802,14 +22457,14 @@
       "pos": [
        291.5,
        64,
-       221.5
+       222.5
       ],
       "wait": 0,
       "pose": "stand"
      },
      {
       "pos": [
-       283.5,
+       284.5,
        64,
        221.5
       ],
@@ -22818,7 +22473,7 @@
      },
      {
       "pos": [
-       274.5,
+       275.5,
        64,
        221.5
       ],
@@ -22827,7 +22482,7 @@
      },
      {
       "pos": [
-       266.5,
+       267.5,
        64,
        221.5
       ],
@@ -22836,7 +22491,7 @@
      },
      {
       "pos": [
-       257.5,
+       258.5,
        64,
        221.5
       ],
@@ -22845,7 +22500,7 @@
      },
      {
       "pos": [
-       249.5,
+       250.5,
        64,
        221.5
       ],
@@ -22865,7 +22520,7 @@
       "pos": [
        249.5,
        64,
-       238.5
+       237.5
       ],
       "wait": 0,
       "pose": "stand"
@@ -22881,7 +22536,7 @@
      },
      {
       "pos": [
-       233.5,
+       234.5,
        64,
        239.5
       ],
@@ -22987,7 +22642,7 @@
      {
       "pos": [
        28.5,
-       64,
+       66,
        50.5
       ],
       "wait": 0,
@@ -22996,7 +22651,7 @@
      {
       "pos": [
        35.5,
-       64,
+       66,
        50.5
       ],
       "wait": 0,
@@ -23005,7 +22660,7 @@
      {
       "pos": [
        40.5,
-       64,
+       65,
        51.5
       ],
       "wait": 600,
@@ -23081,7 +22736,7 @@
    "role": "houseboater",
    "pos": [
     48.5,
-    64,
+    65,
     112.5
    ],
    "yaw": 0,
@@ -23091,7 +22746,7 @@
      {
       "pos": [
        48.5,
-       64,
+       65,
        112.5
       ],
       "wait": 600,
@@ -23365,9 +23020,9 @@
    "name": "Bridge Keeper Toos",
    "role": "bridge_keeper",
    "pos": [
-    299.5,
+    294.5,
     64,
-    217.5
+    220.5
    ],
    "yaw": 180,
    "route": {
@@ -23375,9 +23030,9 @@
     "points": [
      {
       "pos": [
-       299.5,
+       294.5,
        64,
-       217.5
+       220.5
       ],
       "wait": 600,
       "pose": "look",
@@ -23902,6 +23557,396 @@
     ]
    },
    "skin": 1
+  },
+  {
+   "name": "Skipper Jos",
+   "role": "skipper",
+   "pos": [
+    158.5,
+    63,
+    197.5
+   ],
+   "yaw": 0,
+   "aboard": "zwaluw",
+   "skin": 0,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       158.5,
+       63,
+       197.5
+      ],
+      "wait": 600,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Skipper Marloes",
+   "role": "skipper",
+   "pos": [
+    60,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour1",
+   "skin": 1,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       60,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Mr. Becker",
+   "role": "tourist",
+   "pos": [
+    60,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour1",
+   "skin": 3,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       60,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "look"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Mrs. Becker",
+   "role": "tourist",
+   "pos": [
+    60,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour1",
+   "skin": 4,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       60,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "phone"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Ms. Kowalski",
+   "role": "tourist",
+   "pos": [
+    60,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour1",
+   "skin": 5,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       60,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "talk"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Mr. Silva",
+   "role": "tourist",
+   "pos": [
+    60,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour1",
+   "skin": 3,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       60,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "look"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Mrs. Ito",
+   "role": "tourist",
+   "pos": [
+    60,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour1",
+   "skin": 4,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       60,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "phone"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Mr. Ito",
+   "role": "tourist",
+   "pos": [
+    60,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour1",
+   "skin": 5,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       60,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "talk"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Skipper Pieter",
+   "role": "skipper",
+   "pos": [
+    292,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour2",
+   "skin": 1,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       292,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "stand"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Ms. Laurent",
+   "role": "tourist",
+   "pos": [
+    292,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour2",
+   "skin": 3,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       292,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "look"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Mr. Owusu",
+   "role": "tourist",
+   "pos": [
+    292,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour2",
+   "skin": 4,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       292,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "phone"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Mrs. Novak",
+   "role": "tourist",
+   "pos": [
+    292,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour2",
+   "skin": 5,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       292,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "talk"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Mr. Hughes",
+   "role": "tourist",
+   "pos": [
+    292,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour2",
+   "skin": 3,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       292,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "look"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Ms. Rossi",
+   "role": "tourist",
+   "pos": [
+    292,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour2",
+   "skin": 4,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       292,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "phone"
+     }
+    ]
+   }
+  },
+  {
+   "name": "Mr. Andersen",
+   "role": "tourist",
+   "pos": [
+    292,
+    63,
+    202.5
+   ],
+   "yaw": 0,
+   "aboard": "tour2",
+   "skin": 5,
+   "route": {
+    "mode": "once",
+    "points": [
+     {
+      "pos": [
+       292,
+       63,
+       202.5
+      ],
+      "wait": 600,
+      "pose": "talk"
+     }
+    ]
+   }
   }
  ],
  "clock": {
@@ -23929,5 +23974,2305 @@
     "sub": "Ostendorp goes down to the vault, then upstairs for champagne."
    }
   ]
- }
+ },
+ "boats": [
+  {
+   "name": "zwaluw",
+   "design": "zwaluw",
+   "y": 62.5,
+   "route": [
+    {
+     "pos": [
+      158.5,
+      197.5
+     ],
+     "stop": "home",
+     "wait": 400,
+     "hold": "kooistra"
+    },
+    {
+     "pos": [
+      168.8,
+      197.5
+     ]
+    },
+    {
+     "pos": [
+      171.62,
+      197.64
+     ]
+    },
+    {
+     "pos": [
+      174.38,
+      198.07
+     ]
+    },
+    {
+     "pos": [
+      177.08,
+      198.78
+     ]
+    },
+    {
+     "pos": [
+      179.73,
+      199.77
+     ]
+    },
+    {
+     "pos": [
+      180.77,
+      200.23
+     ]
+    },
+    {
+     "pos": [
+      183.42,
+      201.22
+     ]
+    },
+    {
+     "pos": [
+      186.12,
+      201.93
+     ]
+    },
+    {
+     "pos": [
+      188.88,
+      202.36
+     ]
+    },
+    {
+     "pos": [
+      191.7,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      271.27,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      273.58,
+      202.67
+     ]
+    },
+    {
+     "pos": [
+      275.78,
+      203.18
+     ]
+    },
+    {
+     "pos": [
+      277.88,
+      204.03
+     ]
+    },
+    {
+     "pos": [
+      279.86,
+      205.23
+     ]
+    },
+    {
+     "pos": [
+      284.5,
+      208.5
+     ],
+     "gate": "drawbridge"
+    },
+    {
+     "pos": [
+      289.14,
+      205.23
+     ]
+    },
+    {
+     "pos": [
+      291.12,
+      204.03
+     ]
+    },
+    {
+     "pos": [
+      293.22,
+      203.18
+     ]
+    },
+    {
+     "pos": [
+      295.42,
+      202.67
+     ]
+    },
+    {
+     "pos": [
+      297.73,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      319,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      344.5,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      347.12,
+      202.12
+     ]
+    },
+    {
+     "pos": [
+      349.0,
+      201.0
+     ]
+    },
+    {
+     "pos": [
+      350.12,
+      199.12
+     ]
+    },
+    {
+     "pos": [
+      350.5,
+      196.5
+     ]
+    },
+    {
+     "pos": [
+      350.5,
+      103.5
+     ]
+    },
+    {
+     "pos": [
+      350.5,
+      91
+     ]
+    },
+    {
+     "pos": [
+      349.5,
+      71.5
+     ],
+     "stop": "dock",
+     "wait": 400,
+     "hold": "kooistra"
+    },
+    {
+     "pos": [
+      350.5,
+      52
+     ]
+    },
+    {
+     "pos": [
+      350.5,
+      33.5
+     ]
+    },
+    {
+     "pos": [
+      350.23,
+      30.62
+     ]
+    },
+    {
+     "pos": [
+      349.4,
+      27.98
+     ]
+    },
+    {
+     "pos": [
+      348.03,
+      25.58
+     ]
+    },
+    {
+     "pos": [
+      346.1,
+      23.42
+     ]
+    },
+    {
+     "pos": [
+      340.9,
+      18.58
+     ]
+    },
+    {
+     "pos": [
+      338.6,
+      16.73
+     ]
+    },
+    {
+     "pos": [
+      336.12,
+      15.24
+     ]
+    },
+    {
+     "pos": [
+      333.46,
+      14.13
+     ]
+    },
+    {
+     "pos": [
+      330.6,
+      13.39
+     ]
+    },
+    {
+     "pos": [
+      320.5,
+      11.5
+     ]
+    },
+    {
+     "pos": [
+      62.5,
+      11.5
+     ]
+    },
+    {
+     "pos": [
+      52.4,
+      13.39
+     ]
+    },
+    {
+     "pos": [
+      49.54,
+      14.13
+     ]
+    },
+    {
+     "pos": [
+      46.88,
+      15.24
+     ]
+    },
+    {
+     "pos": [
+      44.4,
+      16.73
+     ]
+    },
+    {
+     "pos": [
+      42.1,
+      18.58
+     ]
+    },
+    {
+     "pos": [
+      36.9,
+      23.42
+     ]
+    },
+    {
+     "pos": [
+      34.97,
+      25.58
+     ]
+    },
+    {
+     "pos": [
+      33.6,
+      27.98
+     ]
+    },
+    {
+     "pos": [
+      32.77,
+      30.62
+     ]
+    },
+    {
+     "pos": [
+      32.5,
+      33.5
+     ]
+    },
+    {
+     "pos": [
+      32.5,
+      54
+     ],
+     "gate": "lock.n"
+    },
+    {
+     "pos": [
+      32.5,
+      72.5
+     ],
+     "stop": "lock.chamber",
+     "wait": 160
+    },
+    {
+     "pos": [
+      32.5,
+      74.5
+     ],
+     "gate": "lock.s"
+    },
+    {
+     "pos": [
+      32.5,
+      103.5
+     ]
+    },
+    {
+     "pos": [
+      32.5,
+      196.5
+     ]
+    },
+    {
+     "pos": [
+      32.88,
+      199.12
+     ]
+    },
+    {
+     "pos": [
+      34.0,
+      201.0
+     ]
+    },
+    {
+     "pos": [
+      35.88,
+      202.12
+     ]
+    },
+    {
+     "pos": [
+      38.5,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      100,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      130.5,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      144.5,
+      197.5
+     ]
+    }
+   ]
+  },
+  {
+   "name": "tour1",
+   "design": "tour",
+   "y": 62.5,
+   "route": [
+    {
+     "pos": [
+      60,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      292,
+      202.5
+     ],
+     "gate": "drawbridge"
+    },
+    {
+     "pos": [
+      319,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      344.5,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      347.12,
+      202.12
+     ]
+    },
+    {
+     "pos": [
+      349.0,
+      201.0
+     ]
+    },
+    {
+     "pos": [
+      350.12,
+      199.12
+     ]
+    },
+    {
+     "pos": [
+      350.5,
+      196.5
+     ]
+    },
+    {
+     "pos": [
+      350.5,
+      109.5
+     ]
+    },
+    {
+     "pos": [
+      350.12,
+      106.88
+     ]
+    },
+    {
+     "pos": [
+      349.0,
+      105.0
+     ]
+    },
+    {
+     "pos": [
+      347.12,
+      103.88
+     ]
+    },
+    {
+     "pos": [
+      344.5,
+      103.5
+     ]
+    },
+    {
+     "pos": [
+      38.5,
+      103.5
+     ]
+    },
+    {
+     "pos": [
+      35.88,
+      103.88
+     ]
+    },
+    {
+     "pos": [
+      34.0,
+      105.0
+     ]
+    },
+    {
+     "pos": [
+      32.88,
+      106.88
+     ]
+    },
+    {
+     "pos": [
+      32.5,
+      109.5
+     ]
+    },
+    {
+     "pos": [
+      32.5,
+      196.5
+     ]
+    },
+    {
+     "pos": [
+      32.88,
+      199.12
+     ]
+    },
+    {
+     "pos": [
+      34.0,
+      201.0
+     ]
+    },
+    {
+     "pos": [
+      35.88,
+      202.12
+     ]
+    },
+    {
+     "pos": [
+      38.5,
+      202.5
+     ]
+    }
+   ]
+  },
+  {
+   "name": "tour2",
+   "design": "tour",
+   "y": 62.5,
+   "route": [
+    {
+     "pos": [
+      292,
+      202.5
+     ],
+     "gate": "drawbridge"
+    },
+    {
+     "pos": [
+      319,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      344.5,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      347.12,
+      202.12
+     ]
+    },
+    {
+     "pos": [
+      349.0,
+      201.0
+     ]
+    },
+    {
+     "pos": [
+      350.12,
+      199.12
+     ]
+    },
+    {
+     "pos": [
+      350.5,
+      196.5
+     ]
+    },
+    {
+     "pos": [
+      350.5,
+      109.5
+     ]
+    },
+    {
+     "pos": [
+      350.12,
+      106.88
+     ]
+    },
+    {
+     "pos": [
+      349.0,
+      105.0
+     ]
+    },
+    {
+     "pos": [
+      347.12,
+      103.88
+     ]
+    },
+    {
+     "pos": [
+      344.5,
+      103.5
+     ]
+    },
+    {
+     "pos": [
+      38.5,
+      103.5
+     ]
+    },
+    {
+     "pos": [
+      35.88,
+      103.88
+     ]
+    },
+    {
+     "pos": [
+      34.0,
+      105.0
+     ]
+    },
+    {
+     "pos": [
+      32.88,
+      106.88
+     ]
+    },
+    {
+     "pos": [
+      32.5,
+      109.5
+     ]
+    },
+    {
+     "pos": [
+      32.5,
+      196.5
+     ]
+    },
+    {
+     "pos": [
+      32.88,
+      199.12
+     ]
+    },
+    {
+     "pos": [
+      34.0,
+      201.0
+     ]
+    },
+    {
+     "pos": [
+      35.88,
+      202.12
+     ]
+    },
+    {
+     "pos": [
+      38.5,
+      202.5
+     ]
+    },
+    {
+     "pos": [
+      60,
+      202.5
+     ]
+    }
+   ]
+  }
+ ],
+ "gates": [
+  {
+   "name": "drawbridge",
+   "kind": "drawbridge",
+   "open": [
+    [
+     299,
+     64,
+     198,
+     "minecraft:air"
+    ],
+    [
+     300,
+     64,
+     198,
+     "minecraft:air"
+    ],
+    [
+     300,
+     65,
+     198,
+     "minecraft:air"
+    ],
+    [
+     301,
+     64,
+     198,
+     "minecraft:air"
+    ],
+    [
+     302,
+     64,
+     198,
+     "minecraft:air"
+    ],
+    [
+     303,
+     64,
+     198,
+     "minecraft:air"
+    ],
+    [
+     304,
+     64,
+     198,
+     "minecraft:air"
+    ],
+    [
+     305,
+     64,
+     198,
+     "minecraft:air"
+    ],
+    [
+     306,
+     64,
+     198,
+     "minecraft:air"
+    ],
+    [
+     307,
+     64,
+     198,
+     "minecraft:air"
+    ],
+    [
+     308,
+     64,
+     198,
+     "minecraft:air"
+    ],
+    [
+     309,
+     64,
+     198,
+     "minecraft:air"
+    ],
+    [
+     309,
+     65,
+     198,
+     "minecraft:air"
+    ],
+    [
+     310,
+     64,
+     198,
+     "minecraft:air"
+    ],
+    [
+     299,
+     64,
+     199,
+     "minecraft:air"
+    ],
+    [
+     300,
+     64,
+     199,
+     "minecraft:air"
+    ],
+    [
+     300,
+     65,
+     199,
+     "minecraft:air"
+    ],
+    [
+     301,
+     64,
+     199,
+     "minecraft:air"
+    ],
+    [
+     302,
+     64,
+     199,
+     "minecraft:air"
+    ],
+    [
+     303,
+     64,
+     199,
+     "minecraft:air"
+    ],
+    [
+     304,
+     64,
+     199,
+     "minecraft:air"
+    ],
+    [
+     305,
+     64,
+     199,
+     "minecraft:air"
+    ],
+    [
+     306,
+     64,
+     199,
+     "minecraft:air"
+    ],
+    [
+     307,
+     64,
+     199,
+     "minecraft:air"
+    ],
+    [
+     308,
+     64,
+     199,
+     "minecraft:air"
+    ],
+    [
+     309,
+     64,
+     199,
+     "minecraft:air"
+    ],
+    [
+     309,
+     65,
+     199,
+     "minecraft:air"
+    ],
+    [
+     310,
+     64,
+     199,
+     "minecraft:air"
+    ],
+    [
+     299,
+     64,
+     200,
+     "minecraft:air"
+    ],
+    [
+     300,
+     64,
+     200,
+     "minecraft:air"
+    ],
+    [
+     300,
+     65,
+     200,
+     "minecraft:air"
+    ],
+    [
+     301,
+     64,
+     200,
+     "minecraft:air"
+    ],
+    [
+     302,
+     64,
+     200,
+     "minecraft:air"
+    ],
+    [
+     303,
+     64,
+     200,
+     "minecraft:air"
+    ],
+    [
+     304,
+     64,
+     200,
+     "minecraft:air"
+    ],
+    [
+     305,
+     64,
+     200,
+     "minecraft:air"
+    ],
+    [
+     306,
+     64,
+     200,
+     "minecraft:air"
+    ],
+    [
+     307,
+     64,
+     200,
+     "minecraft:air"
+    ],
+    [
+     308,
+     64,
+     200,
+     "minecraft:air"
+    ],
+    [
+     309,
+     64,
+     200,
+     "minecraft:air"
+    ],
+    [
+     309,
+     65,
+     200,
+     "minecraft:air"
+    ],
+    [
+     310,
+     64,
+     200,
+     "minecraft:air"
+    ],
+    [
+     299,
+     64,
+     201,
+     "minecraft:air"
+    ],
+    [
+     300,
+     64,
+     201,
+     "minecraft:air"
+    ],
+    [
+     300,
+     65,
+     201,
+     "minecraft:air"
+    ],
+    [
+     301,
+     64,
+     201,
+     "minecraft:air"
+    ],
+    [
+     302,
+     64,
+     201,
+     "minecraft:air"
+    ],
+    [
+     303,
+     64,
+     201,
+     "minecraft:air"
+    ],
+    [
+     304,
+     64,
+     201,
+     "minecraft:air"
+    ],
+    [
+     305,
+     64,
+     201,
+     "minecraft:air"
+    ],
+    [
+     306,
+     64,
+     201,
+     "minecraft:air"
+    ],
+    [
+     307,
+     64,
+     201,
+     "minecraft:air"
+    ],
+    [
+     308,
+     64,
+     201,
+     "minecraft:air"
+    ],
+    [
+     309,
+     64,
+     201,
+     "minecraft:air"
+    ],
+    [
+     309,
+     65,
+     201,
+     "minecraft:air"
+    ],
+    [
+     310,
+     64,
+     201,
+     "minecraft:air"
+    ],
+    [
+     299,
+     64,
+     202,
+     "minecraft:air"
+    ],
+    [
+     300,
+     64,
+     202,
+     "minecraft:air"
+    ],
+    [
+     300,
+     65,
+     202,
+     "minecraft:air"
+    ],
+    [
+     301,
+     64,
+     202,
+     "minecraft:air"
+    ],
+    [
+     302,
+     64,
+     202,
+     "minecraft:air"
+    ],
+    [
+     303,
+     64,
+     202,
+     "minecraft:air"
+    ],
+    [
+     304,
+     64,
+     202,
+     "minecraft:air"
+    ],
+    [
+     305,
+     64,
+     202,
+     "minecraft:air"
+    ],
+    [
+     306,
+     64,
+     202,
+     "minecraft:air"
+    ],
+    [
+     307,
+     64,
+     202,
+     "minecraft:air"
+    ],
+    [
+     308,
+     64,
+     202,
+     "minecraft:air"
+    ],
+    [
+     309,
+     64,
+     202,
+     "minecraft:air"
+    ],
+    [
+     309,
+     65,
+     202,
+     "minecraft:air"
+    ],
+    [
+     310,
+     64,
+     202,
+     "minecraft:air"
+    ],
+    [
+     299,
+     64,
+     203,
+     "minecraft:air"
+    ],
+    [
+     300,
+     64,
+     203,
+     "minecraft:air"
+    ],
+    [
+     300,
+     65,
+     203,
+     "minecraft:air"
+    ],
+    [
+     301,
+     64,
+     203,
+     "minecraft:air"
+    ],
+    [
+     302,
+     64,
+     203,
+     "minecraft:air"
+    ],
+    [
+     303,
+     64,
+     203,
+     "minecraft:air"
+    ],
+    [
+     304,
+     64,
+     203,
+     "minecraft:air"
+    ],
+    [
+     305,
+     64,
+     203,
+     "minecraft:air"
+    ],
+    [
+     306,
+     64,
+     203,
+     "minecraft:air"
+    ],
+    [
+     307,
+     64,
+     203,
+     "minecraft:air"
+    ],
+    [
+     308,
+     64,
+     203,
+     "minecraft:air"
+    ],
+    [
+     309,
+     64,
+     203,
+     "minecraft:air"
+    ],
+    [
+     309,
+     65,
+     203,
+     "minecraft:air"
+    ],
+    [
+     310,
+     64,
+     203,
+     "minecraft:air"
+    ],
+    [
+     299,
+     64,
+     204,
+     "minecraft:air"
+    ],
+    [
+     300,
+     64,
+     204,
+     "minecraft:air"
+    ],
+    [
+     300,
+     65,
+     204,
+     "minecraft:air"
+    ],
+    [
+     301,
+     64,
+     204,
+     "minecraft:air"
+    ],
+    [
+     302,
+     64,
+     204,
+     "minecraft:air"
+    ],
+    [
+     303,
+     64,
+     204,
+     "minecraft:air"
+    ],
+    [
+     304,
+     64,
+     204,
+     "minecraft:air"
+    ],
+    [
+     305,
+     64,
+     204,
+     "minecraft:air"
+    ],
+    [
+     306,
+     64,
+     204,
+     "minecraft:air"
+    ],
+    [
+     307,
+     64,
+     204,
+     "minecraft:air"
+    ],
+    [
+     308,
+     64,
+     204,
+     "minecraft:air"
+    ],
+    [
+     309,
+     64,
+     204,
+     "minecraft:air"
+    ],
+    [
+     309,
+     65,
+     204,
+     "minecraft:air"
+    ],
+    [
+     310,
+     64,
+     204,
+     "minecraft:air"
+    ],
+    [
+     301,
+     65,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     301,
+     66,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     301,
+     67,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     302,
+     65,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     302,
+     66,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     302,
+     67,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     303,
+     65,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     303,
+     66,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     303,
+     67,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     304,
+     65,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     304,
+     66,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     304,
+     67,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     305,
+     65,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     305,
+     66,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     305,
+     67,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     306,
+     65,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     306,
+     66,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     306,
+     67,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     307,
+     65,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     307,
+     66,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     307,
+     67,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     308,
+     65,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     308,
+     66,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     308,
+     67,
+     197,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     301,
+     65,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     301,
+     66,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     301,
+     67,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     302,
+     65,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     302,
+     66,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     302,
+     67,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     303,
+     65,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     303,
+     66,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     303,
+     67,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     304,
+     65,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     304,
+     66,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     304,
+     67,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     305,
+     65,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     305,
+     66,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     305,
+     67,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     306,
+     65,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     306,
+     66,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     306,
+     67,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     307,
+     65,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     307,
+     66,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     307,
+     67,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     308,
+     65,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     308,
+     66,
+     205,
+     "minecraft:stripped_birch_wood"
+    ],
+    [
+     308,
+     67,
+     205,
+     "minecraft:stripped_birch_wood"
+    ]
+   ],
+   "clear": [
+    300,
+    64,
+    198,
+    309,
+    66,
+    204
+   ]
+  },
+  {
+   "name": "lock.n",
+   "kind": "lock",
+   "open": [
+    [
+     29,
+     58,
+     62,
+     "minecraft:water"
+    ],
+    [
+     29,
+     59,
+     62,
+     "minecraft:water"
+    ],
+    [
+     29,
+     60,
+     62,
+     "minecraft:water"
+    ],
+    [
+     29,
+     61,
+     62,
+     "minecraft:water"
+    ],
+    [
+     29,
+     62,
+     62,
+     "minecraft:water"
+    ],
+    [
+     29,
+     63,
+     62,
+     "minecraft:air"
+    ],
+    [
+     29,
+     64,
+     61,
+     "minecraft:air"
+    ],
+    [
+     30,
+     58,
+     62,
+     "minecraft:water"
+    ],
+    [
+     30,
+     59,
+     62,
+     "minecraft:water"
+    ],
+    [
+     30,
+     60,
+     62,
+     "minecraft:water"
+    ],
+    [
+     30,
+     61,
+     62,
+     "minecraft:water"
+    ],
+    [
+     30,
+     62,
+     62,
+     "minecraft:water"
+    ],
+    [
+     30,
+     63,
+     62,
+     "minecraft:air"
+    ],
+    [
+     30,
+     64,
+     61,
+     "minecraft:air"
+    ],
+    [
+     31,
+     58,
+     62,
+     "minecraft:water"
+    ],
+    [
+     31,
+     59,
+     62,
+     "minecraft:water"
+    ],
+    [
+     31,
+     60,
+     62,
+     "minecraft:water"
+    ],
+    [
+     31,
+     61,
+     62,
+     "minecraft:water"
+    ],
+    [
+     31,
+     62,
+     62,
+     "minecraft:water"
+    ],
+    [
+     31,
+     63,
+     62,
+     "minecraft:air"
+    ],
+    [
+     31,
+     64,
+     61,
+     "minecraft:air"
+    ],
+    [
+     32,
+     58,
+     62,
+     "minecraft:water"
+    ],
+    [
+     32,
+     59,
+     62,
+     "minecraft:water"
+    ],
+    [
+     32,
+     60,
+     62,
+     "minecraft:water"
+    ],
+    [
+     32,
+     61,
+     62,
+     "minecraft:water"
+    ],
+    [
+     32,
+     62,
+     62,
+     "minecraft:water"
+    ],
+    [
+     32,
+     63,
+     62,
+     "minecraft:air"
+    ],
+    [
+     32,
+     64,
+     61,
+     "minecraft:air"
+    ],
+    [
+     33,
+     58,
+     62,
+     "minecraft:water"
+    ],
+    [
+     33,
+     59,
+     62,
+     "minecraft:water"
+    ],
+    [
+     33,
+     60,
+     62,
+     "minecraft:water"
+    ],
+    [
+     33,
+     61,
+     62,
+     "minecraft:water"
+    ],
+    [
+     33,
+     62,
+     62,
+     "minecraft:water"
+    ],
+    [
+     33,
+     63,
+     62,
+     "minecraft:air"
+    ],
+    [
+     33,
+     64,
+     61,
+     "minecraft:air"
+    ],
+    [
+     34,
+     58,
+     62,
+     "minecraft:water"
+    ],
+    [
+     34,
+     59,
+     62,
+     "minecraft:water"
+    ],
+    [
+     34,
+     60,
+     62,
+     "minecraft:water"
+    ],
+    [
+     34,
+     61,
+     62,
+     "minecraft:water"
+    ],
+    [
+     34,
+     62,
+     62,
+     "minecraft:water"
+    ],
+    [
+     34,
+     63,
+     62,
+     "minecraft:air"
+    ],
+    [
+     34,
+     64,
+     61,
+     "minecraft:air"
+    ],
+    [
+     35,
+     58,
+     62,
+     "minecraft:water"
+    ],
+    [
+     35,
+     59,
+     62,
+     "minecraft:water"
+    ],
+    [
+     35,
+     60,
+     62,
+     "minecraft:water"
+    ],
+    [
+     35,
+     61,
+     62,
+     "minecraft:water"
+    ],
+    [
+     35,
+     62,
+     62,
+     "minecraft:water"
+    ],
+    [
+     35,
+     63,
+     62,
+     "minecraft:air"
+    ],
+    [
+     35,
+     64,
+     61,
+     "minecraft:air"
+    ],
+    [
+     36,
+     58,
+     62,
+     "minecraft:water"
+    ],
+    [
+     36,
+     59,
+     62,
+     "minecraft:water"
+    ],
+    [
+     36,
+     60,
+     62,
+     "minecraft:water"
+    ],
+    [
+     36,
+     61,
+     62,
+     "minecraft:water"
+    ],
+    [
+     36,
+     62,
+     62,
+     "minecraft:water"
+    ],
+    [
+     36,
+     63,
+     62,
+     "minecraft:air"
+    ],
+    [
+     36,
+     64,
+     61,
+     "minecraft:air"
+    ]
+   ],
+   "clear": [
+    26,
+    58,
+    61,
+    39,
+    65,
+    63
+   ]
+  },
+  {
+   "name": "lock.s",
+   "kind": "lock",
+   "open": [
+    [
+     29,
+     58,
+     81,
+     "minecraft:water"
+    ],
+    [
+     29,
+     59,
+     81,
+     "minecraft:water"
+    ],
+    [
+     29,
+     60,
+     81,
+     "minecraft:water"
+    ],
+    [
+     29,
+     61,
+     81,
+     "minecraft:water"
+    ],
+    [
+     29,
+     62,
+     81,
+     "minecraft:water"
+    ],
+    [
+     29,
+     63,
+     81,
+     "minecraft:air"
+    ],
+    [
+     29,
+     64,
+     80,
+     "minecraft:air"
+    ],
+    [
+     30,
+     58,
+     81,
+     "minecraft:water"
+    ],
+    [
+     30,
+     59,
+     81,
+     "minecraft:water"
+    ],
+    [
+     30,
+     60,
+     81,
+     "minecraft:water"
+    ],
+    [
+     30,
+     61,
+     81,
+     "minecraft:water"
+    ],
+    [
+     30,
+     62,
+     81,
+     "minecraft:water"
+    ],
+    [
+     30,
+     63,
+     81,
+     "minecraft:air"
+    ],
+    [
+     30,
+     64,
+     80,
+     "minecraft:air"
+    ],
+    [
+     31,
+     58,
+     81,
+     "minecraft:water"
+    ],
+    [
+     31,
+     59,
+     81,
+     "minecraft:water"
+    ],
+    [
+     31,
+     60,
+     81,
+     "minecraft:water"
+    ],
+    [
+     31,
+     61,
+     81,
+     "minecraft:water"
+    ],
+    [
+     31,
+     62,
+     81,
+     "minecraft:water"
+    ],
+    [
+     31,
+     63,
+     81,
+     "minecraft:air"
+    ],
+    [
+     31,
+     64,
+     80,
+     "minecraft:air"
+    ],
+    [
+     32,
+     58,
+     81,
+     "minecraft:water"
+    ],
+    [
+     32,
+     59,
+     81,
+     "minecraft:water"
+    ],
+    [
+     32,
+     60,
+     81,
+     "minecraft:water"
+    ],
+    [
+     32,
+     61,
+     81,
+     "minecraft:water"
+    ],
+    [
+     32,
+     62,
+     81,
+     "minecraft:water"
+    ],
+    [
+     32,
+     63,
+     81,
+     "minecraft:air"
+    ],
+    [
+     32,
+     64,
+     80,
+     "minecraft:air"
+    ],
+    [
+     33,
+     58,
+     81,
+     "minecraft:water"
+    ],
+    [
+     33,
+     59,
+     81,
+     "minecraft:water"
+    ],
+    [
+     33,
+     60,
+     81,
+     "minecraft:water"
+    ],
+    [
+     33,
+     61,
+     81,
+     "minecraft:water"
+    ],
+    [
+     33,
+     62,
+     81,
+     "minecraft:water"
+    ],
+    [
+     33,
+     63,
+     81,
+     "minecraft:air"
+    ],
+    [
+     33,
+     64,
+     80,
+     "minecraft:air"
+    ],
+    [
+     34,
+     58,
+     81,
+     "minecraft:water"
+    ],
+    [
+     34,
+     59,
+     81,
+     "minecraft:water"
+    ],
+    [
+     34,
+     60,
+     81,
+     "minecraft:water"
+    ],
+    [
+     34,
+     61,
+     81,
+     "minecraft:water"
+    ],
+    [
+     34,
+     62,
+     81,
+     "minecraft:water"
+    ],
+    [
+     34,
+     63,
+     81,
+     "minecraft:air"
+    ],
+    [
+     34,
+     64,
+     80,
+     "minecraft:air"
+    ],
+    [
+     35,
+     58,
+     81,
+     "minecraft:water"
+    ],
+    [
+     35,
+     59,
+     81,
+     "minecraft:water"
+    ],
+    [
+     35,
+     60,
+     81,
+     "minecraft:water"
+    ],
+    [
+     35,
+     61,
+     81,
+     "minecraft:water"
+    ],
+    [
+     35,
+     62,
+     81,
+     "minecraft:water"
+    ],
+    [
+     35,
+     63,
+     81,
+     "minecraft:air"
+    ],
+    [
+     35,
+     64,
+     80,
+     "minecraft:air"
+    ],
+    [
+     36,
+     58,
+     81,
+     "minecraft:water"
+    ],
+    [
+     36,
+     59,
+     81,
+     "minecraft:water"
+    ],
+    [
+     36,
+     60,
+     81,
+     "minecraft:water"
+    ],
+    [
+     36,
+     61,
+     81,
+     "minecraft:water"
+    ],
+    [
+     36,
+     62,
+     81,
+     "minecraft:water"
+    ],
+    [
+     36,
+     63,
+     81,
+     "minecraft:air"
+    ],
+    [
+     36,
+     64,
+     80,
+     "minecraft:air"
+    ]
+   ],
+   "clear": [
+    26,
+    58,
+    80,
+    39,
+    65,
+    82
+   ]
+  }
+ ]
 }

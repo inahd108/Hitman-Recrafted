@@ -20,7 +20,8 @@ import ams_ground  # noqa: E402
 import ams_water  # noqa: E402
 import ams_harbour  # noqa: E402
 import ams_city  # noqa: E402
-import ams_street  # noqa: E402
+import ams_street
+import ams_boats  # noqa: E402
 import ams_mission  # noqa: E402
 import json  # noqa: E402
 
@@ -56,7 +57,7 @@ def main():
     w = World(L.SX, L.SY, L.SZ)
     ctx = dict(w=w, rng=random.Random(1672), anchors={}, props=[], npcs=[], zones=[])
     steps = [('ground', ams_ground.base), ('water', ams_ground.waters), ('streets', ams_ground.streets),
-             ('harbour', ams_harbour.build), ('city', ams_city.build), ('bridges', bridges), ('street', ams_street.build)]
+             ('harbour', ams_harbour.build), ('city', ams_city.build), ('bridges', bridges), ('street', ams_street.build), ('boats', ams_boats.build)]
     for name, fn in steps:
         fn(ctx)
         print(f'  {name} done ({time.time() - t:.1f}s)')

@@ -16,7 +16,7 @@ import recrafted.mission.MissionManager;
 
 /** Simple blocks whose only job is to hand a right-click to the mission logic. */
 public class ActionBlock extends Block {
-    public enum Action { HIDE_BODY, SMASH_CORE, PURGE, EXIT, WINCH, CLUE, NONE }
+    public enum Action { HIDE_BODY, SMASH_CORE, PURGE, EXIT, WINCH, CLUE, BRIDGE, SLUICE, NONE }
 
     private final Action action;
 
@@ -39,6 +39,8 @@ public class ActionBlock extends Block {
             case EXIT -> MissionManager.tryExit(sl, sp);
             case WINCH -> MissionManager.dropLoad(sl, sp, pos);
             case CLUE -> MissionManager.readClue(sl, sp, pos);
+            case BRIDGE -> MissionManager.bridgeControl(sl, sp, pos);
+            case SLUICE -> MissionManager.lockControl(sl, sp, pos);
             default -> { }
         }
         return InteractionResult.CONSUME;

@@ -471,6 +471,56 @@ public final class MissionManager {
         return true;
     }
 
+    /** Using a keeper's controls in plain clothes looks wrong to anyone watching. */
+    private static void keeperWork(ServerLevel level, ServerPlayer p) {
+        if (PlayerData.disguise(p) != NpcRole.BRIDGE_KEEPER) Awareness.suspiciousAct(level, p, 0.45f);
+    }
+
+    /** The bridge keeper's lever: hold the Gildegracht drawbridge down (boats wait at the crane), or let it work again. */
+    public static void bridgeControl(ServerLevel level, @Nullable ServerPlayer p, BlockPos pos) {
+        boolean held = recrafted.boat.Waterways.toggleHold(level, "drawbridge");
+        level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.8f, held ? 0.6f : 0.9f);
+        if (p != null) {
+            keeperWork(level, p);
+            p.displayClientMessage(Component.literal(held ? "The drawbridge stays down. Boats will have to wait at the crane."
+                    : "The drawbridge works again.").withStyle(ChatFormatting.GOLD), true);
+        }
+    }
+
+    /**
+     * The lock keeper's sluice wheel. With a boat in the chamber it dumps the water all at once: the boat drops hard
+     * against the sill and whoever can't swim goes over the side.
+     */
+    public static void lockControl(ServerLevel level, @Nullable ServerPlayer p, BlockPos pos) {
+        level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 1f, 0.5f);
+        if (p != null) keeperWork(level, p);
+        recrafted.boat.CanalBoat inLock = null;
+        for (recrafted.boat.CanalBoat b : level.getEntitiesOfClass(recrafted.boat.CanalBoat.class, new AABB(pos).inflate(40))) {
+            if (b.isMoored("lock.chamber")) inLock = b;
+        }
+        if (inLock == null) {
+            if (p != null) p.displayClientMessage(Component.literal("The sluices roar. Nothing in the chamber."), true);
+            return;
+        }
+        level.playSound(null, inLock.blockPosition(), SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 2f, 0.6f);
+        level.sendParticles(ParticleTypes.SPLASH, inLock.getX(), inLock.getY() + 0.8, inLock.getZ(), 80, 2, .3, 4, .2);
+        boolean over = false;
+        for (net.minecraft.world.entity.Entity e : new ArrayList<>(inLock.getPassengers())) {
+            if (e instanceof NpcEntity n && n.getRole().cantSwim()) {
+                Vec3 side = inLock.local(3.4, -0.3, 0);
+                n.stopRiding();
+                n.teleportTo(side.x, side.y, side.z);
+                n.setDeltaMovement(0, -0.1, 0);
+                n.drownedBy = p;
+                over = true;
+            } else if (e instanceof NpcEntity n) {
+                n.say("Hold on!", 50);
+            }
+        }
+        Awareness.noise(level, inLock.position(), 20, 6, p);
+        if (p != null && !over) p.displayClientMessage(Component.literal("The boat lurches against the sill. Everyone holds on."), true);
+    }
+
     /** Collect objectives: done once the item is in the player's inventory. */
     private static void tickCollect(ServerLevel level, MissionState st) {
         Mission m = of(level);
@@ -576,6 +626,9 @@ public final class MissionManager {
         st.pendingProps.clear();
         for (int i = 0; i < m.npcs.size(); i++) st.pendingNpcs.add(i);
         for (int i = 0; i < m.props.size(); i++) st.pendingProps.add(i);
+        st.pendingBoats.clear();
+        for (int i = 0; i < m.boats.size(); i++) st.pendingBoats.add(i);
+        recrafted.boat.Waterways.reset(level);
         st.active = true;
         st.complete = false;
         st.purgeAt = -1;
@@ -586,6 +639,7 @@ public final class MissionManager {
         for (Entity e : level.getAllEntities()) {
             if (e instanceof NpcEntity n && n.missionGen != -1) stale.add(e);
             else if (e instanceof PropEntity pe && pe.missionGen != -1) stale.add(e);
+            else if (e instanceof recrafted.boat.CanalBoat b && b.missionGen != -1) stale.add(e);
         }
         stale.forEach(Entity::discard);
     }
@@ -675,6 +729,7 @@ public final class MissionManager {
         if (def.has("id")) n.contractId = def.get("id").getAsString();
         if (n.hiddenTarget && MissionState.get(level).identified.contains(n.contractId)) n.setTarget(true);
         if (def.has("follow")) n.followId = def.get("follow").getAsString();
+        if (def.has("aboard")) n.aboard = def.get("aboard").getAsString();
         if (def.has("sickSpot")) {
             JsonArray s = def.getAsJsonArray("sickSpot");
             n.sickSpot = new Vec3(s.get(0).getAsDouble(), s.get(1).getAsDouble(), s.get(2).getAsDouble());
@@ -703,6 +758,7 @@ public final class MissionManager {
         if (n.isEnforcer()) o.addProperty("enforcer", true);
         if (!n.contractId.isEmpty()) o.addProperty("id", n.contractId);
         if (!n.followId.isEmpty()) o.addProperty("follow", n.followId);
+        if (!n.aboard.isEmpty()) o.addProperty("aboard", n.aboard);
         if (n.sickSpot != null) {
             JsonArray s = new JsonArray();
             s.add(n.sickSpot.x); s.add(n.sickSpot.y); s.add(n.sickSpot.z);
@@ -753,6 +809,14 @@ public final class MissionManager {
     private static void spawnPending(ServerLevel level, MissionState st) {
         Mission m = of(level);
         int budget = 24;
+        for (Integer i : new ArrayList<>(st.pendingBoats)) {
+            if (i >= m.boats.size()) { st.pendingBoats.remove(i); continue; }
+            Mission.BoatDef b = m.boats.get(i);
+            if (!level.isPositionEntityTicking(BlockPos.containing(b.route().get(0).x(), b.y(), b.route().get(0).z()))) continue;
+            level.addFreshEntity(recrafted.boat.CanalBoat.create(level, b, st.gen));
+            st.pendingBoats.remove(i);
+            st.setDirty();
+        }
         if (!st.pendingNpcs.isEmpty()) {
             for (Integer i : new ArrayList<>(st.pendingNpcs)) {
                 if (i >= m.npcs.size()) { st.pendingNpcs.remove(i); continue; }
@@ -821,6 +885,7 @@ public final class MissionManager {
             if (level.getGameTime() % 20 == 0) tickCollect(level, st);
             if (level.getGameTime() % 20 == 5) tickClock(level, st);
             tickPurge(level, st);
+            recrafted.boat.Waterways.tick(level);
         }
         if (level.getGameTime() % 5 == 0) {
             for (ServerPlayer p : level.players()) sendHud(level, p);

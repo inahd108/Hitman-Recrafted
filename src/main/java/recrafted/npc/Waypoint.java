@@ -18,6 +18,8 @@ public class Waypoint {
     public float yaw = NO_YAW;
     public boolean run;
     public String say = "";
+    /** Boat to board here (by name); the NPC rides it until it moors at the stop named in {@link #alight}. */
+    public String board = "", alight = "";
 
     public Waypoint() {}
 
@@ -31,7 +33,7 @@ public class Waypoint {
 
     public Waypoint copy() {
         Waypoint w = new Waypoint(x, y, z);
-        w.wait = wait; w.pose = pose; w.yaw = yaw; w.run = run; w.say = say;
+        w.wait = wait; w.pose = pose; w.yaw = yaw; w.run = run; w.say = say; w.board = board; w.alight = alight;
         return w;
     }
 
@@ -43,6 +45,7 @@ public class Waypoint {
         if (hasYaw()) t.putFloat("yaw", yaw);
         if (run) t.putBoolean("run", true);
         if (!say.isEmpty()) t.putString("say", say);
+        if (!board.isEmpty()) { t.putString("board", board); t.putString("alight", alight); }
         return t;
     }
 
@@ -53,6 +56,8 @@ public class Waypoint {
         w.yaw = t.contains("yaw") ? t.getFloat("yaw") : NO_YAW;
         w.run = t.getBoolean("run");
         w.say = t.getString("say");
+        w.board = t.getString("board");
+        w.alight = t.getString("alight");
         return w;
     }
 
@@ -63,6 +68,8 @@ public class Waypoint {
         buf.writeFloat(yaw);
         buf.writeBoolean(run);
         buf.writeUtf(say, 256);
+        buf.writeUtf(board, 32);
+        buf.writeUtf(alight, 32);
     }
 
     public static Waypoint read(FriendlyByteBuf buf) {
@@ -72,6 +79,8 @@ public class Waypoint {
         w.yaw = buf.readFloat();
         w.run = buf.readBoolean();
         w.say = buf.readUtf(256);
+        w.board = buf.readUtf(32);
+        w.alight = buf.readUtf(32);
         return w;
     }
 
@@ -85,6 +94,7 @@ public class Waypoint {
         if (hasYaw()) o.addProperty("yaw", Math.round(yaw));
         if (run) o.addProperty("run", true);
         if (!say.isEmpty()) o.addProperty("say", say);
+        if (!board.isEmpty()) { o.addProperty("board", board); o.addProperty("alight", alight); }
         return o;
     }
 
@@ -96,6 +106,8 @@ public class Waypoint {
         if (o.has("yaw") && !o.get("yaw").isJsonNull()) w.yaw = o.get("yaw").getAsFloat();
         if (o.has("run")) w.run = o.get("run").getAsBoolean();
         if (o.has("say") && !o.get("say").isJsonNull()) w.say = o.get("say").getAsString();
+        if (o.has("board")) w.board = o.get("board").getAsString();
+        if (o.has("alight")) w.alight = o.get("alight").getAsString();
         return w;
     }
 
