@@ -368,6 +368,7 @@ public final class MissionManager {
         p.setHealth(p.getMaxHealth());
         give(p, PropType.COIN, 3);
         give(p, PropType.FIBER_WIRE, 1);
+        giveStarterPistol(p);
         p.connection.send(new ClientboundSetSubtitleTextPacket(Component.literal(m.location).withStyle(ChatFormatting.GRAY)));
         p.connection.send(new ClientboundSetTitleTextPacket(Component.literal(m.title).withStyle(ChatFormatting.WHITE)));
         for (String line : m.briefing) p.sendSystemMessage(Component.literal(line).withStyle(ChatFormatting.GRAY));
@@ -377,6 +378,19 @@ public final class MissionManager {
         }
         p.sendSystemMessage(Component.literal("/contract intel lists what the handler knows. Hold V to focus.").withStyle(ChatFormatting.DARK_GRAY));
         return true;
+    }
+
+    /** The Passero .22, loaded, with two spare magazines: quiet, and legal while it stays out of sight. */
+    private static void giveStarterPistol(ServerPlayer p) {
+        boolean has = p.getInventory().items.stream().anyMatch(s -> Guns.isGun(s, Guns.PASSERO))
+                || Guns.isGun(p.getOffhandItem(), Guns.PASSERO);
+        if (has) return;
+        ItemStack gun = Guns.loadedGun(Guns.PASSERO);
+        if (gun.isEmpty()) return;
+        ItemStack ammo = Guns.spareAmmo(gun);
+        if (!ammo.isEmpty()) ammo.setCount(ammo.getCount() * 2);
+        if (!p.getInventory().add(gun)) p.drop(gun, false);
+        if (!ammo.isEmpty() && !p.getInventory().add(ammo)) p.drop(ammo, false);
     }
 
     private static void give(ServerPlayer p, PropType t, int n) {

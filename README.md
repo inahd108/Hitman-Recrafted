@@ -29,7 +29,9 @@ All screenshots are taken in-game by the automated tour (`./gradlew runClient -P
 ## Playing the contract
 
 1. Install Forge 47.x for 1.20.1 and drop the mod jar in `mods/`.
-2. Create a world (any type) and run **`/contract start`**. You arrive on the evening ferry.
+2. Create a world (any type) and run **`/contract start`**. You arrive on the evening ferry with three coins,
+   the fiber wire and (with TACZ and the gun pack) a loaded **Passero .22** plus two spare magazines. It's legal
+   while it stays in your inventory; in your hand it's a gun like any other.
 3. Eliminate **Marco Belmonte**, **Dr. Ilse Varga** and **Capitano Renzo Sordi**, destroy the CINDER
    sample in the lab, and leave by an exit point (the ferry, the patrol launch, or the boat in the sea cave).
 

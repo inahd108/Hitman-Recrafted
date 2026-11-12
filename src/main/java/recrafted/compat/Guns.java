@@ -63,6 +63,17 @@ public final class Guns {
     }
 
     public static final ResourceLocation CICALA = new ResourceLocation(Recrafted.MODID, "cicala");
+    public static final ResourceLocation PASSERO = new ResourceLocation(Recrafted.MODID, "passero");
+
+    /** A full, ready-to-fire gun from the gun pack, or empty (TACZ or the pack missing). */
+    public static ItemStack loadedGun(ResourceLocation id) {
+        return safely(() -> TaczBridge.loadedGun(id), ItemStack.EMPTY);
+    }
+
+    /** Is this stack the gun pack's gun with this id? */
+    public static boolean isGun(ItemStack stack, ResourceLocation id) {
+        return isGun(stack) && stack.hasTag() && id.toString().equals(stack.getTag().getString("GunId"));
+    }
 
     /** A loaded Cicala with its 8x scope fitted (what a fresh briefcase holds), or empty. */
     public static ItemStack freshCicala() {

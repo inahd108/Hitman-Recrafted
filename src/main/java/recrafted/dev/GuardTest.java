@@ -310,6 +310,28 @@ public final class GuardTest {
             sp.setHealth(sp.getMaxHealth());
         }));
         step(500, () -> onServer(server, (level, sp) -> cleanUp(level)));
+        // ---- starting loadout -----------------------------------------------------------------------------
+        step(300, () -> onServer(server, (level, sp) -> {
+            sp.getInventory().clearContent();
+            MissionManager.start(sp);
+            MissionManager.start(sp);                       // a restart must not hand out a second pistol
+            long pistols = sp.getInventory().items.stream().filter(st -> Guns.isGun(st, Guns.PASSERO)).count();
+            ItemStack pistol = sp.getInventory().items.stream().filter(st -> Guns.isGun(st, Guns.PASSERO)).findFirst().orElse(ItemStack.EMPTY);
+            int rounds = sp.getInventory().items.stream().filter(st -> st.hasTag() && "tacz:22wmr".equals(st.getTag().getString("AmmoId")))
+                    .mapToInt(ItemStack::getCount).sum();
+            check("contract start hands out one Passero, loaded", pistols == 1 && pistol.getTag().getInt("GunCurrentAmmoCount") == 10,
+                    pistols + " " + pistol.getTag());
+            check("and 20 spare .22 rounds", rounds == 20, rounds);
+            // leave the dev world as it was: no running contract, no cast left standing
+            ServerLevel ml = MissionManager.missionLevel(server);
+            MissionManager.stop(ml);
+            List<Entity> cast = new ArrayList<>();
+            for (Entity en : ml.getAllEntities()) {
+                if ((en instanceof NpcEntity n && n.missionGen != -1) || (en instanceof PropEntity pe && pe.missionGen != -1)) cast.add(en);
+            }
+            cast.forEach(Entity::discard);
+            sp.setGameMode(GameType.SURVIVAL);
+        }));
         step(1000, () -> {
             LOG.info("GUARDTEST DONE failures={}", failures);
             mc.stop();
